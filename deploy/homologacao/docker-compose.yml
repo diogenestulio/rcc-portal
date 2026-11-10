@@ -1,0 +1,77 @@
+# Portal RCC Arquidiocese de Cuiabá — HOMOLOGAÇÃO na VPS compartilhada (Hostinger, 1 vCPU / 3,9 GB).
+# Fica em /opt/rcc-portal-hml/docker-compose.yml. Nenhuma porta publicada: o Nginx do HelpDesk
+# (rede externa helpdesk_default) encaminha https://179-197-73-172.sslip.io:10443 para rcc-hml-app:3000.
+# Limites de memória somam ~832 MB (uso real esperado ~350–450 MB). Só dados fictícios.
+name: rcc-portal-hml
+
+x-app: &app
+  image: rcc-portal:${RCC_VERSAO:?defina RCC_VERSAO no .env}
+  env_file: .env
+  restart: unless-stopped
+  logging: { driver: json-file, options: { max-size: "10m", max-file: "3" } }
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: UTC
+    command: ["postgres", "-c", "shared_buffers=64MB", "-c", "effective_cache_size=192MB", "-c", "work_mem=4MB", "-c", "max_connections=30"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    networks: [interna]
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      retries: 10
+    logging: { driver: json-file, options: { max-size: "5m", max-file: "2" } }
+
+  # Uso: docker compose run --rm migrate
+  migrate:
+    <<: *app
+    restart: "no"
+    profiles: [ferramentas]
+    command: ["node", "scripts/migrate.mjs"]
+    depends_on: { postgres: { condition: service_healthy } }
+    networks: [interna]
+
+  # Uso: docker compose run --rm ferramentas scripts/seed-dev.mjs   (ou create-admin.mjs, verify-audit.mjs)
+  ferramentas:
+    <<: *app
+    restart: "no"
+    profiles: [ferramentas]
+    entrypoint: ["node"]
+    depends_on: { postgres: { condition: service_healthy } }
+    networks: [interna]
+
+  app:
+    <<: *app
+    depends_on: { postgres: { condition: service_healthy } }
+    networks:
+      interna: {}
+      borda: { aliases: [rcc-hml-app] }
+    mem_limit: 384m
+
+  worker:
+    <<: *app
+    command: ["node", "scripts/worker.mjs"]
+    depends_on: { postgres: { condition: service_healthy } }
+    environment: { EMAIL_DIR: /data/emails }
+    volumes: [emails:/data/emails]
+    networks: [interna]
+    mem_limit: 192m
+    healthcheck: { disable: true }
+
+volumes:
+  pgdata:
+  emails:
+
+networks:
+  interna:
+    internal: true
+  borda:
+    external: true
+    name: helpdesk_default

@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+/*
+ * Design system — RCC Arquidiocesana (docs/10-design-system.md)
+ * Cor principal PROVISÓRIA (vinho) até receber a identidade autorizada.
+ * Contrastes calculados (WCAG 2.x): tinta/marfim 16,1:1 · vinho/marfim 9,3:1 ·
+ * dourado-texto/marfim 6,0:1 · branco/vinho 9,9:1. O dourado decorativo (#B8912F, 2,8:1)
+ * NÃO é usado em texto nem em botões.
+ */
+@theme {
+  --color-marfim: #fbf8f1;
+  --color-marfim-2: #f4eee1;
+  --color-papel: #ffffff;
+  --color-tinta: #1f1b16;
+  --color-tinta-2: #4a4339;
+  --color-tinta-3: #6b6256;
+  --color-linha: #e3dacb;
+  --color-vinho: #7a2335;
+  --color-vinho-escuro: #5a1726;
+  --color-vinho-claro: #f6e9ea;
+  --color-dourado: #b8912f;      /* decorativo: filetes, ícones grandes */
+  --color-dourado-texto: #7a5a1c;
+  --color-azul: #1f4e79;          /* informação e foco */
+  --color-azul-claro: #e8f0f8;
+  --color-verde: #2f6b3a;         /* sucesso / confirmado */
+  --color-verde-claro: #e7f2e8;
+  --color-alerta: #8a5a00;        /* atenção (texto) */
+  --color-alerta-claro: #fdf3dc;
+  --color-perigo: #9b1c1c;        /* erro / cancelado */
+  --color-perigo-claro: #fbeaea;
+
+  --font-titulo: var(--font-source-serif), "Georgia", serif;
+  --font-corpo: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --text-display: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  --text-display--line-height: 1.1;
+
+  --ease-suave: cubic-bezier(.2, .7, .2, 1);
+}
+
+:root {
+  --foco: 3px solid var(--color-azul);
+  --sombra: 0 1px 2px rgb(31 27 22 / .06), 0 4px 14px rgb(31 27 22 / .06);
+  --dur: 160ms;
+  color-scheme: light;
+}
+
+@layer base {
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--color-marfim);
+  color: var(--color-tinta);
+  font-family: var(--font-corpo);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4 { font-family: var(--font-titulo); line-height: 1.2; color: var(--color-tinta); text-wrap: balance; }
+p { text-wrap: pretty; }
+a { color: var(--color-vinho); text-underline-offset: .18em; text-decoration-thickness: 1px; }
+a:hover { color: var(--color-vinho-escuro); text-decoration-thickness: 2px; }
+
+/* Foco sempre visível e consistente */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: var(--foco);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute; left: 1rem; top: -100px; z-index: 100;
+  background: var(--color-tinta); color: #fff; padding: .6rem 1rem; border-radius: var(--radius-sm);
+}
+.skip-link:focus { top: 1rem; color: #fff; }
+
+}
+
+/* Texto rico vindo do CMS (já sanitizado no servidor) */
+.prosa { max-width: 68ch; }
+.prosa > * + * { margin-top: 1em; }
+.prosa h2 { font-size: 1.6rem; margin-top: 1.8em; }
+.prosa h3 { font-size: 1.3rem; margin-top: 1.5em; }
+.prosa ul { list-style: disc; padding-left: 1.4em; }
+.prosa ol { list-style: decimal; padding-left: 1.4em; }
+.prosa blockquote { border-left: 3px solid var(--color-dourado); padding-left: 1em; color: var(--color-tinta-2); font-style: italic; }
+.prosa img { border-radius: var(--radius-md); height: auto; }
+
+/* Filete com chama discreta — elemento de identidade, estático */
+.filete { height: 1px; background: linear-gradient(90deg, transparent, var(--color-dourado), transparent); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

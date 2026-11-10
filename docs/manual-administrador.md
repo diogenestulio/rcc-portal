@@ -1,0 +1,41 @@
+# Manual do administrador
+
+Para servos que cuidam do portal. Linguagem simples; dúvidas técnicas ficam em `docs/07-operacao.md`.
+
+## Entrar
+1. Acesse `/entrar` com o e-mail e a senha que a coordenação criou para você.
+2. No primeiro acesso, o portal pede a **verificação em duas etapas**: instale um aplicativo autenticador no celular, escaneie o QR Code e guarde os códigos de recuperação em local seguro.
+3. Nos próximos acessos: senha + código de 6 dígitos do aplicativo.
+4. Perdeu o celular? Use um código de recuperação (cada um funciona uma vez) e peça ao gestor para refazer o MFA.
+
+Você só vê o que o seu papel permite. Responsáveis por um grupo veem só o próprio grupo.
+
+## Publicar uma notícia ou formação
+1. **Conteúdo → Novo conteúdo.** Escolha o tipo e um endereço curto (ex.: `retiro-de-jovens-2027`).
+2. Escolha a **natureza**: notícia, institucional, doutrina, orientação pastoral, devoção ou testemunho. As quatro últimas só vão ao ar depois do **revisor designado**.
+3. Escreva o texto. Parágrafos separados por linha em branco; `## Subtítulo`; `**negrito**`; `- item`. Indique **fontes** e **direitos** (de quem é a foto, o texto).
+4. **Salvar como rascunho → Enviar para revisão.**
+5. O revisor aprova ou devolve com observação. Ninguém aprova o próprio texto.
+6. Aprovado, clique **Publicar** (ou agende data e hora).
+7. Precisa corrigir algo publicado? Edite: a versão antiga continua no ar até a nova ser aprovada e publicada.
+
+Não publique: citações sem fonte conferida, promessas de cura, revelações privadas como verdade de fé, fotos sem autorização, textos gerados automaticamente sem revisão humana.
+
+## Grupos de Oração
+- **Grupos → (nome do grupo)**: ajuste dia, horário, local e acessibilidade. O contato do coordenador é **privado**; o telefone só aparece no site se ele autorizar e você marcar a caixa.
+- A cada visita ou conversa com o grupo, clique **Confirmar dados**. Grupos sem confirmação há 180 dias aparecem como “Informação a confirmar”.
+- **Sugestões de visitantes** chegam em “Grupos → Sugestões”. Nada muda sozinho: confira, edite o grupo se for o caso, e marque a sugestão como aplicada ou rejeitada.
+
+## Eventos e inscrições
+1. **Eventos → Novo evento.** Informe data/hora (horário de Cuiabá) ou marque “dia inteiro”. Para encontros que se repetem, escolha a repetição.
+2. Para receber inscrições, marque a caixa e defina vagas, prazo e lista de espera.
+3. O evento nasce como rascunho: confira e clique **Publicar no portal**.
+4. **Adiar ou cancelar**: mude a situação. O site, o arquivo de agenda e os assinantes recebem a mudança (os assinantes dependem do aplicativo deles para atualizar).
+5. **Check-in**: abra o evento → Check-in → cole o código do comprovante. Um comprovante só vale uma vez.
+6. A lista de participantes e a exportação são registradas na auditoria. Não compartilhe a planilha em grupos de mensagem.
+
+## Pedidos de oração
+Só intercessores autorizados veem. Os pedidos somem sozinhos após 60 dias. Não copie, não fotografe, não comente nomes fora da equipe.
+
+## Ambiente de demonstração
+Itens com o selo **Demonstração** são fictícios e existem só no ambiente de desenvolvimento.

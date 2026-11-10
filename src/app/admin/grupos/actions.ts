@@ -1,0 +1,67 @@
+"use server";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { eq } from "drizzle-orm";
+import { db } from "@/db";
+import { groupCorrection, groupPrivateContact, prayerGroup } from "@/db/schema";
+import { requireAdmin, requireCan } from "@/server/session";
+import { decide } from "@/server/authz";
+import { confirmGroup, editGroup } from "@/server/groups";
+import { audit } from "@/server/audit";
+
+const STATUS = ["ativo", "pausado", "encerrado", "a_confirmar"] as const;
+
+export async function salvarGrupo(fd: FormData) {
+  const s = await requireAdmin();
+  const id = String(fd.get("id"));
+  const weekday = Number(fd.get("dia"));
+  const status = String(fd.get("situacao")) as (typeof STATUS)[number];
+  const time = (v: FormDataEntryValue | null) => (/^\d{2}:\d{2}$/.test(String(v)) ? String(v) : null);
+  if (!Number.isInteger(weekday) || weekday < 0 || weekday > 6 || !STATUS.includes(status) || !time(fd.get("inicio"))) redirect(`/admin/grupos/${id}?erro=1`);
+  await editGroup(db, s, id, {
+    name: String(fd.get("nome")).trim().slice(0, 120), venue: String(fd.get("local")).trim().slice(0, 200),
+    publicAddress: String(fd.get("endereco") ?? "").trim().slice(0, 300) || null, weekday, startTime: time(fd.get("inicio"))!, endTime: time(fd.get("fim")),
+    accessibilityInfo: String(fd.get("acessibilidade") ?? "").trim().slice(0, 300) || null, description: String(fd.get("descricao") ?? "").trim().slice(0, 2000) || null,
+    publicContact: String(fd.get("contato_publico") ?? "").trim().slice(0, 200) || null, status,
+  });
+  // Contato privado: só quem tem grupo.contato_privado no escopo
+  const [g] = await db.select({ regionId: prayerGroup.regionId }).from(prayerGroup).where(eq(prayerGroup.id, id));
+  if (!decide(s, "grupo.contato_privado", { groupId: id, regionId: g.regionId }).ok) { revalidatePath("/grupos", "layout"); redirect(`/admin/grupos/${id}?ok=1`); }
+  const auth = fd.get("autoriza_telefone") === "on";
+  await db.insert(groupPrivateContact).values({
+    groupId: id, coordinatorName: String(fd.get("coord_nome") ?? "").slice(0, 120) || null, coordinatorPhone: String(fd.get("coord_tel") ?? "").slice(0, 30) || null,
+    coordinatorEmail: String(fd.get("coord_email") ?? "").slice(0, 200) || null, phonePublicationAuthorized: auth, authorizationRecordedAt: auth ? new Date() : null,
+  }).onConflictDoUpdate({ target: groupPrivateContact.groupId, set: {
+    coordinatorName: String(fd.get("coord_nome") ?? "").slice(0, 120) || null, coordinatorPhone: String(fd.get("coord_tel") ?? "").slice(0, 30) || null,
+    coordinatorEmail: String(fd.get("coord_email") ?? "").slice(0, 200) || null, phonePublicationAuthorized: auth, updatedAt: new Date(),
+  } });
+  revalidatePath("/grupos", "layout");
+  redirect(`/admin/grupos/${id}?ok=1`);
+}
+
+export async function confirmar(fd: FormData) {
+  const s = await requireAdmin();
+  const id = String(fd.get("id"));
+  await confirmGroup(db, s, id);
+  revalidatePath("/grupos", "layout");
+  redirect(`/admin/grupos/${id}?ok=1`);
+}
+
+export async function publicar(fd: FormData) {
+  const s = await requireCan("grupo.publicar");
+  const id = String(fd.get("id"));
+  const pub = fd.get("publicar") === "1";
+  await db.update(prayerGroup).set({ published: pub, updatedAt: new Date() }).where(eq(prayerGroup.id, id));
+  await audit(db, { actorId: s.userId, action: pub ? "grupo.publicar" : "grupo.despublicar", resourceType: "prayer_group", resourceId: id });
+  revalidatePath("/grupos", "layout");
+  redirect(`/admin/grupos/${id}?ok=1`);
+}
+
+export async function moderar(fd: FormData) {
+  const s = await requireCan("grupo.moderar_correcoes");
+  const id = String(fd.get("id"));
+  const d = fd.get("decisao") === "aceita" ? "aceita" : "rejeitada";
+  await db.update(groupCorrection).set({ status: d, moderatedBy: s.userId, moderatedAt: new Date() }).where(eq(groupCorrection.id, id));
+  await audit(db, { actorId: s.userId, action: `grupo.correcao_${d}`, resourceType: "group_correction", resourceId: id });
+  redirect("/admin/grupos?ok=1#correcoes");
+}

@@ -1,0 +1,38 @@
+# CI proposto — AINDA NÃO EXECUTADO (o projeto ainda não tem repositório remoto).
+name: ci
+on: [push, pull_request]
+permissions: { contents: read }
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env: { POSTGRES_PASSWORD: ci_only, POSTGRES_DB: postgres }
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      APP_ENV: development
+      DATABASE_URL: postgres://postgres:ci_only@localhost:5432/rcc_ci_test
+      TEST_DATABASE_URL: postgres://postgres:ci_only@localhost:5432/rcc_ci_test
+      BETTER_AUTH_SECRET: ci-secret-ci-secret-ci-secret-ci-secret
+      APP_SIGNING_KEY: ci-signing-key-ci-signing-key-ci-signing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: npm }
+      - run: npm ci
+      - run: npx next typegen && npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - name: Migrações aplicam do zero
+        run: npm run db:migrate
+      - name: Migração gerada confere com o esquema
+        run: npx drizzle-kit check
+      - run: npm run build
+      - name: Dependências com vulnerabilidade alta/crítica
+        run: npm audit --audit-level=high --omit=dev
+      - name: Segredos no repositório
+        uses: gitleaks/gitleaks-action@v2
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
