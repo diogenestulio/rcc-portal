@@ -16,7 +16,7 @@ Arquidiocese de Cuiabá · homologação na VPS atual (servidor próprio ao ativ
 
 ## Próximos passos sugeridos (ordem)
 1. Pendências restantes de `docs/01-pendencias-bloqueantes.md` (denominação exata, paróquias, marca, responsáveis, domínio).
-2. Tela de usuários e papéis + revogação de sessões; e-mail transacional (habilita recuperação de senha).
+2. ~~Tela de usuários e papéis + revogação de sessões~~ (feito em 10/11/2026: criar conta com senha provisória, papéis com escopo, desativar, encerrar sessões, zerar MFA, Minha conta; 6 testes novos). E-mail transacional (habilita recuperação de senha por e-mail) continua pendente.
 3. Biblioteca de mídia (upload validado já existe) com armazenamento de objetos.
 4. Auditoria de acessibilidade manual (teclado + NVDA + 320 px) e Lighthouse repetível.
 5. Homologação na VPS: plano e arquivos prontos e testados localmente (`docs/14-plano-homologacao.md`); no ar em https://179-197-73-172.sslip.io:10443 (com senha) desde 10/11/2026; backup diário com teste de restauração agendado. CI no repositório institucional.

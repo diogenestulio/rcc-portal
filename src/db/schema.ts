@@ -27,6 +27,8 @@ export const user = pgTable("user", {
   image: text("image"),
   twoFactorEnabled: boolean("two_factor_enabled").default(false),
   active: boolean("active").notNull().default(true),
+  /** Senha provisória entregue pela administração: o painel exige a troca antes de qualquer uso. */
+  mustChangePassword: boolean("must_change_password").notNull().default(false),
   createdAt: createdAt(),
   updatedAt: updatedAt(),
 });

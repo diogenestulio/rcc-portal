@@ -3,7 +3,10 @@ import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { btn, field } from "@/components/ui";
 
-export function LoginForm() {
+/** Só aceita voltar para páginas do painel (evita redirecionamento aberto). */
+const safeBack = (v?: string) => (v && /^\/admin(\/[A-Za-z0-9/_-]*)?$/.test(v) ? v : "/admin");
+
+export function LoginForm({ volta }: { volta?: string }) {
   const [step, setStep] = useState<"senha" | "totp">("senha");
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -29,7 +32,7 @@ export function LoginForm() {
       : await authClient.twoFactor.verifyBackupCode({ code });
     setBusy(false);
     if (r.error) { setErr("Código inválido ou expirado."); return; }
-    window.location.assign("/admin");
+    window.location.assign(safeBack(volta));
   }
 
   if (step === "totp") return (

@@ -9,6 +9,7 @@ export const metadata: Metadata = { title: "Configurar verificação em duas eta
 export default async function MfaPage() {
   const s = await currentSubject();
   if (!s) redirect("/entrar");
+  if (s.mustChangePassword) redirect("/entrar/trocar-senha");
   if (s.mfa) redirect("/admin");
   return (
     <main className="flex flex-1 items-center justify-center px-4 py-16">

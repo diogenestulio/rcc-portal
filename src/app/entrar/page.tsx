@@ -14,7 +14,8 @@ export default async function Entrar({ searchParams }: PageProps<"/entrar">) {
         <h1 className="mt-6 text-2xl font-semibold">Acesso da equipe</h1>
         <p className="mt-1 text-tinta-2">Área restrita a servos com conta criada pela coordenação.</p>
         {sp.sem_papel && <p role="alert" className="mt-4 rounded-md bg-alerta-claro p-3 text-alerta">Sua conta ainda não tem papel atribuído. Fale com o gestor institucional.</p>}
-        <LoginForm />
+        {sp.reautenticar && <p role="status" className="mt-4 rounded-md bg-azul-claro p-3 text-azul">Por segurança, esta área pede que você entre de novo (login feito há mais de 10 minutos).</p>}
+        <LoginForm volta={typeof sp.volta === "string" ? sp.volta : undefined} />
       </div>
     </main>
   );

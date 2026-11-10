@@ -15,6 +15,13 @@
       "when": 1794337265478,
       "tag": "0001_protecoes",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794348216214,
+      "tag": "0002_senha_provisoria",
+      "breakpoints": true
     }
   ]
 }

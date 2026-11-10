@@ -6,9 +6,20 @@ Para servos que cuidam do portal. Linguagem simples; dúvidas técnicas ficam em
 1. Acesse `/entrar` com o e-mail e a senha que a coordenação criou para você.
 2. No primeiro acesso, o portal pede a **verificação em duas etapas**: instale um aplicativo autenticador no celular, escaneie o QR Code e guarde os códigos de recuperação em local seguro.
 3. Nos próximos acessos: senha + código de 6 dígitos do aplicativo.
-4. Perdeu o celular? Use um código de recuperação (cada um funciona uma vez) e peça ao gestor para refazer o MFA.
+4. Perdeu o celular? Use um código de recuperação (cada um funciona uma vez) ou peça ao gestor para zerar o MFA.
 
 Você só vê o que o seu papel permite. Responsáveis por um grupo veem só o próprio grupo.
+
+## Usuários e papéis (gestor institucional)
+- **Usuários e papéis → Nova conta**: nome e e-mail. O portal mostra uma **senha provisória uma única vez**; entregue pessoalmente ou por canal seguro. No primeiro acesso a pessoa cria a própria senha e configura a verificação em duas etapas.
+- Abra a conta para **conceder papéis**. “Responsável por grupo/ministério” e “Gestor de eventos” podem ser limitados a um grupo, região ou ministério; os outros papéis valem para tudo.
+- Perdeu o celular e os códigos? **Zerar verificação em duas etapas** — a pessoa configura de novo no próximo login.
+- Esqueceu a senha? **Gerar senha provisória** (a antiga deixa de valer).
+- Saiu da equipe? **Desativar conta** — o acesso acaba na hora.
+- Por segurança: esta área só abre até 10 minutos depois do login (o portal pede para entrar de novo); ninguém altera os próprios papéis; sempre fica ao menos um gestor institucional.
+
+## Minha conta
+Troque sua senha e veja onde sua conta está aberta. “Encerrar as outras sessões” serve para quando você esqueceu o painel aberto em outro computador.
 
 ## Publicar uma notícia ou formação
 1. **Conteúdo → Novo conteúdo.** Escolha o tipo e um endereço curto (ex.: `retiro-de-jovens-2027`).

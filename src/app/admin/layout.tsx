@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { requireAdmin, canView } from "@/server/session";
+import { requireAdmin } from "@/server/session";
 import { Wordmark } from "@/components/ui";
 import { SignOut } from "./SignOut";
-import type { Action } from "@/server/authz";
+import { MATRIX, type Action } from "@/server/authz";
+import { ROLE_LABEL } from "@/server/users";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: { default: "Painel", template: "%s · Painel RCC" }, robots: { index: false, follow: false } };
@@ -15,12 +16,17 @@ const LINKS: { href: string; label: string; any: Action[] }[] = [
   { href: "/admin/eventos", label: "Eventos e inscrições", any: ["evento.gerenciar", "evento.checkin"] },
   { href: "/admin/oracao", label: "Pedidos de oração", any: ["oracao.ler"] },
   { href: "/admin/loja", label: "Loja", any: ["loja.pedidos", "loja.produtos"] },
+  { href: "/admin/usuarios", label: "Usuários e papéis", any: ["usuarios.gerenciar"] },
   { href: "/admin/auditoria", label: "Auditoria", any: ["auditoria.ler"] },
+  { href: "/admin/conta", label: "Minha conta", any: [] },
 ];
 
-/** Escopos locais também liberam o menu (o servidor filtra os registros). */
+/**
+ * O menu mostra o que os PAPÉIS permitem (sem exigir login recente, para "Usuários" não sumir após 10 min).
+ * Quem decide de verdade é o servidor em cada página/ação; escopos locais filtram os registros lá.
+ */
 const visible = (s: Awaited<ReturnType<typeof requireAdmin>>, any: Action[]) =>
-  any.length === 0 || any.some((a) => canView(s, a) || s.assignments.some((x) => x.scopeType !== "global" && (a.startsWith("grupo.") || a.startsWith("evento."))));
+  any.length === 0 || any.some((a) => s.assignments.some((x) => MATRIX[x.role].includes(a)));
 
 export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   const s = await requireAdmin();
@@ -38,7 +44,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
         </nav>
         <div className="hidden border-t border-linha p-4 text-sm lg:block">
           <p className="font-semibold">{s.name}</p>
-          <p className="text-tinta-3">{s.assignments.map((a) => a.role.replace("_", " ")).join(", ")}</p>
+          <p className="text-tinta-3">{[...new Set(s.assignments.map((a) => ROLE_LABEL[a.role]))].join(", ")}</p>
           <div className="mt-3 flex gap-3"><Link href="/" >Ver portal</Link><SignOut /></div>
         </div>
       </aside>
