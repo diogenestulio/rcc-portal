@@ -24,6 +24,7 @@
 
 ## Lacunas conhecidas (antes da produção)
 - Recuperação de senha depende do e-mail transacional (não implementado).
+- IP em claro na tabela `rate_limit` e em `session.ip_address` (biblioteca de autenticação): aplicar hash/truncamento — ver `15-incidente-2026-11-10.md`.
 - Antivírus em uploads e armazenamento de objetos privado: não iniciados.
 - CI de dependências/segredos escrito mas não executado. `npm audit --omit=dev` em 10/11/2026: 4 alertas **moderados** (aviso do `esbuild` sobre o servidor de desenvolvimento, GHSA-67mh-4wv8-2f99); nenhum alto ou crítico. Reavaliar antes do lançamento.
 - Teste de intrusão / revisão independente: não realizados.

@@ -47,7 +47,9 @@ services:
     depends_on: { postgres: { condition: service_healthy } }
     networks: [interna]
 
-  app:
+  # ATENÇÃO: o nome do serviço vira nome DNS em TODAS as redes do contêiner, inclusive helpdesk_default.
+  # Nunca usar "app", "web", "api", "db" etc. — "app" colidiu com o HelpDesk em 10/11/2026 (incidente).
+  rcc-portal:
     <<: *app
     depends_on: { postgres: { condition: service_healthy } }
     networks:

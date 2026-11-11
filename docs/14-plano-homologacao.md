@@ -1,5 +1,7 @@
 # Plano de homologação na VPS atual
 
+> **Incidente 10–11/11/2026:** o serviço chamado `app` colidiu com o HelpDesk na rede compartilhada; corrigido (serviço renomeado para `rcc-portal`). Ver `15-incidente-2026-11-10.md`.
+
 Decisão de 10/11/2026: homologação na VPS Hostinger compartilhada; servidor próprio quando loja/inscrições pagas forem ativadas.
 **Situação (10/11/2026, 20:09 UTC):** passo 1 **executado** — stack `rcc-portal-hml` no ar na VPS com a imagem `rcc-portal:202611102006` (55 testes passando antes do build; migração aplicada; app *healthy*, `/api/health` ok, worker ativo, 0 reinícios; memória em uso: app 58 MB, worker 21 MB, Postgres 33 MB). `.env` gerado no servidor (permissão 600, sem marcadores sobrando). Outros sistemas inalterados (443=307, 8443=200, 9443=200 antes e depois; Nginx não reiniciado). Passo 2 **executado**: seed de demonstração (7 grupos, 4 eventos, 5 conteúdos, todos marcados como demonstração) e conta `diogenestulio@gmail.com` (gestor institucional, editor, gestor de eventos, intercessor); senha gerada no servidor em `/root/rcc-portal-hml-admin.txt` (600). Cadeia de auditoria íntegra. Passo 3 **executado** (20:13 UTC): porta 10443 publicada; Nginx recriado com as 5 portas escutando; de fora: 443=307, 8443=200, 9443=200 (iguais ao antes), 10443 sem senha=401, com senha: páginas 200, `/admin` 307, `X-Robots-Tag: noindex`, login HTTPS com cookie `Secure; HttpOnly; SameSite=Lax`. Senha de acesso em `/root/rcc-portal-hml-acesso.txt` (600). Backup do compose: `/opt/helpdesk/docker-compose.yml.bak-antes-rcc-hml-20261110T201303Z`. Passo 4 **executado**: compose e os arquivos `rcc-portal-hml.conf`/`.htpasswd` copiados para o repositório local do HelpDesk no D: (md5 iguais aos da VPS, **sem commit**, como os demais confs compartilhados). Passo 7 desnecessário (porta já acessível). Passo 5 **executado**: backup manual verificado (dump de 95 KB, sha256 ok, restauração de teste em 1 s) e agendado em `/etc/cron.d/rcc-portal-hml` às 04:15 UTC (00:15 em Cuiabá), log em `/var/log/rcc-portal-hml-backup.log`. **Todos os passos do plano concluídos.** O backup fica na própria VPS (sem cópia externa) — aceitável só porque os dados são fictícios.
 
@@ -17,7 +19,7 @@ Decisão de 10/11/2026: homologação na VPS Hostinger compartilhada; servidor p
 
 ```
 Internet ──https :10443──▶ helpdesk-nginx-1 (senha de homologação + noindex)
-                                  │  rede helpdesk_default (alias rcc-hml-app)
+                                  │  rede helpdesk_default (alias rcc-hml-app; serviço `rcc-portal` — nunca `app`)
                                   ▼
                  /opt/rcc-portal-hml  ── app (Next.js, 384 MB)
                                        ├ worker (fila e rotinas, 192 MB)

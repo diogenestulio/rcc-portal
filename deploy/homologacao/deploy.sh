@@ -40,8 +40,8 @@ EOF
 
 echo "== 5. backup antes de migrar (se já houver banco), migração e subida"
 ssh "$VPS" "cd $DIR && (docker compose ps postgres --status running -q | grep -q . && ./backup.sh || true) \
-  && docker compose up -d postgres && docker compose run --rm migrate && docker compose up -d app worker"
+  && docker compose up -d postgres && docker compose run --rm migrate && docker compose up -d --remove-orphans rcc-portal worker"
 
 echo "== 6. verificação"
-ssh "$VPS" "cd $DIR && sleep 8 && docker compose ps && docker compose exec -T app node -e \"fetch('http://127.0.0.1:3000/api/health').then(r=>r.text()).then(t=>{console.log(t);process.exit(0)}).catch(e=>{console.error(e);process.exit(1)})\""
-echo "OK: rcc-portal:$VERSAO em homologação. Rollback: RCC_VERSAO=<anterior> no .env + docker compose up -d app worker"
+ssh "$VPS" "cd $DIR && sleep 8 && docker compose ps && docker compose exec -T rcc-portal node -e \"fetch('http://127.0.0.1:3000/api/health').then(r=>r.text()).then(t=>{console.log(t);process.exit(0)}).catch(e=>{console.error(e);process.exit(1)})\""
+echo "OK: rcc-portal:$VERSAO em homologação. Rollback: RCC_VERSAO=<anterior> no .env + docker compose up -d --remove-orphans rcc-portal worker"
