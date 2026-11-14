@@ -23,7 +23,7 @@ Atualizada em 10/11/2026. Estados: **não iniciado**, **em andamento**, **valida
 | 14 | Compra, inscrição e administração por teclado e celular | Formulários HTML nativos, `<details>` no menu | Inscrição feita no navegador; teclado/leitor de tela **não testados** | — | em andamento |
 | 15 | Backup restaurado permite conciliação | `ops/backup.sh`, `ops/restore-test.sh` | Restauração local do dump em banco temporário | Contagens idênticas, ~2 s (dev, dados de demonstração) | em andamento (sem teste em produção, sem conciliação com provedor real) |
 
-Total automatizado: **61 testes em 7 arquivos, todos passando** (`npm test`, 10/11/2026).
+Total automatizado: **64 testes em 8 arquivos, todos passando** (`npm test`, 14/11/2026).
 
 ## Demais requisitos por seção
 

@@ -20,11 +20,11 @@
 | Cache | `private, no-store` + `noindex` em painel, comprovantes, pedidos e API | `next.config.ts` | `curl -I /admin` |
 | Webhooks | Assinatura + janela anti-replay + inbox única + reconsulta ao provedor | `payments.ts` | testes |
 | Auditoria | Somente inclusão (triggers) + cadeia SHA-256; campos sensíveis omitidos | `audit.ts`, migração 0001 | testes |
+| Minimização de IP | IP nunca gravado em claro: sessões guardam HMAC (`h:…`), limitador de login usa chave em HMAC (`ba:…`), limitador próprio usa HMAC (`app:…`); migração 0003 anonimizou o legado | `src/server/ip-privacy.ts`, `src/lib/auth.ts` | `tests/ip-privacy.test.ts` (login real) |
 | Segredos | Apenas no servidor; `.env*` fora do git; validação de ambiente | `env.ts`, `.gitignore` | — |
 
 ## Lacunas conhecidas (antes da produção)
 - Recuperação de senha depende do e-mail transacional (não implementado).
-- IP em claro na tabela `rate_limit` e em `session.ip_address` (biblioteca de autenticação): aplicar hash/truncamento — ver `15-incidente-2026-11-10.md`.
 - Antivírus em uploads e armazenamento de objetos privado: não iniciados.
 - CI de dependências/segredos escrito mas não executado. `npm audit --omit=dev` em 10/11/2026: 4 alertas **moderados** (aviso do `esbuild` sobre o servidor de desenvolvimento, GHSA-67mh-4wv8-2f99); nenhum alto ou crítico. Reavaliar antes do lançamento.
 - Teste de intrusão / revisão independente: não realizados.

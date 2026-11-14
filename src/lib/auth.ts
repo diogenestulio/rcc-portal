@@ -8,6 +8,7 @@ import * as schema from "@/db/schema";
 import { env } from "./env";
 import { enqueue } from "@/server/jobs";
 import { instituicaoProvisoria as INST } from "@/config/instituicao";
+import { hashedRateLimitStorage, ipFingerprint } from "@/server/ip-privacy";
 
 /**
  * Autenticação (ADR-005): better-auth, e-mail + senha (hash da biblioteca), MFA TOTP
@@ -37,8 +38,17 @@ export const auth = betterAuth({
   },
   session: { expiresIn: 60 * 60 * 12, updateAge: 60 * 60, freshAge: 60 * 10 },
   rateLimit: {
-    enabled: true, storage: "database", window: 60, max: 60,
+    enabled: true, window: 60, max: 60,
+    // Chave (IP|rota) gravada só como HMAC — o IP nunca fica em claro no banco.
+    customStorage: hashedRateLimitStorage(db, env.APP_SIGNING_KEY),
     customRules: { "/sign-in/email": { window: 300, max: 5 }, "/two-factor/verify-totp": { window: 300, max: 5 }, "/request-password-reset": { window: 3600, max: 3 } },
+  },
+  // Sessões: o IP vira impressão digital (HMAC) antes de ir para o banco.
+  databaseHooks: {
+    session: {
+      create: { before: async (s) => ({ data: { ...s, ipAddress: ipFingerprint(s.ipAddress, env.APP_SIGNING_KEY) } }) },
+      update: { before: async (s) => ({ data: "ipAddress" in s && s.ipAddress && !String(s.ipAddress).startsWith("h:") ? { ...s, ipAddress: ipFingerprint(String(s.ipAddress), env.APP_SIGNING_KEY) } : s }) },
+    },
   },
   advanced: { useSecureCookies: env.APP_URL.startsWith("https://"), cookiePrefix: "rcc" },
   plugins: [twoFactor({ issuer: INST.nomePublico }), nextCookies()],
