@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { btn, field } from "@/components/ui";
 
 export const NATURE_OPTIONS = [
@@ -29,7 +30,7 @@ export function ContentFields({ v = {}, disabled }: { v?: Values; disabled?: boo
       <div>
         <label htmlFor="texto" className={field.label}>Texto</label>
         <textarea id="texto" name="texto" required rows={16} defaultValue={v.texto} className={field.input + " font-mono text-sm"} aria-describedby="texto-dica" />
-        <p id="texto-dica" className={field.hint}>Parágrafos separados por linha em branco. <code>## Subtítulo</code>, <code>&gt; citação</code>, <code>- item</code>, <code>**negrito**</code>, <code>*itálico*</code>, <code>[texto](https://endereço)</code>. Não invente citações: indique a fonte abaixo.</p>
+        <p id="texto-dica" className={field.hint}>Parágrafos separados por linha em branco. <code>## Subtítulo</code>, <code>&gt; citação</code>, <code>- item</code>, <code>**negrito**</code>, <code>*itálico*</code>, <code>[texto](https://endereço)</code>. Imagem: cole numa linha sozinha o código copiado em <Link href="/admin/midia">Mídia</Link> (legenda opcional na linha de baixo começando com “— ”). Não invente citações: indique a fonte abaixo.</p>
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>

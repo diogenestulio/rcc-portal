@@ -22,7 +22,7 @@ export class WorkflowError extends Error {}
 export function sanitizeRichText(html: string): string {
   return sanitizeHtml(html, {
     allowedTags: ["p", "br", "h2", "h3", "h4", "strong", "em", "u", "s", "blockquote", "ul", "ol", "li", "a", "figure", "figcaption", "img", "hr", "cite"],
-    allowedAttributes: { a: ["href", "title", "rel", "target"], img: ["src", "alt", "width", "height", "loading"] },
+    allowedAttributes: { a: ["href", "title", "rel", "target"], img: ["src", "srcset", "sizes", "alt", "width", "height", "loading", "decoding"] },
     allowedSchemes: ["https", "mailto", "tel"],
     allowedSchemesByTag: { img: ["https"] },
     allowProtocolRelative: false,

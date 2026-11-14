@@ -19,11 +19,11 @@ Atualizada em 10/11/2026. Estados: **não iniciado**, **em andamento**, **valida
 | 10 | Reembolso, reserva expirada, pagamento tardio | `payments.ts` | `store.test.ts` (4 casos) | Testes passam | validado (provedor simulado) |
 | 11 | Intenções/participantes/pedidos fora de busca, logs e cache | `prayer.ts`, `search.ts`, `audit.ts`, `next.config.ts` | `privacy-uploads-jobs.test.ts` | Teste + `curl -I` (no-store, noindex no painel) | validado |
 | 12 | MFA, recuperação, revogação, bloqueio | better-auth + `twoFactor`, `session.ts`, `src/server/users.ts`, `/admin/usuarios`, `/admin/conta` | `tests/users.test.ts` (6) + navegador: conta criada no painel → senha provisória → troca obrigatória → MFA; senha provisória antiga recusada (401) | 10/11/2026 | validado, exceto recuperação **por e-mail** (depende de SMTP); a recuperação hoje é pelo gestor: senha provisória + zerar MFA |
-| 13 | Upload inválido e arquivo privado bloqueados | `src/server/uploads.ts`, `tokens.ts` | `privacy-uploads-jobs.test.ts` | Testes passam | validado (lógica) · tela de upload **não iniciada** |
+| 13 | Upload inválido e arquivo privado bloqueados | `src/server/uploads.ts`, `tokens.ts` | `privacy-uploads-jobs.test.ts` | Testes passam | validado: `tests/media.test.ts` (5) + navegador (envio de foto e PDF privado, link temporário, adulteração do link → 404) |
 | 14 | Compra, inscrição e administração por teclado e celular | Formulários HTML nativos, `<details>` no menu | Inscrição feita no navegador; teclado/leitor de tela **não testados** | — | em andamento |
 | 15 | Backup restaurado permite conciliação | `ops/backup.sh`, `ops/restore-test.sh` | Restauração local do dump em banco temporário | Contagens idênticas, ~2 s (dev, dados de demonstração) | em andamento (sem teste em produção, sem conciliação com provedor real) |
 
-Total automatizado: **64 testes em 8 arquivos, todos passando** (`npm test`, 14/11/2026).
+Total automatizado: **69 testes em 9 arquivos, todos passando** (`npm test`, 14/11/2026).
 
 ## Demais requisitos por seção
 
@@ -48,13 +48,14 @@ Total automatizado: **64 testes em 8 arquivos, todos passando** (`npm test`, 14/
 | 10 | Provedor real (Pix/cartão/boleto) | adiado por decisão | Vendas adiadas em 10/11/2026; retomar com entidade vendedora |
 | 11 | Papéis, matriz, escopos, MFA, reautenticação, fluxo editorial, auditoria | validado | `docs/05-permissoes.md` |
 | 11 | Tela de usuários e papéis (criar conta, senha provisória, conceder/revogar papel com escopo, desativar, encerrar sessões, zerar MFA) e “Minha conta” | validado | Anti-escalada e “último gestor” testados |
-| 11 | Telas: mídia, menus, campanhas, redirecionamentos | não iniciado | |
+| 11 | Biblioteca de mídia (envio, texto alternativo obrigatório, autorização de imagem, variantes 640/1280, privado com link de 1 h, exclusão bloqueada em uso, imagem no texto) | validado | Armazenamento em disco; S3 não iniciado |
+| 11 | Telas: menus, campanhas, redirecionamentos | não iniciado | |
 | 12 | Monólito modular, fila em PostgreSQL, outbox/inbox | validado | |
 | 13 | Modelo de dados e migrações | validado | `docs/06-modelo-de-dados.md` |
 | 14 | Cabeçalhos, CSP com nonce, rate limit, sanitização, CSRF (Server Actions + SameSite) | validado (dev) | HSTS só em produção |
 | 14 | Mapeamento ASVS 5.0.0 | em andamento | Controles listados em `docs/11-lgpd-seguranca.md`; sem verificação independente |
 | 15 | SEO: sitemap, robots, canonical, JSON-LD de evento | validado | |
-| 15 | Imagens responsivas da biblioteca de mídia | não iniciado | Sem fotos ainda |
+| 15 | Imagens responsivas da biblioteca de mídia | validado | `srcset` 640/1280/original; fotos reais ainda não recebidas |
 | 16 | Peso de transferência | validado (lab) | ~290 KB gzip por página (orçamento 1,5 MB) |
 | 16 | WCAG 2.2 AA completo, Core Web Vitals de campo | em andamento | Sem auditoria manual completa; sem dados de campo |
 | 17 | Backup criptografado, retenção, restauração | em andamento | Homologação: backup diário + restauração de teste automáticos na VPS (sem criptografia/cópia externa, dados fictícios); produção ainda não |

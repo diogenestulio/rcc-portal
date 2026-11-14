@@ -14,6 +14,7 @@ const LINKS: { href: string; label: string; any: Action[] }[] = [
   { href: "/admin/conteudo", label: "Conteúdo", any: ["conteudo.criar", "conteudo.aprovar_doutrinal", "conteudo.aprovar_geral"] },
   { href: "/admin/grupos", label: "Grupos de Oração", any: ["grupo.editar", "grupo.moderar_correcoes"] },
   { href: "/admin/eventos", label: "Eventos e inscrições", any: ["evento.gerenciar", "evento.checkin"] },
+  { href: "/admin/midia", label: "Mídia", any: ["midia.enviar"] },
   { href: "/admin/oracao", label: "Pedidos de oração", any: ["oracao.ler"] },
   { href: "/admin/loja", label: "Loja", any: ["loja.pedidos", "loja.produtos"] },
   { href: "/admin/usuarios", label: "Usuários e papéis", any: ["usuarios.gerenciar"] },

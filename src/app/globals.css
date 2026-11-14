@@ -88,6 +88,8 @@ a:hover { color: var(--color-vinho-escuro); text-decoration-thickness: 2px; }
 .prosa ol { list-style: decimal; padding-left: 1.4em; }
 .prosa blockquote { border-left: 3px solid var(--color-dourado); padding-left: 1em; color: var(--color-tinta-2); font-style: italic; }
 .prosa img { border-radius: var(--radius-md); height: auto; }
+.prosa figure img { width: 100%; max-width: 100%; }
+.prosa figcaption { margin-top: .4em; font-size: .9rem; color: var(--color-tinta-3); }
 
 /* Filete com chama discreta — elemento de identidade, estático */
 .filete { height: 1px; background: linear-gradient(90deg, transparent, var(--color-dourado), transparent); }

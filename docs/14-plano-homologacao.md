@@ -41,7 +41,7 @@ Internet ──https :10443──▶ helpdesk-nginx-1 (senha de homologação + 
 | `rcc-portal-hml.conf` | bloco do Nginx compartilhado (porta 10443, senha, noindex, resolução tardia) |
 | `publicar-nginx.sh` | **uma vez**: backup, senha, conf, porta 10443, `nginx -t`, recriar só o Nginx, conferir as 5 portas |
 | `deploy.sh` | a cada versão: testes → build → envio da imagem → backup → migração → subida → verificação |
-| `backup.sh` | diário: dump + sha256 + **teste de restauração** + retenção de 7 dias |
+| `backup.sh` | diário: dump do banco + pacote da mídia (volume `midia`), sha256, **teste de restauração** e conferência de que toda mídia do banco tem arquivo; retenção de 7 dias |
 
 ## 4. Passo a passo (cada passo precisa do seu “ok”)
 

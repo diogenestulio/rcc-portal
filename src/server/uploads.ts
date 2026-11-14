@@ -5,7 +5,8 @@
 import sharp from "sharp";
 
 export const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
-export const MAX_PDF_BYTES = 20 * 1024 * 1024;
+// Limitado pelo corpo máximo das Server Actions (10 MB, next.config.ts) e do Nginx de homologação (12 MB).
+export const MAX_PDF_BYTES = 9 * 1024 * 1024;
 export class UploadError extends Error {}
 
 export type Detected = "image/jpeg" | "image/png" | "image/webp" | "application/pdf";
@@ -28,7 +29,7 @@ export async function validateUpload(buf: Buffer, declaredName: string) {
   const type = sniff(buf);
   if (!type) throw new UploadError("Tipo de arquivo não permitido. Envie JPEG, PNG, WebP ou PDF.");
   if (type === "application/pdf") {
-    if (buf.length > MAX_PDF_BYTES) throw new UploadError("PDF acima de 20 MB.");
+    if (buf.length > MAX_PDF_BYTES) throw new UploadError("PDF acima de 9 MB. Reduza o arquivo (exportar com qualidade menor) ou divida em partes.");
     if (/\/JavaScript|\/JS[\s(]|\/Launch|\/EmbeddedFile/.test(buf.toString("latin1"))) throw new UploadError("PDF com conteúdo ativo não é aceito.");
     return { type, data: buf, width: null as number | null, height: null as number | null };
   }

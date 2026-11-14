@@ -55,6 +55,8 @@ services:
     networks:
       interna: {}
       borda: { aliases: [rcc-hml-app] }
+    environment: { MEDIA_DIR: /data/media }
+    volumes: [midia:/data/media]
     mem_limit: 384m
 
   worker:
@@ -70,6 +72,7 @@ services:
 volumes:
   pgdata:
   emails:
+  midia:
 
 networks:
   interna:

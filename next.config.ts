@@ -31,6 +31,8 @@ const nextConfig: NextConfig = {
       { source: "/inscricao/:path*", headers: privateNoStore },
       { source: "/pedido-de-oracao", headers: [{ key: "Cache-Control", value: "private, no-store" }] },
       { source: "/api/:path*", headers: [{ key: "Cache-Control", value: "private, no-store" }] },
+      // Link temporário de arquivo privado: não vaza pela origem (Referer) nem fica em cache.
+      { source: "/midia/privado/:path*", headers: [...privateNoStore, { key: "Referrer-Policy", value: "no-referrer" }] },
     ];
   },
   turbopack: {

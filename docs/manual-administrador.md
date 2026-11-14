@@ -18,6 +18,14 @@ Você só vê o que o seu papel permite. Responsáveis por um grupo veem só o p
 - Saiu da equipe? **Desativar conta** — o acesso acaba na hora.
 - Por segurança: esta área só abre até 10 minutos depois do login (o portal pede para entrar de novo); ninguém altera os próprios papéis; sempre fica ao menos um gestor institucional.
 
+## Mídia (fotos e documentos)
+1. **Mídia → Enviar arquivo.** Fotos JPEG/PNG/WebP até 8 MB; PDF até 9 MB. As fotos são reduzidas e perdem dados de localização automaticamente.
+2. Escreva a **descrição da imagem** (o que ela mostra) ou marque “só decorativa”. Informe o **crédito**.
+3. Para fotos, confirme que há **autorização** do autor e das pessoas que aparecem (responsáveis, no caso de menores).
+4. Para usar num texto: clique em **Copiar código para o texto** e cole numa linha sozinha do editor. Legenda opcional na linha de baixo, começando com “— ”.
+5. **Arquivo privado** (atas, listas internas): não aparece no site; use **Gerar link (1 h)** para compartilhar com a equipe. O link expira sozinho.
+6. Só dá para **excluir** um arquivo que não esteja em uso em nenhuma página.
+
 ## Minha conta
 Troque sua senha e veja onde sua conta está aberta. “Encerrar as outras sessões” serve para quando você esqueceu o painel aberto em outro computador.
 
