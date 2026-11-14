@@ -10,7 +10,8 @@ export function proxy(request: NextRequest) {
     // Estilos inline são injetados pelo framework (React/Next). Permitidos apenas para ESTILO
     // (risco bem menor que script); scripts seguem com nonce + strict-dynamic. Ver ADR-006.
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' blob: data:",
+    // Mapa dos grupos: blocos do OpenStreetMap, carregados só depois que o visitante clica em “Mostrar mapa”.
+    "img-src 'self' blob: data: https://tile.openstreetmap.org",
     "font-src 'self'",
     // Vídeos só carregam após clique do visitante (youtube-nocookie).
     "frame-src https://www.youtube-nocookie.com",

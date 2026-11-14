@@ -29,7 +29,32 @@ export function parseGroupFilters(sp: Record<string, string | string[] | undefin
 
 function escapeLike(s: string) { return s.replace(/[\\%_]/g, (c) => "\\" + c); }
 
-export async function searchGroups(db: DB, f: GroupFilters, pageSize = 20) {
+/** Coordenada digitada ("-15,6014" ou "-15.6014") → texto normalizado com até 6 casas, ou null. */
+export function parseCoord(v: string | null | undefined, kind: "lat" | "lng"): string | null {
+  const s = (v ?? "").trim().replace(",", ".");
+  if (!s) return null;
+  if (!/^-?\d{1,3}(\.\d{1,8})?$/.test(s)) throw new Error(`${kind === "lat" ? "Latitude" : "Longitude"} inválida: use, por exemplo, -15.6014.`);
+  const n = Number(s);
+  const lim = kind === "lat" ? 90 : 180;
+  if (n < -lim || n > lim) throw new Error(`${kind === "lat" ? "Latitude" : "Longitude"} fora do intervalo.`);
+  return n.toFixed(6);
+}
+
+/** Grupos com localização pública para o mapa (mesmos filtros da lista, sem paginação, só dados públicos). */
+export async function mapGroups(db: DB, f: GroupFilters) {
+  const rows = await db.select({
+    slug: prayerGroup.slug, name: prayerGroup.name, venue: prayerGroup.venue, weekday: prayerGroup.weekday, startTime: prayerGroup.startTime,
+    lat: prayerGroup.latitude, lng: prayerGroup.longitude, municipality: municipality.name,
+  }).from(prayerGroup)
+    .innerJoin(parish, eq(parish.id, prayerGroup.parishId))
+    .innerJoin(municipality, eq(municipality.id, prayerGroup.municipalityId))
+    .leftJoin(region, eq(region.id, prayerGroup.regionId))
+    .where(and(...groupWhere(f), sql`${prayerGroup.latitude} is not null and ${prayerGroup.longitude} is not null`))
+    .limit(500);
+  return rows.map((r) => ({ ...r, lat: Number(r.lat), lng: Number(r.lng) })).filter((r) => Number.isFinite(r.lat) && Number.isFinite(r.lng));
+}
+
+function groupWhere(f: GroupFilters): SQL[] {
   const where: SQL[] = [eq(prayerGroup.published, true), sql`${prayerGroup.status} <> 'encerrado'`];
   if (f.municipio) where.push(eq(municipality.slug, f.municipio));
   if (f.paroquia) where.push(eq(parish.slug, f.paroquia));
@@ -40,6 +65,11 @@ export async function searchGroups(db: DB, f: GroupFilters, pageSize = 20) {
     where.push(b ? sql`${prayerGroup.startTime} >= ${a}::time and ${prayerGroup.startTime} < ${b}::time` : sql`${prayerGroup.startTime} >= ${a}::time`);
   }
   if (f.q) where.push(sql`f_unaccent(${prayerGroup.name} || ' ' || ${parish.name} || ' ' || ${prayerGroup.venue}) ilike f_unaccent(${"%" + escapeLike(f.q) + "%"})`);
+  return where;
+}
+
+export async function searchGroups(db: DB, f: GroupFilters, pageSize = 20) {
+  const where = groupWhere(f);
   const page = f.page ?? 1;
   const rows = await db.select({
     id: prayerGroup.id, slug: prayerGroup.slug, name: prayerGroup.name, venue: prayerGroup.venue, weekday: prayerGroup.weekday,
@@ -94,7 +124,7 @@ export async function suggestCorrection(db: DB, groupSlug: string, message: stri
   await db.insert(groupCorrection).values({ groupId: g.id, message: msg, contactEmail: contactEmail?.trim() || null });
 }
 
-export type GroupEdit = Partial<Pick<typeof prayerGroup.$inferInsert, "name" | "venue" | "publicAddress" | "weekday" | "startTime" | "endTime" | "accessibilityInfo" | "description" | "publicContact" | "status">>;
+export type GroupEdit = Partial<Pick<typeof prayerGroup.$inferInsert, "name" | "venue" | "publicAddress" | "weekday" | "startTime" | "endTime" | "accessibilityInfo" | "description" | "publicContact" | "status" | "latitude" | "longitude">>;
 
 async function loadScope(db: DB, groupId: string) {
   const [g] = await db.select({ id: prayerGroup.id, regionId: prayerGroup.regionId }).from(prayerGroup).where(eq(prayerGroup.id, groupId));
@@ -105,6 +135,9 @@ async function loadScope(db: DB, groupId: string) {
 /** Edição por responsável local: somente grupos do seu escopo; o servidor verifica sempre. */
 export async function editGroup(db: DB, s: Subject, groupId: string, changes: GroupEdit) {
   assertCan(s, "grupo.editar", await loadScope(db, groupId));
+  if (("latitude" in changes || "longitude" in changes) && (changes.latitude == null) !== (changes.longitude == null)) {
+    throw new Error("Informe latitude e longitude juntas (ou deixe as duas vazias).");
+  }
   await db.update(prayerGroup).set({ ...changes, updatedAt: new Date() }).where(eq(prayerGroup.id, groupId));
   await audit(db, { actorId: s.userId, action: "grupo.editar", resourceType: "prayer_group", resourceId: groupId, detail: { campos: Object.keys(changes) } });
 }

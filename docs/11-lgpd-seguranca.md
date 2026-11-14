@@ -20,6 +20,7 @@
 | Cache | `private, no-store` + `noindex` em painel, comprovantes, pedidos e API | `next.config.ts` | `curl -I /admin` |
 | Webhooks | Assinatura + janela anti-replay + inbox única + reconsulta ao provedor | `payments.ts` | testes |
 | Auditoria | Somente inclusão (triggers) + cadeia SHA-256; campos sensíveis omitidos | `audit.ts`, migração 0001 | testes |
+| Mapa e localização | Mapa (OpenStreetMap) só carrega após clique, com aviso de que o provedor recebe o IP; “perto de mim” só com permissão do navegador e cálculo no aparelho (a posição não é enviada ao portal); CSP libera apenas `tile.openstreetmap.org` para imagens | `GroupMap.tsx`, `proxy.ts` | navegador: nenhuma requisição ao OSM antes do clique; nenhuma requisição ao portal ao usar “perto de mim” |
 | Minimização de IP | IP nunca gravado em claro: sessões guardam HMAC (`h:…`), limitador de login usa chave em HMAC (`ba:…`), limitador próprio usa HMAC (`app:…`); migração 0003 anonimizou o legado | `src/server/ip-privacy.ts`, `src/lib/auth.ts` | `tests/ip-privacy.test.ts` (login real) |
 | Segredos | Apenas no servidor; `.env*` fora do git; validação de ambiente | `env.ts`, `.gitignore` | — |
 

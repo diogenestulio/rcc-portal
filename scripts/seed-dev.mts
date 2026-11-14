@@ -49,6 +49,13 @@ await sql.begin(async (tx) => {
       ${confirmed ? days(-20) : days(-400)}, 'Descrição de demonstração. Substituir pelo texto aprovado pela coordenação.',
       ${wd % 2 ? "Acesso sem degraus (informação de demonstração)" : null}, 'secretaria@paroquia-demo.invalid', true)
       on conflict (slug) do nothing`;
+    // Coordenadas FICTÍCIAS (pontos próximos a Cuiabá, só para demonstrar o mapa). O último grupo fica sem
+    // localização de propósito, para mostrar que ele continua na lista.
+    const i = groups.findIndex((x) => x[0] === name);
+    if (i < groups.length - 1) {
+      await tx`update prayer_group set latitude = ${(-15.59 - (i % 3) * 0.018).toFixed(6)}, longitude = ${(-56.11 + Math.floor(i / 3) * 0.025 + (i % 2) * 0.007).toFixed(6)}
+        where slug = ${slug} and is_demo and latitude is null`;
+    }
   }
   for (const [n, s] of [["Ministério de Música (demo)", "musica-demo"], ["Ministério de Intercessão (demo)", "intercessao-demo"], ["Ministério Jovem (demo)", "jovem-demo"], ["Ministério de Pregação (demo)", "pregacao-demo"]]) {
     await tx`insert into ministry (name, slug, summary, published, is_demo) values (${n}, ${s}, 'Resumo de demonstração.', true, true) on conflict (slug) do nothing`;

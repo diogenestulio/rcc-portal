@@ -61,3 +61,6 @@ Sem domínio próprio não é possível autenticar o remetente (SPF/DKIM/DMARC):
    `SMTP_URL=smtp://<usuario>:<chave>@<host do provedor>:587` e `MAIL_FROM="RCC Arquidiocese de Cuiabá <nao-responda@<domínio>>"`. Caracteres especiais da chave precisam ser codificados (ex.: `@` → `%40`).
 4. Reiniciar o worker; pedir uma redefinição de senha de teste e conferir no Gmail: “Mostrar original” deve indicar **SPF: PASS, DKIM: PASS, DMARC: PASS**.
 5. Configurar no provedor o aviso de devoluções/reclamações (bounce/complaint) e revisar semanalmente no início.
+
+## Mapa (OpenStreetMap)
+Os blocos do mapa vêm de `tile.openstreetmap.org`, serviço comunitário sem garantia de disponibilidade e com política de uso que proíbe uso intenso (exige crédito visível, que o portal mostra). Para o volume de um portal diocesano é adequado; se o tráfego crescer muito, trocar por um provedor de blocos contratado (mudar a URL em `src/components/site/GroupMap.tsx` e a regra `img-src` em `src/proxy.ts`). Se o mapa ficar fora do ar, a lista de grupos continua funcionando.

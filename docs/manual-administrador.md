@@ -52,6 +52,7 @@ Não publique: citações sem fonte conferida, promessas de cura, revelações p
 
 ## Grupos de Oração
 - **Grupos → (nome do grupo)**: ajuste dia, horário, local e acessibilidade. O contato do coordenador é **privado**; o telefone só aparece no site se ele autorizar e você marcar a caixa.
+- **Localização no mapa (opcional):** latitude e longitude do local público do encontro (igreja/salão), nunca de uma casa. No OpenStreetMap ou Google Maps, clique com o botão direito no local e copie os dois números. Sem localização, o grupo continua na lista, só não aparece no mapa.
 - A cada visita ou conversa com o grupo, clique **Confirmar dados**. Grupos sem confirmação há 180 dias aparecem como “Informação a confirmar”.
 - **Sugestões de visitantes** chegam em “Grupos → Sugestões”. Nada muda sozinho: confira, edite o grupo se for o caso, e marque a sugestão como aplicada ou rejeitada.
 

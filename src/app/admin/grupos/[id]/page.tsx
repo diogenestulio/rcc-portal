@@ -28,7 +28,7 @@ export default async function EditGroup({ params, searchParams }: PageProps<"/ad
       <h1 className="mt-3 text-3xl font-semibold">{g.name}</h1>
       <p className="text-sm text-tinta-3">Última confirmação: {g.lastConfirmedAt ? fmtPublished(g.lastConfirmedAt) : "nunca"}</p>
       {sp.ok && <div className="mt-4"><Notice tone="sucesso">Salvo.</Notice></div>}
-      {sp.erro && <div className="mt-4"><Notice tone="perigo">Confira dia, horário e situação.</Notice></div>}
+      {sp.erro && <div className="mt-4"><Notice tone="perigo">{sp.erro === "coord" && typeof sp.msg === "string" ? sp.msg : "Confira dia, horário e situação."}</Notice></div>}
       {isStale(g.lastConfirmedAt) && (
         <div className="mt-4"><Notice tone="alerta" title="Confirmação pendente">
           Confira com o grupo se os dados continuam corretos e clique em “Confirmar dados”.
@@ -45,6 +45,14 @@ export default async function EditGroup({ params, searchParams }: PageProps<"/ad
         </div>
         <div><label htmlFor="local" className={field.label}>Local</label><input id="local" name="local" required defaultValue={g.venue} className={field.input} /></div>
         <div><label htmlFor="endereco" className={field.label}>Endereço público</label><input id="endereco" name="endereco" defaultValue={g.publicAddress ?? ""} className={field.input} /></div>
+        <fieldset className="rounded-[var(--radius-md)] border border-linha p-4">
+          <legend className="px-1 font-semibold">Localização no mapa (opcional)</legend>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div><label htmlFor="latitude" className={field.label}>Latitude</label><input id="latitude" name="latitude" inputMode="decimal" defaultValue={g.latitude ?? ""} placeholder="-15.601400" className={field.input} /></div>
+            <div><label htmlFor="longitude" className={field.label}>Longitude</label><input id="longitude" name="longitude" inputMode="decimal" defaultValue={g.longitude ?? ""} placeholder="-56.097900" className={field.input} /></div>
+          </div>
+          <p className={field.hint}>Use o local público do encontro (igreja/salão), nunca a casa de alguém. Para descobrir: no OpenStreetMap ou no Google Maps, clique com o botão direito no local e copie os dois números. Deixe em branco para o grupo não aparecer no mapa (ele continua na lista).</p>
+        </fieldset>
         <div><label htmlFor="acessibilidade" className={field.label}>Acessibilidade (informada pelo grupo)</label><input id="acessibilidade" name="acessibilidade" defaultValue={g.accessibilityInfo ?? ""} className={field.input} /></div>
         <div><label htmlFor="descricao" className={field.label}>Descrição</label><textarea id="descricao" name="descricao" rows={4} defaultValue={g.description ?? ""} className={field.input} /></div>
         <div><label htmlFor="contato_publico" className={field.label}>Contato institucional público</label><input id="contato_publico" name="contato_publico" defaultValue={g.publicContact ?? ""} className={field.input} /><p className={field.hint}>Ex.: secretaria da paróquia. Não use dados pessoais aqui.</p></div>

@@ -23,7 +23,7 @@ Atualizada em 10/11/2026. Estados: **não iniciado**, **em andamento**, **valida
 | 14 | Compra, inscrição e administração por teclado e celular | Formulários HTML nativos, `<details>` no menu | Inscrição feita no navegador; teclado/leitor de tela **não testados** | — | em andamento |
 | 15 | Backup restaurado permite conciliação | `ops/backup.sh`, `ops/restore-test.sh` | Restauração local do dump em banco temporário | Contagens idênticas, ~2 s (dev, dados de demonstração) | em andamento (sem teste em produção, sem conciliação com provedor real) |
 
-Total automatizado: **79 testes em 11 arquivos, todos passando** (`npm test`, 14/11/2026).
+Total automatizado: **82 testes em 12 arquivos, todos passando** (`npm test`, 14/11/2026).
 
 ## Demais requisitos por seção
 
@@ -38,7 +38,7 @@ Total automatizado: **79 testes em 11 arquivos, todos passando** (`npm test`, 14
 | 5 | Design system próprio, tokens, 2 famílias tipográficas | validado | Cor principal provisória |
 | 5 | Fotografias reais autorizadas | **bloqueado** | Nenhuma foto inventada |
 | 6 | Menu de 7 grupos, rodapé, estados vazios | validado | |
-| 7 | Grupos: filtros, sem login, correção moderada, contato privado, desatualizados | validado | Mapa opcional: link OSM; “perto de mim” não iniciado |
+| 7 | Grupos: filtros, sem login, correção moderada, contato privado, desatualizados | validado | Mapa opcional carregado só após clique (OpenStreetMap) e “perto de mim” com cálculo no aparelho — `tests/map.test.ts` + navegador |
 | 8 | Agenda própria (lista, mês, detalhe), estados, ICS, feed | validado | |
 | 8 | Google Calendar real | **bloqueado** | Fonte de verdade decidida (portal → Google); faltam credenciais da conta institucional |
 | 9 | Lotes, capacidade, espera, check-in único, QR opaco | validado | Lotes pagos dependem do provedor |

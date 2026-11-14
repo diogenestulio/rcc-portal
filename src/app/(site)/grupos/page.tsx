@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { db } from "@/db";
-import { filterOptions, isStale, parseGroupFilters, searchGroups } from "@/server/groups";
+import { filterOptions, isStale, mapGroups, parseGroupFilters, searchGroups } from "@/server/groups";
+import { GroupMap } from "@/components/site/GroupMap";
 import { Badge, btn, Container, DemoBadge, EmptyState, field, PageHeader } from "@/components/ui";
 import { fmtPublished, hhmm, weekday, WEEKDAY_OPTIONS } from "@/components/site/format";
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = { title: "Grupos de Oração", description: "E
 export default async function GruposPage({ searchParams }: PageProps<"/grupos">) {
   const sp = await searchParams;
   const f = parseGroupFilters(sp);
-  const [opts, res] = await Promise.all([filterOptions(db), searchGroups(db, f)]);
+  const [opts, res, pontos] = await Promise.all([filterOptions(db), searchGroups(db, f), mapGroups(db, f)]);
   const pages = Math.max(1, Math.ceil(res.total / res.pageSize));
   const qs = (p: number) => { const u = new URLSearchParams(Object.entries(sp).flatMap(([k, v]) => (typeof v === "string" && k !== "pagina" ? [[k, v]] : []))); u.set("pagina", String(p)); return `?${u}`; };
   const anyFilter = f.municipio || f.paroquia || f.regiao || f.dia !== undefined || f.periodo || f.q;
@@ -70,6 +71,8 @@ export default async function GruposPage({ searchParams }: PageProps<"/grupos">)
             {anyFilter && <Link href="/grupos" className={btn.discreto}>Limpar</Link>}
           </div>
         </form>
+
+        <GroupMap groups={pontos} totalNaLista={res.total} />
 
         <p className="mt-8 text-tinta-2" aria-live="polite">
           {res.total === 0 ? "Nenhum grupo encontrado." : `${res.total} ${res.total === 1 ? "grupo encontrado" : "grupos encontrados"}.`}
