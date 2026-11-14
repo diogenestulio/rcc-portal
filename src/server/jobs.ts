@@ -39,13 +39,16 @@ export async function runJobsOnce(db: DB, handlers: Record<string, JobHandler>, 
     try {
       if (!handler) throw new Error(`sem handler para ${j.type}`);
       await handler(j.payload, { db, jobId: j.id, attempt: j.attempts });
-      await db.execute(sql`update job set status = 'concluido', finished_at = now(), last_error = null where id = ${j.id}`);
+      // Payload marcado como sensível (ex.: link de redefinição de senha) é apagado ao concluir.
+      await db.execute(sql`update job set status = 'concluido', finished_at = now(), last_error = null,
+        payload = case when payload ? '_sensivel' then '{}'::jsonb else payload end where id = ${j.id}`);
     } catch (err) {
       const msg = (err instanceof Error ? err.message : String(err)).slice(0, 500);
       const dead = j.attempts >= j.max_attempts;
       const next = new Date(Date.now() + backoffMs(j.attempts));
       await db.execute(sql`update job set status = ${dead ? "morto" : "pendente"}::job_status, last_error = ${msg},
-        run_at = ${next.toISOString()}::timestamptz, locked_at = null, locked_by = null where id = ${j.id}`);
+        run_at = ${next.toISOString()}::timestamptz, locked_at = null, locked_by = null,
+        payload = case when ${dead} and payload ? '_sensivel' then '{}'::jsonb else payload end where id = ${j.id}`);
     }
   }
   return claimed.length;

@@ -8,9 +8,7 @@
 import "dotenv/config";
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
-import { mkdirSync, writeFileSync } from "node:fs";
 import { hostname } from "node:os";
-import { eq } from "drizzle-orm";
 import * as schema from "../src/db/schema";
 import { runJobsOnce, type JobHandler } from "../src/server/jobs";
 import { expireHolds, promoteWaitlist } from "../src/server/registrations";
@@ -20,6 +18,8 @@ import { publishDue } from "../src/server/content";
 import { purgeExpiredPrayers } from "../src/server/prayer";
 import { GoogleHttpCalendarApi, importFromGoogle, projectEventToGoogle } from "../src/server/calendar/google";
 import type { DB } from "../src/db";
+import { emailHandlers } from "../src/server/mail-jobs";
+import { instituicaoProvisoria as INST } from "../src/config/instituicao";
 
 const env = process.env;
 const client = postgres(env.DATABASE_URL!, { max: 4 });
@@ -33,38 +33,9 @@ const receiver = provider ? "recebedor-dev" : env.PAYMENT_RECEIVER_ID ?? "__nao_
 const gcal = env.GOOGLE_CALENDAR_MODE !== "off" && env.GOOGLE_CALENDAR_ID && env.GOOGLE_SERVICE_ACCOUNT_JSON_PATH
   ? new GoogleHttpCalendarApi(env.GOOGLE_CALENDAR_ID, env.GOOGLE_SERVICE_ACCOUNT_JSON_PATH) : null;
 
-/**
- * E-mail: sem SMTP configurado, desenvolvimento e homologação gravam .eml em EMAIL_DIR (para conferência);
- * em produção, falha (o job morre e vira alerta) — nunca finge que enviou.
- */
-async function sendMail(to: string, subject: string, text: string) {
-  if (!env.SMTP_URL) {
-    if (env.APP_ENV === "producao") throw new Error("SMTP não configurado");
-    const dir = env.EMAIL_DIR || "storage/emails";
-    mkdirSync(dir, { recursive: true });
-    writeFileSync(`${dir}/${Date.now()}-${Math.random().toString(36).slice(2)}.eml`, `To: ${to}\nSubject: ${subject}\n\n${text}\n`);
-    return;
-  }
-  throw new Error("Envio SMTP ainda não implementado: escolher provedor (docs/09-integracoes.md)");
-}
-
 const handlers: Record<string, JobHandler> = {
-  "email.inscricao": async (p) => {
-    const [r] = await db.select({ r: schema.registration, title: schema.event.title }).from(schema.registration)
-      .innerJoin(schema.event, eq(schema.event.id, schema.registration.eventId)).where(eq(schema.registration.id, String(p.registrationId)));
-    if (!r) return;
-    const t = String(p.template);
-    const subject = t === "confirmada" ? `Inscrição confirmada — ${r.title}` : t === "lista_espera" ? `Lista de espera — ${r.title}` : `Vaga liberada — ${r.title}`;
-    await sendMail(r.r.email, subject, `Olá, ${r.r.fullName.split(" ")[0]}.\n\nSeu comprovante: ${env.APP_URL}/inscricao/${r.r.publicToken}\n\nRCC Arquidiocese de Cuiabá`);
-  },
-  "email.pedido": async (p) => {
-    const [o] = await db.select().from(schema.order).where(eq(schema.order.id, String(p.orderId)));
-    if (o) await sendMail(o.customerEmail, "Pagamento confirmado", `Seu pedido: ${env.APP_URL}/pedido/${o.publicToken}`);
-  },
-  "email.redefinir_senha": async (p) => {
-    const [u] = await db.select().from(schema.user).where(eq(schema.user.id, String(p.userId)));
-    if (u) await sendMail(u.email, "Redefinição de senha", `Para criar uma nova senha, acesse (válido por 30 minutos):\n${p.url}`);
-  },
+  // E-mails transacionais: modelos e envio em src/server/mail.ts (SMTP de qualquer provedor).
+  ...emailHandlers(db, { SMTP_URL: env.SMTP_URL, MAIL_FROM: env.MAIL_FROM ?? `${INST.nomePublico} <nao-responda@exemplo.invalid>`, APP_ENV: env.APP_ENV ?? "development", EMAIL_DIR: env.EMAIL_DIR, APP_URL: env.APP_URL! }, INST.nomePublico),
   // Alertas operacionais: conteúdo mínimo, sem dados pessoais nem textos de oração.
   "alerta.operacional": async (p) => { log("alerta", "operacional", { tipo: p.kind }); },
   "alerta.intercessores": async () => { log("info", "novos_pedidos_de_oracao"); },

@@ -18,12 +18,12 @@ Atualizada em 10/11/2026. Estados: **não iniciado**, **em andamento**, **valida
 | 9 | Retorno do navegador não aprova pagamento | `payments.ts`, `/inscricao/[token]` | `store.test.ts` | Teste passa | validado |
 | 10 | Reembolso, reserva expirada, pagamento tardio | `payments.ts` | `store.test.ts` (4 casos) | Testes passam | validado (provedor simulado) |
 | 11 | Intenções/participantes/pedidos fora de busca, logs e cache | `prayer.ts`, `search.ts`, `audit.ts`, `next.config.ts` | `privacy-uploads-jobs.test.ts` | Teste + `curl -I` (no-store, noindex no painel) | validado |
-| 12 | MFA, recuperação, revogação, bloqueio | better-auth + `twoFactor`, `session.ts`, `src/server/users.ts`, `/admin/usuarios`, `/admin/conta` | `tests/users.test.ts` (6) + navegador: conta criada no painel → senha provisória → troca obrigatória → MFA; senha provisória antiga recusada (401) | 10/11/2026 | validado, exceto recuperação **por e-mail** (depende de SMTP); a recuperação hoje é pelo gestor: senha provisória + zerar MFA |
+| 12 | MFA, recuperação, revogação, bloqueio | better-auth + `twoFactor`, `session.ts`, `src/server/users.ts`, `/admin/usuarios`, `/admin/conta` | `tests/users.test.ts` (6) + navegador: conta criada no painel → senha provisória → troca obrigatória → MFA; senha provisória antiga recusada (401) | 10/11/2026 | validado; recuperação **por e-mail** validada com SMTP local (`tests/mail.test.ts` + Mailpit); **bloqueado** em homologação/produção até haver provedor e domínio |
 | 13 | Upload inválido e arquivo privado bloqueados | `src/server/uploads.ts`, `tokens.ts` | `privacy-uploads-jobs.test.ts` | Testes passam | validado: `tests/media.test.ts` (5) + navegador (envio de foto e PDF privado, link temporário, adulteração do link → 404) |
 | 14 | Compra, inscrição e administração por teclado e celular | Formulários HTML nativos, `<details>` no menu | Inscrição feita no navegador; teclado/leitor de tela **não testados** | — | em andamento |
 | 15 | Backup restaurado permite conciliação | `ops/backup.sh`, `ops/restore-test.sh` | Restauração local do dump em banco temporário | Contagens idênticas, ~2 s (dev, dados de demonstração) | em andamento (sem teste em produção, sem conciliação com provedor real) |
 
-Total automatizado: **69 testes em 9 arquivos, todos passando** (`npm test`, 14/11/2026).
+Total automatizado: **74 testes em 10 arquivos, todos passando** (`npm test`, 14/11/2026).
 
 ## Demais requisitos por seção
 

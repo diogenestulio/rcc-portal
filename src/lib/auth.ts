@@ -33,7 +33,8 @@ export const auth = betterAuth({
     resetPasswordTokenExpiresIn: 60 * 30,
     sendResetPassword: async ({ user, url }) => {
       // Enviado pelo worker; o link não vai para logs.
-      await enqueue(db, "email.redefinir_senha", { userId: user.id, url });
+      // _sensivel: o link (com o token) é apagado do banco assim que o e-mail sai.
+      await enqueue(db, "email.redefinir_senha", { userId: user.id, url, _sensivel: true });
     },
   },
   session: { expiresIn: 60 * 60 * 12, updateAge: 60 * 60, freshAge: 60 * 10 },

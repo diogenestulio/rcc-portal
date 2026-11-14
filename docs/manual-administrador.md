@@ -7,6 +7,7 @@ Para servos que cuidam do portal. Linguagem simples; dúvidas técnicas ficam em
 2. No primeiro acesso, o portal pede a **verificação em duas etapas**: instale um aplicativo autenticador no celular, escaneie o QR Code e guarde os códigos de recuperação em local seguro.
 3. Nos próximos acessos: senha + código de 6 dígitos do aplicativo.
 4. Perdeu o celular? Use um código de recuperação (cada um funciona uma vez) ou peça ao gestor para zerar o MFA.
+5. Esqueceu a senha? Clique em **Esqueci minha senha** no login: chega um link por e-mail, válido por 30 minutos (funciona quando o e-mail do portal estiver ativado).
 
 Você só vê o que o seu papel permite. Responsáveis por um grupo veem só o próprio grupo.
 

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { LoginForm } from "./LoginForm";
 import { Wordmark } from "@/components/ui";
@@ -16,6 +17,7 @@ export default async function Entrar({ searchParams }: PageProps<"/entrar">) {
         {sp.sem_papel && <p role="alert" className="mt-4 rounded-md bg-alerta-claro p-3 text-alerta">Sua conta ainda não tem papel atribuído. Fale com o gestor institucional.</p>}
         {sp.reautenticar && <p role="status" className="mt-4 rounded-md bg-azul-claro p-3 text-azul">Por segurança, esta área pede que você entre de novo (login feito há mais de 10 minutos).</p>}
         <LoginForm volta={typeof sp.volta === "string" ? sp.volta : undefined} />
+        <p className="mt-4 text-sm"><Link href="/entrar/esqueci">Esqueci minha senha</Link></p>
       </div>
     </main>
   );
