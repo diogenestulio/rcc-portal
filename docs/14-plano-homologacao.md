@@ -70,3 +70,6 @@ Imagem `rcc-portal` construída; em contêineres com `APP_ENV=homologacao`: migr
 
 ## 7. Antes de virar produção (fora deste plano)
 Domínio próprio, servidor dedicado, e-mail transacional, backup criptografado com cópia externa, HSTS e as pendências institucionais de `01-pendencias-bloqueantes.md`.
+
+## Correção 14/11/2026 — pasta de e-mails sem permissão
+Desde a primeira implantação, o worker não conseguia gravar os `.eml` (volume `emails` criado como `root`; o worker roda como `app`): e-mails de homologação falhavam com `EACCES` e eram tentados de novo. Corrigido na VPS (`chown app:app` no volume) e no `Dockerfile` (a pasta já nasce com o dono certo). Teste com a conta fictícia `teste.redefinir@teste.invalid` (desativada após o teste): pedido de redefinição → `.eml` gerado com link da homologação → payload do job apagado.
