@@ -16,15 +16,6 @@ const PAGES: Record<string, { title: string; intro?: string; body: React.ReactNo
     intro: "Transmissões, vídeos, fotos e materiais para download.",
     body: <EmptyState title="Acervo em organização">Os vídeos e materiais serão publicados aqui com tipo, tamanho e descrição. Transmissões só carregam quando você clicar.</EmptyState>,
   },
-  loja: {
-    title: "Loja",
-    intro: "Livros, materiais de formação e artigos religiosos.",
-    body: env.STORE_ENABLED ? <p>Catálogo em preparação.</p> : (
-      <EmptyState title="Loja em preparação">
-        As vendas online serão abertas após a definição da entidade responsável, do atendimento e das políticas de entrega, troca e reembolso.
-      </EmptyState>
-    ),
-  },
   contato: {
     title: "Contato",
     intro: `Canais oficiais de atendimento da ${INST.nomePublico}.`,

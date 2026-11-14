@@ -13,6 +13,9 @@ const schema = z.object({
   GOOGLE_SERVICE_ACCOUNT_JSON_PATH: z.string().optional(),
   STORE_ENABLED: z.enum(["true", "false"]).default("false").transform((v) => v === "true"),
   PAYMENTS_PROVIDER: z.enum(["off", "simulado"]).default("off"),
+  /** Retirada no local: só se a operação oferecer (texto com endereço e horários). */
+  STORE_PICKUP_ENABLED: z.enum(["true", "false"]).default("false").transform((v) => v === "true"),
+  STORE_PICKUP_INFO: z.string().max(300).default(""),
   SMTP_URL: z.string().optional(),
   MAIL_FROM: z.string().default("RCC Arquidiocese de Cuiabá <nao-responda@exemplo.invalid>"),
   ALERT_EMAIL: z.string().optional(),

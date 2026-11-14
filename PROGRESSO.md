@@ -21,7 +21,7 @@ Arquidiocese de Cuiabá · homologação na VPS atual (servidor próprio ao ativ
 4. Auditoria de acessibilidade manual (teclado + NVDA + 320 px) e Lighthouse repetível.
 5. Homologação na VPS: plano e arquivos prontos e testados localmente (`docs/14-plano-homologacao.md`); no ar em https://179-197-73-172.sslip.io:10443 (com senha) desde 10/11/2026; backup diário com teste de restauração agendado. CI no repositório institucional.
 6. Google Calendar real (procedimento em `docs/09-integracoes.md`).
-7. Loja: telas de catálogo/carrinho/checkout após definir a entidade vendedora e o provedor.
+7. ~~Telas da loja~~ (feito em 14/11/2026: vitrine, produto, carrinho, checkout com retirada, pedido; painel de produtos/estoque/pedidos/exceções). **Desligada** até definir entidade vendedora, provedor real e frete.
 
 ## Decisões tomadas sem consulta (substituíveis)
 Cor vinho provisória, marca tipográfica provisória, retenção de 60 dias para pedidos de oração, editor de texto simples. Detalhes em `docs/13-adrs.md`.

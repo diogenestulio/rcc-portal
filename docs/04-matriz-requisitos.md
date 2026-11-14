@@ -23,7 +23,7 @@ Atualizada em 10/11/2026. Estados: **não iniciado**, **em andamento**, **valida
 | 14 | Compra, inscrição e administração por teclado e celular | Formulários HTML nativos, `<details>` no menu | Inscrição feita no navegador; teclado/leitor de tela **não testados** | — | em andamento |
 | 15 | Backup restaurado permite conciliação | `ops/backup.sh`, `ops/restore-test.sh` | Restauração local do dump em banco temporário | Contagens idênticas, ~2 s (dev, dados de demonstração) | em andamento (sem teste em produção, sem conciliação com provedor real) |
 
-Total automatizado: **74 testes em 10 arquivos, todos passando** (`npm test`, 14/11/2026).
+Total automatizado: **79 testes em 11 arquivos, todos passando** (`npm test`, 14/11/2026).
 
 ## Demais requisitos por seção
 
@@ -44,7 +44,8 @@ Total automatizado: **74 testes em 10 arquivos, todos passando** (`npm test`, 14
 | 9 | Lotes, capacidade, espera, check-in único, QR opaco | validado | Lotes pagos dependem do provedor |
 | 9 | Transferência, menores | não iniciado | Regras institucionais |
 | 10 | Loja: regras de servidor (carrinho, estoque, pagamento, reembolso) | validado (simulado) | |
-| 10 | Catálogo público, carrinho e checkout (telas), frete, produto digital | não iniciado | Loja desligada até titularidade |
+| 10 | Telas: vitrine (busca, categoria), produto com variantes, carrinho (cookie HttpOnly), checkout com retirada local, acompanhamento do pedido por token; painel de produtos/variantes/estoque, pedidos, etapas de entrega, reembolso, fila de exceções | validado em desenvolvimento (`tests/catalog.test.ts` + navegador com pagamento simulado) | **Desligada** em homologação/produção até titularidade |
+| 10 | Frete por CEP/transportadora, produto digital | não iniciado | Depende de contrato com transportadora |
 | 10 | Provedor real (Pix/cartão/boleto) | adiado por decisão | Vendas adiadas em 10/11/2026; retomar com entidade vendedora |
 | 11 | Papéis, matriz, escopos, MFA, reautenticação, fluxo editorial, auditoria | validado | `docs/05-permissoes.md` |
 | 11 | Tela de usuários e papéis (criar conta, senha provisória, conceder/revogar papel com escopo, desativar, encerrar sessões, zerar MFA) e “Minha conta” | validado | Anti-escalada e “último gestor” testados |

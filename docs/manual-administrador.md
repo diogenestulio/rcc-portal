@@ -27,6 +27,15 @@ Você só vê o que o seu papel permite. Responsáveis por um grupo veem só o p
 5. **Arquivo privado** (atas, listas internas): não aparece no site; use **Gerar link (1 h)** para compartilhar com a equipe. O link expira sozinho.
 6. Só dá para **excluir** um arquivo que não esteja em uso em nenhuma página.
 
+## Loja (operador da loja)
+A loja só aparece no site quando for ligada pela coordenação. Antes disso, já dá para preparar o catálogo.
+1. **Loja → Produtos e estoque → Novo produto.** Depois abra o produto e cadastre as **variantes** (ex.: Único, P, M) com código (SKU) e preço (ex.: 39,90).
+2. Registre o estoque em cada variante: **Entrada** quando chega mercadoria, **Devolução** quando um item volta, **Ajuste** para corrigir contagem (o motivo é obrigatório). O estoque nunca fica abaixo do que está reservado em pedidos em andamento.
+3. Escolha a foto (enviada antes em **Mídia**) e marque **Publicado na loja**.
+4. **Pedidos:** só depois de “pagamento aprovado” aparece **Começar separação** → **Marcar como retirado/enviado** → **entregue**.
+5. **Reembolso:** informe valor e motivo; o provedor confirma depois. Reembolso não devolve o produto ao estoque sozinho: se o item voltar, registre uma **Devolução**.
+6. **Exceções** (pagamento que chegou depois de a reserva expirar, valores divergentes, contestações): resolva no provedor e registre a decisão no painel.
+
 ## Minha conta
 Troque sua senha e veja onde sua conta está aberta. “Encerrar as outras sessões” serve para quando você esqueceu o painel aberto em outro computador.
 
