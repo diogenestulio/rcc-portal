@@ -42,3 +42,6 @@ next-env.d.ts
 !.env.example
 /storage
 /backups
+
+# axe-core copiado só para revisão local de acessibilidade
+/public/_axe-dev.js

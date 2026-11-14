@@ -28,7 +28,7 @@ export function SiteHeader() {
         </p>
       )}
       <Container className="flex items-center justify-between gap-4 py-3">
-        <Link href="/" className="no-underline" aria-label={`${INST.nomePublico} — página inicial`}><Wordmark /></Link>
+        <Link href="/" className="no-underline"><Wordmark /><span className="sr-only">, página inicial</span></Link>
         <nav aria-label="Principal" className="hidden xl:block">
           <ul className="flex items-center gap-1">
             {NAV.map((n) => (

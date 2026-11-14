@@ -34,7 +34,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   return (
     <div className="flex min-h-full flex-1 flex-col bg-marfim-2/50 lg:flex-row">
       <a href="#painel" className="skip-link">Pular para o conteúdo</a>
-      <aside className="border-b border-linha bg-papel lg:w-64 lg:shrink-0 lg:border-r lg:border-b-0">
+      <aside aria-label="Menu do painel" className="border-b border-linha bg-papel lg:w-64 lg:shrink-0 lg:border-r lg:border-b-0">
         <div className="p-4"><Link href="/admin" className="no-underline"><Wordmark compact /></Link></div>
         <nav aria-label="Painel" className="px-2 pb-4">
           <ul className="flex gap-1 overflow-x-auto lg:flex-col">

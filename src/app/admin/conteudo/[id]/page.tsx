@@ -52,10 +52,10 @@ export default async function EditContent({ params, searchParams }: PageProps<"/
           <p className="mt-3 text-sm text-tinta-3">Salvar cria uma nova revisão e exige nova aprovação antes de publicar.</p>
         </form>
 
-        <aside className="space-y-4">
+        <aside aria-label="Fluxo e histórico" className="space-y-4">
           <section className="rounded-[var(--radius-lg)] border border-linha bg-papel p-4">
             <h2 className="text-lg font-semibold">Fluxo</h2>
-            <ol className="mt-2 text-sm text-tinta-2">rascunho → em revisão → aprovado → publicado/agendado → arquivado</ol>
+            <p className="mt-2 text-sm text-tinta-2">rascunho → em revisão → aprovado → publicado/agendado → arquivado</p>
             <div className="mt-4 space-y-3">
               {item.status === "rascunho" && canView(s, "conteudo.enviar_revisao") && (
                 <form action={transicao}><input type="hidden" name="id" value={id} /><input type="hidden" name="acao" value="enviar" /><button className={btn.secundario + " w-full"}>Enviar para revisão</button></form>

@@ -50,3 +50,4 @@ docs/               documentação              scripts/          worker, seed, 
 11. `docs/manual-administrador.md` — manual para voluntários
 12. `docs/14-plano-homologacao.md` — homologação na VPS (`deploy/homologacao/`)
 13. `docs/15-incidente-2026-11-10.md` — incidente de nome de serviço na rede compartilhada
+14. `docs/16-acessibilidade.md` — revisão de acessibilidade (método, achados, limitações)

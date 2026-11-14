@@ -43,8 +43,8 @@ export default async function GrupoPage({ params, searchParams }: PageProps<"/gr
         <div><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Onde</dt><dd className="mt-1">{g.venue}{g.publicAddress && <><br />{g.publicAddress}</>}</dd></div>
         {g.accessibilityInfo && <div className="sm:col-span-2"><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Acessibilidade informada</dt><dd className="mt-1">{g.accessibilityInfo}</dd></div>}
         {(g.publicContact || g.authorizedPhone) && <div className="sm:col-span-2"><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Contato</dt><dd className="mt-1">{g.publicContact}{g.authorizedPhone && <><br />Telefone (autorizado): {g.authorizedPhone}</>}</dd></div>}
-        <div className="sm:col-span-2 text-sm text-tinta-3">{g.lastConfirmedAt ? `Informações confirmadas pela coordenação em ${fmtPublished(g.lastConfirmedAt)}.` : "Informações ainda não confirmadas pela coordenação."}</div>
       </dl>
+      <p className="mt-3 text-sm text-tinta-3">{g.lastConfirmedAt ? `Informações confirmadas pela coordenação em ${fmtPublished(g.lastConfirmedAt)}.` : "Informações ainda não confirmadas pela coordenação."}</p>
 
       {osm && <p className="mt-4"><a href={osm} rel="noopener noreferrer external" className="font-semibold">Ver localização no OpenStreetMap<span className="sr-only"> (abre site externo)</span></a></p>}
       {g.description && <div className="prosa mt-8"><p>{g.description}</p></div>}

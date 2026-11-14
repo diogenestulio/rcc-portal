@@ -1,4 +1,4 @@
-# Progresso — atualizado em 10/11/2026
+# Progresso — atualizado em 14/11/2026
 
 ## Entrega 1 (esta sessão) — concluída em desenvolvimento local
 
@@ -18,7 +18,7 @@ Arquidiocese de Cuiabá · homologação na VPS atual (servidor próprio ao ativ
 1. Pendências restantes de `docs/01-pendencias-bloqueantes.md` (denominação exata, paróquias, marca, responsáveis, domínio).
 2. ~~Tela de usuários e papéis + revogação de sessões~~ (feito em 10/11/2026: criar conta com senha provisória, papéis com escopo, desativar, encerrar sessões, zerar MFA, Minha conta; 6 testes novos). E-mail transacional implementado em 14/11/2026 (SMTP de qualquer provedor, recuperação de senha, confirmações); falta escolher o provedor e ter domínio próprio — ver docs/09.
 3. ~~Biblioteca de mídia~~ (feito em 14/11/2026: envio validado, descrição/crédito/autorização, variantes, privado com link temporário, imagem no texto; armazenamento em disco — S3 continua pendente).
-4. Auditoria de acessibilidade manual (teclado + NVDA + 320 px) e Lighthouse repetível.
+4. Acessibilidade: revisão automática (axe-core) + teclado + 320 px feita em 14/11/2026, 4 achados corrigidos (`docs/16-acessibilidade.md`). Falta teste com leitor de tela real (NVDA/TalkBack) e Lighthouse repetível.
 5. Homologação na VPS: plano e arquivos prontos e testados localmente (`docs/14-plano-homologacao.md`); no ar em https://179-197-73-172.sslip.io:10443 (com senha) desde 10/11/2026; backup diário com teste de restauração agendado. CI no repositório institucional.
 6. Google Calendar real (procedimento em `docs/09-integracoes.md`).
 7. ~~Telas da loja~~ (feito em 14/11/2026: vitrine, produto, carrinho, checkout com retirada, pedido; painel de produtos/estoque/pedidos/exceções). **Desligada** até definir entidade vendedora, provedor real e frete.

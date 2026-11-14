@@ -58,7 +58,8 @@ Total automatizado: **82 testes em 12 arquivos, todos passando** (`npm test`, 14
 | 15 | SEO: sitemap, robots, canonical, JSON-LD de evento | validado | |
 | 15 | Imagens responsivas da biblioteca de mídia | validado | `srcset` 640/1280/original; fotos reais ainda não recebidas |
 | 16 | Peso de transferência | validado (lab) | ~290 KB gzip por página (orçamento 1,5 MB) |
-| 16 | WCAG 2.2 AA completo, Core Web Vitals de campo | em andamento | Sem auditoria manual completa; sem dados de campo |
+| 16 | WCAG 2.2 AA — verificação automática (axe-core 4.14, ~45 rotas) + teclado + 320 px | validado (dev) | `docs/16-acessibilidade.md`; 4 achados corrigidos, revarredura sem violações |
+| 16 | WCAG 2.2 AA completo (leitor de tela, usuários reais), Core Web Vitals de campo | em andamento | Sem teste com NVDA/TalkBack nem com pessoas com deficiência; sem dados de campo |
 | 17 | Backup criptografado, retenção, restauração | em andamento | Homologação: backup diário + restauração de teste automáticos na VPS (sem criptografia/cópia externa, dados fictícios); produção ainda não |
 | 18 | Auditoria append-only com cadeia de hash, logs JSON sem dados sensíveis | validado | |
 | 18 | Alertas e-mail/Telegram | não iniciado | Worker só registra em log |

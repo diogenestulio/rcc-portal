@@ -48,7 +48,7 @@ const PAGES: Record<string, { title: string; intro?: string; body: React.ReactNo
   },
   acessibilidade: {
     title: "Acessibilidade",
-    body: <div className="prosa"><p>Nosso objetivo é atender às diretrizes WCAG 2.2 nível AA. O portal funciona por teclado, respeita a preferência por menos animações, não usa carrossel automático e oferece a agenda em formato de lista.</p><p>Esta é uma meta em verificação contínua, não uma declaração de conformidade. Encontrou uma barreira? Escreva para a coordenação pelos canais de <Link href="/contato">contato</Link>.</p></div>,
+    body: <div className="prosa"><p>Nosso objetivo é atender às diretrizes WCAG 2.2 nível AA. O portal funciona por teclado, tem atalho “Pular para o conteúdo”, mostra onde está o foco, respeita a preferência por menos animações, não usa carrossel automático, oferece a agenda em formato de lista e se adapta a telas pequenas (até 320 pixels de largura) sem rolagem lateral. O mapa dos grupos é opcional: a lista tem as mesmas informações.</p><p>Última revisão: novembro de 2026, com verificação automática (axe-core) de todas as páginas e testes manuais de teclado e de tela pequena. Ainda não houve teste com leitores de tela por pessoas que os usam no dia a dia.</p><p>Esta é uma meta em verificação contínua, não uma declaração de conformidade. Encontrou uma barreira? Escreva para a coordenação pelos canais de <Link href="/contato">contato</Link>.</p></div>,
   },
   termos: {
     title: "Termos de uso", draft: true,
