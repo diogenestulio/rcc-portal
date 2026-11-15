@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container, EmptyState, Notice, PageHeader } from "@/components/ui";
 import { RETENTION_DAYS } from "@/server/prayer";
-import { env } from "@/lib/env";
 import { instituicaoProvisoria as INST } from "@/config/instituicao";
 
 /**

@@ -73,12 +73,12 @@ describe("redefinição de senha", () => {
     const token = /reset-password\/([^?]+)/.exec(link)![1];
     expect(eml).toContain("Redefinição de senha");
 
-    const r = await post("/reset-password", { newPassword: "senha-nova-segura-456", token });
+    const r = await post("/reset-password", { newPassword: "senha-nova-segura-456", token }); // gitleaks:allow (senha fictícia de teste)
     expect(r.status).toBe(200);
     expect(await db.select().from(session).where(eq(session.userId, id))).toHaveLength(0); // sessões encerradas
-    expect((await post("/sign-in/email", { email: "ana@teste.invalid", password: "senha-nova-segura-456" }, "198.51.100.8")).status).toBe(200);
+    expect((await post("/sign-in/email", { email: "ana@teste.invalid", password: "senha-nova-segura-456" }, "198.51.100.8")).status).toBe(200); // gitleaks:allow (senha fictícia de teste)
     expect((await post("/sign-in/email", { email: "ana@teste.invalid", password: "senha-antiga-123" }, "198.51.100.9")).status).toBe(401);
-    expect((await post("/reset-password", { newPassword: "outra-senha-qualquer-789", token })).status).toBe(400); // uso único
+    expect((await post("/reset-password", { newPassword: "outra-senha-qualquer-789", token })).status).toBe(400); // uso único // gitleaks:allow (senha fictícia de teste)
   });
 
   it("conta desativada não recebe link", async () => {

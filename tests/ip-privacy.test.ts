@@ -38,7 +38,7 @@ describe("minimização de IP", () => {
 
   it("login grava sessão sem IP em claro e o limitador usa chave em HMAC", async () => {
     const id = await makeLoginUser();
-    const res = await auth.handler(req("/sign-in/email", { email: "login@teste.invalid", password: "senha-correta-123" }));
+    const res = await auth.handler(req("/sign-in/email", { email: "login@teste.invalid", password: "senha-correta-123" })); // gitleaks:allow (senha fictícia de teste)
     expect(res.status).toBe(200);
     const [s] = await db.select().from(session).where(eq(session.userId, id));
     expect(s.ipAddress).toMatch(/^h:/);

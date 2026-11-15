@@ -15,9 +15,9 @@
 ## Cobertura
 
 - **Site:** início, grupos (lista, mapa e página do grupo), agenda (lista, mês, evento e inscrição), notícias (lista e artigo), formação, ministérios, A RCC, multimídia, contato, pedido de oração, busca, privacidade, acessibilidade, loja, produto, carrinho e pedido.
-- **Acesso:** entrar, esqueci a senha e redefinir senha.
+- **Acesso:** entrar, esqueci a senha, redefinir senha e verificação em duas etapas (`/entrar/mfa`). A troca de senha obrigatória (`/entrar/trocar-senha`) usa o mesmo formulário de “Minha conta”, que foi varrido; a rota em si só abre para contas com senha provisória.
 - **Painel:** início, conteúdo (lista, novo e edição), grupos (lista e edição), eventos (lista, detalhe, novo e check-in), mídia, usuários, conta, loja (pedidos, produtos e produto), oração e auditoria.
-- **Não verificadas:** `/entrar/mfa`, `/entrar/trocar-senha` e o comprovante de inscrição `/inscricao/[token]`. Usam os mesmos componentes de formulário, mas não foram varridas.
+- **Comprovante de inscrição** (`/inscricao/[token]`), gerado por uma inscrição de teste local.
 
 ## Achados e correções
 

@@ -1,4 +1,4 @@
-# CI proposto — AINDA NÃO EXECUTADO (o projeto ainda não tem repositório remoto).
+# CI: roda a cada push e pull request no GitHub.
 name: ci
 on: [push, pull_request]
 permissions: { contents: read }
