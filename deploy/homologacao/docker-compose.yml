@@ -63,9 +63,15 @@ services:
     <<: *app
     command: ["node", "scripts/worker.mjs"]
     depends_on: { postgres: { condition: service_healthy } }
-    environment: { EMAIL_DIR: /data/emails }
+    environment:
+      EMAIL_DIR: /data/emails
+      # Monitoramento (alertas no Telegram só se TELEGRAM_BOT_TOKEN e TELEGRAM_CHAT_ID estiverem no .env)
+      HEALTH_URL: http://rcc-portal:3000/api/health
+      MONITOR_PUBLIC_URL: ${APP_URL}
+      ALERT_EXPECT_BACKUP: "true"
     volumes: [emails:/data/emails]
-    networks: [interna]
+    # "saida": rede própria só para o worker acessar a internet (Telegram, SMTP). NÃO é a rede do HelpDesk.
+    networks: [interna, saida]
     mem_limit: 192m
     healthcheck: { disable: true }
 
@@ -77,6 +83,7 @@ volumes:
 networks:
   interna:
     internal: true
+  saida: {}
   borda:
     external: true
     name: helpdesk_default

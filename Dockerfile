@@ -12,7 +12,7 @@ COPY . .
 RUN APP_ENV=development DATABASE_URL=postgres://build:build@localhost:5432/build \
     BETTER_AUTH_SECRET=build-only-build-only-build-only-0000 APP_SIGNING_KEY=build-only-build-only-build-only-0000 \
     npx next build \
- && npx esbuild scripts/worker.mts scripts/migrate.mts scripts/seed-dev.mts scripts/create-admin.mts scripts/verify-audit.mts \
+ && npx esbuild scripts/worker.mts scripts/migrate.mts scripts/seed-dev.mts scripts/create-admin.mts scripts/verify-audit.mts scripts/alerta-teste.mts \
       --bundle --platform=node --format=esm --target=node24 --outdir=dist-scripts --out-extension:.js=.mjs \
       --alias:@=./src --external:sharp \
       --banner:js="import { createRequire } from 'module'; const require = createRequire(import.meta.url);"

@@ -11,6 +11,18 @@ f="$DEST/rcc-hml-$ts.dump"
 fm="$DEST/rcc-hml-midia-$ts.tgz"
 set -a; . ./.env; set +a
 
+# Registra o resultado no banco (integration_state, chave "backup"): o worker lê e alerta no Telegram
+# se a última execução falhou ou se não houver backup bem-sucedido nas últimas 26 h.
+registrar() { # $1 = ok | erro, $2 = detalhe (sem dados pessoais)
+  local det; det=$(printf '%s' "$2" | tr -d "'\"\\\\")   # sem aspas/barras: o detalhe vai dentro do SQL
+  if [ "$1" = ok ]; then
+    docker compose exec -T postgres psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -qc "insert into integration_state (key, last_success_at, value) values ('backup', now(), '{\"detalhe\": \"$det\"}') on conflict (key) do update set last_success_at = now(), value = excluded.value, updated_at = now()" >/dev/null || true
+  else
+    docker compose exec -T postgres psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -qc "insert into integration_state (key, last_error_at, last_error) values ('backup', now(), '$det') on conflict (key) do update set last_error_at = now(), last_error = excluded.last_error, updated_at = now()" >/dev/null || true
+  fi
+}
+trap 'registrar erro "falhou na linha $LINENO do backup.sh"' ERR
+
 docker compose exec -T postgres pg_dump -U "$POSTGRES_USER" --format=custom --no-owner "$POSTGRES_DB" > "$f"
 chmod 600 "$f"; sha256sum "$f" > "$f.sha256"
 
@@ -35,4 +47,8 @@ nkeys=$(printf '%s\n' "$keys" | grep -c . || true)
 find "$DEST" -name 'rcc-hml-*' -mtime +7 -delete
 status=$([ "$faltando" -eq 0 ] && echo "backup.ok" || echo "backup.midia_incompleta")
 echo "{\"t\":\"$(date -u +%FT%TZ)\",\"evento\":\"$status\",\"arquivo\":\"$f\",\"bytes\":$(stat -c %s "$f"),\"midia_bytes\":$(stat -c %s "$fm"),\"restauracao_s\":$(( $(date +%s) - start )),\"auditoria_linhas\":$n,\"midia_registros\":$nkeys,\"midia_faltando\":$faltando}"
-[ "$faltando" -eq 0 ]
+if [ "$faltando" -eq 0 ]; then
+  registrar ok "auditoria=$n midia=$nkeys"
+else
+  trap - ERR; registrar erro "midia incompleta: $faltando arquivo(s) faltando no pacote"; exit 1
+fi
