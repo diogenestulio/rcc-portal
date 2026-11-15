@@ -16,8 +16,8 @@ docker save "rcc-portal:$VERSAO" | gzip | ssh "$VPS" docker load
 
 echo "== 3. arquivos de implantação"
 ssh "$VPS" "mkdir -p $DIR /opt/backups/rcc-portal-hml && chmod 700 /opt/backups/rcc-portal-hml"
-scp -q deploy/homologacao/docker-compose.yml deploy/homologacao/backup.sh deploy/homologacao/backup-externo-vps.sh "$VPS:$DIR/"
-ssh "$VPS" "chmod 700 $DIR/backup.sh $DIR/backup-externo-vps.sh"
+scp -q deploy/homologacao/docker-compose.yml deploy/homologacao/backup.sh deploy/homologacao/backup-externo-vps.sh deploy/homologacao/conta.sh "$VPS:$DIR/"
+ssh "$VPS" "chmod 700 $DIR/backup.sh $DIR/backup-externo-vps.sh $DIR/conta.sh"
 # segredos/ (chave da Google Agenda): legível só pelo usuário do contêiner (uid 100)
 ssh "$VPS" "mkdir -p $DIR/segredos && chown -R 100:101 $DIR/segredos && chmod 700 $DIR/segredos"
 
