@@ -17,6 +17,7 @@ describe("AlertTracker", () => {
   it("avisa uma vez, lembra a cada 6 h e avisa quando resolve", () => {
     const t = new AlertTracker("[RCC · teste]");
     const t0 = 1_000_000;
+    expect(t.plan([falha], t0 - 60_000)).toEqual([]);             // 1ª falha: aguarda confirmação
     const [n] = t.plan([falha], t0);
     expect(n).toMatchObject({ kind: "novo" });
     expect(n.text).toContain("🔴 [RCC · teste] — tarefas que falharam\nemail.enviar: 1");
@@ -37,13 +38,21 @@ describe("AlertTracker", () => {
   });
 
   it("se o envio falhar (sem markSent), tenta de novo no próximo ciclo; chaves ausentes não mudam", () => {
-    const t = new AlertTracker("[x]");
+    const t = new AlertTracker("[x]", 6 * H, 1);
     expect(t.plan([falha], 0)).toHaveLength(1);
     expect(t.plan([falha], 60_000)).toHaveLength(1);             // não confirmado → planeja de novo
     t.markSent(t.plan([falha], 120_000)[0], falha.title, 120_000);
     expect(t.plan([{ key: "auditoria", title: "a", ok: true }], 180_000)).toEqual([]); // outra chave: não resolve a fila
     expect(t.activeKeys()).toEqual(["fila.morta"]);
   });
+});
+
+it("falha isolada (ex.: worker subiu antes do portal) não gera alerta", () => {
+  const t = new AlertTracker("[x]");
+  expect(t.plan([falha], 0)).toEqual([]);
+  expect(t.plan([ok], 60_000)).toEqual([]);
+  expect(t.plan([falha], 120_000)).toEqual([]);                  // a contagem recomeçou
+  expect(t.plan([falha], 180_000)).toHaveLength(1);
 });
 
 describe("verificações", () => {

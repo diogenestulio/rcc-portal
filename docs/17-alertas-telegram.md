@@ -15,7 +15,7 @@ O **worker** verifica o sistema a cada minuto e avisa um chat do Telegram quando
 | `auditoria` | a cadeia de hash da auditoria não confere | 1 h |
 | exceção operacional | pagamento tardio, divergência de valor etc. (só o tipo; detalhe no painel) | na hora |
 
-**Regras de envio:** problema novo → 🔴; se continuar, lembrete a cada 6 h (`ALERT_REPEAT_HOURS`); quando volta ao normal → ✅ com a duração. Se o Telegram estiver fora, o aviso é tentado de novo no minuto seguinte. Reiniciar o worker reenvia uma vez os alertas ainda ativos.
+**Regras de envio:** problema novo, confirmado em duas verificações seguidas (evita alarme falso enquanto o portal reinicia numa implantação) → 🔴; se continuar, lembrete a cada 6 h (`ALERT_REPEAT_HOURS`); quando volta ao normal → ✅ com a duração. Se o Telegram estiver fora, o aviso é tentado de novo no minuto seguinte. Reiniciar o worker reenvia uma vez os alertas ainda ativos.
 
 **Privacidade:** as mensagens têm só tipos de tarefa, contagens e horários. Nunca nomes, e-mails, textos de oração, tokens ou conteúdo de pedidos.
 

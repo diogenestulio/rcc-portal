@@ -2,7 +2,7 @@
  * Alertas operacionais por Telegram.
  *
  * - O worker roda as verificações a cada minuto (`collectChecks`) e o `AlertTracker` decide o que enviar:
- *   problema novo → 🔴; problema que continua → lembrete a cada `repeatMs` (padrão 6 h); problema resolvido → ✅.
+ *   problema novo (confirmado em `confirmAfter` verificações seguidas, padrão 2 — evita alarme falso em reinícios) → 🔴; problema que continua → lembrete a cada `repeatMs` (padrão 6 h); problema resolvido → ✅.
  * - O estado fica em memória do worker: reiniciar o worker reenvia uma vez os alertas ainda ativos (de propósito).
  * - As mensagens NUNCA levam dados pessoais, textos de oração, e-mails, tokens ou conteúdo de payloads:
  *   só contagens, tipos de tarefa e horários.
@@ -23,7 +23,8 @@ const fmtDur = (ms: number) => {
 
 export class AlertTracker {
   private active = new Map<string, State>();
-  constructor(private label: string, private repeatMs = 6 * 3600_000) {}
+  private streak = new Map<string, number>();
+  constructor(private label: string, private repeatMs = 6 * 3600_000, private confirmAfter = 2) {}
 
   /** O que precisa ser enviado agora. Só as chaves presentes em `checks` são avaliadas (as ausentes não mudam). */
   plan(checks: Check[], now = Date.now()): Outgoing[] {
@@ -31,7 +32,9 @@ export class AlertTracker {
     for (const c of checks) {
       const st = this.active.get(c.key);
       const det = c.detail ? `\n${c.detail}` : "";
-      if (!c.ok && !st) out.push({ key: c.key, kind: "novo", text: `🔴 ${this.label} — ${c.title}${det}` });
+      const n = c.ok ? 0 : (this.streak.get(c.key) ?? 0) + 1;
+      this.streak.set(c.key, n);
+      if (!c.ok && !st && n >= this.confirmAfter) out.push({ key: c.key, kind: "novo", text: `🔴 ${this.label} — ${c.title}${det}` });
       else if (!c.ok && st && now - st.lastSent >= this.repeatMs)
         out.push({ key: c.key, kind: "lembrete", text: `🔴 ${this.label} — continua há ${fmtDur(now - st.since)}: ${c.title}${det}` });
       else if (c.ok && st) out.push({ key: c.key, kind: "resolvido", text: `✅ ${this.label} — resolvido após ${fmtDur(now - st.since)}: ${st.title}` });
