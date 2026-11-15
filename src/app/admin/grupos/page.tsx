@@ -26,7 +26,10 @@ export default async function GruposAdmin({ searchParams }: PageProps<"/admin/gr
 
   return (
     <div className="max-w-6xl">
-      <h1 className="text-3xl font-semibold">Grupos de Oração</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-3xl font-semibold">Grupos de Oração</h1>
+        {canView(s, "grupo.criar") && <Link href="/admin/grupos/novo" className={btn.primario}>Novo grupo</Link>}
+      </div>
       {typeof sp.ok === "string" && <div className="mt-4"><Notice tone="sucesso">Alteração registrada.</Notice></div>}
       <p className="mt-2 text-tinta-2">{mine.length} grupo(s) no seu escopo · {staleCount} publicados sem confirmação há mais de 180 dias. <Link href={sp.desatualizados ? "/admin/grupos" : "/admin/grupos?desatualizados=1"}>{sp.desatualizados ? "Ver todos" : "Ver só desatualizados"}</Link></p>
       {list.length === 0 ? <div className="mt-6"><EmptyState title="Nenhum grupo no seu escopo" /></div> : (

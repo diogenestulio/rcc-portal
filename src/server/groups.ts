@@ -7,6 +7,8 @@ import type { DB } from "@/db";
 import { groupCorrection, groupPrivateContact, municipality, parish, prayerGroup, region } from "@/db/schema";
 import { assertCan, type Subject } from "./authz";
 import { audit } from "./audit";
+import { uniqueSlug } from "./slug";
+import { InputError } from "./errors";
 
 export const STALE_DAYS = 180;
 export type Period = "manha" | "tarde" | "noite";
@@ -160,4 +162,69 @@ export async function staleGroups(db: DB, now = new Date()) {
     select id, name, last_confirmed_at from prayer_group where published and status <> 'encerrado'
       and (last_confirmed_at is null or last_confirmed_at < ${now.toISOString()}::timestamptz - make_interval(days => ${STALE_DAYS}))
     order by last_confirmed_at nulls first`);
+}
+
+// ───────── Cadastro de grupo novo (gestor) ─────────
+export type NewGroupInput = {
+  name: string; venue: string; weekday: number; startTime: string; endTime?: string | null;
+  /** Paróquia existente… */
+  parishId?: string | null;
+  /** …ou nova paróquia, num município existente ou novo. */
+  newParish?: { name: string; municipalityId?: string | null; newMunicipality?: string | null; regionId?: string | null } | null;
+};
+
+/**
+ * Cria o grupo OCULTO e "a confirmar": o gestor revisa os dados, confirma com o grupo e publica.
+ * Paróquia e município novos são criados na mesma transação (lista oficial ainda é pendência institucional).
+ */
+export async function createGroup(db: DB, s: Subject, input: NewGroupInput): Promise<string> {
+  assertCan(s, "grupo.criar");
+  const name = input.name.trim().slice(0, 120), venue = input.venue.trim().slice(0, 200);
+  if (name.length < 3) throw new InputError("Informe o nome do grupo.");
+  if (venue.length < 3) throw new InputError("Informe o local do encontro.");
+  if (!Number.isInteger(input.weekday) || input.weekday < 0 || input.weekday > 6) throw new InputError("Escolha o dia da semana.");
+  if (!/^\d{2}:\d{2}$/.test(input.startTime)) throw new InputError("Informe o horário de início.");
+  const endTime = input.endTime && /^\d{2}:\d{2}$/.test(input.endTime) ? input.endTime : null;
+
+  return db.transaction(async (tx) => {
+    let par: { id: string; municipalityId: string; regionId: string | null };
+    if (input.parishId) {
+      const [p] = await tx.select({ id: parish.id, municipalityId: parish.municipalityId, regionId: parish.regionId }).from(parish).where(eq(parish.id, input.parishId));
+      if (!p) throw new InputError("Paróquia não encontrada.");
+      par = p;
+    } else {
+      const np = input.newParish;
+      const pname = np?.name.trim().slice(0, 160) ?? "";
+      if (pname.length < 3) throw new InputError("Escolha a paróquia ou informe o nome da nova paróquia.");
+      let mun: { id: string; regionId: string | null };
+      if (np?.municipalityId) {
+        const [m] = await tx.select({ id: municipality.id, regionId: municipality.regionId }).from(municipality).where(eq(municipality.id, np.municipalityId));
+        if (!m) throw new InputError("Município não encontrado.");
+        mun = m;
+      } else {
+        const mname = np?.newMunicipality?.trim().slice(0, 120) ?? "";
+        if (mname.length < 2) throw new InputError("Escolha o município ou informe o nome do novo município.");
+        const [dup] = await tx.select({ id: municipality.id, regionId: municipality.regionId }).from(municipality).where(sql`f_unaccent(lower(${municipality.name})) = f_unaccent(lower(${mname}))`);
+        if (dup) mun = dup;
+        else {
+          const slug = await uniqueSlug(mname, async (x) => (await tx.select({ id: municipality.id }).from(municipality).where(eq(municipality.slug, x))).length > 0);
+          const [m] = await tx.insert(municipality).values({ name: mname, slug, regionId: np?.regionId || null }).returning({ id: municipality.id, regionId: municipality.regionId });
+          mun = m;
+          await audit(tx, { actorId: s.userId, action: "municipio.criar", resourceType: "municipality", resourceId: m.id, detail: { nome: mname } });
+        }
+      }
+      const slug = await uniqueSlug(pname, async (x) => (await tx.select({ id: parish.id }).from(parish).where(eq(parish.slug, x))).length > 0);
+      const [p] = await tx.insert(parish).values({ name: pname, slug, municipalityId: mun.id, regionId: np?.regionId || mun.regionId })
+        .returning({ id: parish.id, municipalityId: parish.municipalityId, regionId: parish.regionId });
+      par = p;
+      await audit(tx, { actorId: s.userId, action: "paroquia.criar", resourceType: "parish", resourceId: p.id, detail: { nome: pname } });
+    }
+    const slug = await uniqueSlug(name, async (x) => (await tx.select({ id: prayerGroup.id }).from(prayerGroup).where(eq(prayerGroup.slug, x))).length > 0);
+    const [g] = await tx.insert(prayerGroup).values({
+      name, slug, venue, weekday: input.weekday, startTime: input.startTime, endTime,
+      parishId: par.id, municipalityId: par.municipalityId, regionId: par.regionId, status: "a_confirmar", published: false,
+    }).returning({ id: prayerGroup.id });
+    await audit(tx, { actorId: s.userId, action: "grupo.criar", resourceType: "prayer_group", resourceId: g.id });
+    return g.id;
+  });
 }

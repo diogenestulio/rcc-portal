@@ -14,11 +14,14 @@ Regras gerais: toda requisição é verificada no servidor; MFA é obrigatório 
 | `conteudo.publicar` — Publicar/agendar revisão aprovada |  | ✔ | ✔ |  |  |  |  |  |
 | `conteudo.arquivar` — Arquivar conteúdo |  | ✔ |  |  |  |  |  |  |
 | `midia.enviar` — Enviar mídia | ✔ | ✔ | ✔ |  | ✔ | ✔ |  |  |
+| `grupo.criar` — Cadastrar grupo novo (e paróquia/município novos) |  | ✔ |  |  |  |  |  |  |
 | `grupo.editar` — Editar dados do grupo |  | ✔ |  |  |  |  | ✔ |  |
 | `grupo.publicar` — Publicar/despublicar grupo |  | ✔ |  |  |  |  |  |  |
 | `grupo.contato_privado` — Ver/editar contato privado do coordenador |  | ✔ |  |  |  |  | ✔ |  |
 | `grupo.moderar_correcoes` — Moderar sugestões de correção |  | ✔ |  |  |  |  |  |  |
+| `ministerio.criar` — Cadastrar ministério novo |  | ✔ |  |  |  |  |  |  |
 | `ministerio.editar` — Editar ministério |  | ✔ |  |  |  |  | ✔ |  |
+| `ministerio.publicar` — Publicar/ocultar ministério |  | ✔ |  |  |  |  |  |  |
 | `evento.gerenciar` — Criar/editar/publicar eventos |  | ✔ |  |  | ✔ |  | ✔ |  |
 | `evento.participantes` — Ver participantes |  | ✔ |  |  | ✔ |  | ✔ |  |
 | 🔒 `evento.exportar` — Exportar participantes (auditado) |  |  |  |  | ✔ |  |  |  |

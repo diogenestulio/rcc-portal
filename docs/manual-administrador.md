@@ -86,12 +86,12 @@ Todo o conteúdo do site é cadastrado **pelo painel**. Não é preciso programa
 | **Notícias** | **Conteúdo** → tipo *Notícia* | editor + aprovação |
 | **Formação** | **Conteúdo** → tipo *Formação* (natureza doutrina, orientação pastoral ou devoção) | editor + **revisor** |
 | **Comunicados** | **Conteúdo** → tipo *Comunicado* | editor + gestor |
-| **Grupos de Oração** (lista, página do grupo e mapa) | **Grupos** | gestor ou responsável local |
+| **Grupos de Oração** (lista, página do grupo e mapa) | **Grupos** → **Novo grupo** (gestor) e edição | gestor ou responsável local |
 | **Agenda** (lista, mês, página do evento, arquivo de calendário e, depois, a Google Agenda) | **Eventos** | gestor de eventos ou responsável local |
 | **Inscrições em eventos** | dentro do evento: marcar "recebe inscrições" | gestor de eventos |
 | **Fotos e documentos** | **Mídia** | editor, gestor e gestor de eventos |
 | **Pedido de oração** (formulário do site) | chega em **Oração** | intercessor |
-| **Ministérios** | lista exibida no site; **edição pelo painel ainda não existe** (seção 11) | equipe técnica |
+| **Ministérios** | **Ministérios** (cadastrar, editar texto, publicar) | gestor; responsável local edita o seu |
 | **Loja** | **Loja** (desligada até a decisão institucional) | operador da loja |
 | Nome, endereço e redes sociais da instituição | configuração técnica (`src/config/instituicao.ts`) | equipe técnica |
 
@@ -164,7 +164,21 @@ Uma correção num texto publicado cria uma **nova versão**. A versão antiga c
   1. confira a sugestão;
   2. edite o grupo, se for o caso;
   3. marque a sugestão como aplicada ou rejeitada.
-- **Grupo novo:** por enquanto, cadastrado pela equipe técnica (seção 11).
+- **Grupo novo** (gestor): **Grupos → Novo grupo**.
+  1. Informe nome, dia, horário e local.
+  2. Escolha a **paróquia**. Se ela não estiver na lista, escolha **"Outra"** e preencha o quadro **Nova paróquia** com o nome e o município. Se o município também faltar, escolha **"Outro"** e digite o nome.
+  3. Confira a grafia: paróquia e município novos passam a aparecer nos filtros do site.
+  4. O grupo nasce **oculto** e "a confirmar". Na tela seguinte, complete o endereço, a descrição, o contato e o mapa e salve.
+  5. Confirme os dados com o grupo, clique em **Confirmar dados** e depois em **Publicar no portal**.
+
+## 7-A. Ministérios
+
+- **Ministérios → Novo ministério** (gestor):
+  1. Informe nome, resumo (uma frase, aparece na lista do site) e descrição (missão, como participar, contato institucional).
+  2. Separe os parágrafos com uma linha em branco.
+- O ministério nasce **oculto**. Confira o texto e clique em **Publicar no portal**. **Ocultar do portal** tira do site sem apagar.
+- O **responsável local** de um ministério (papel com escopo no ministério) edita **só o texto do seu ministério**. Publicar e ocultar continua com o gestor.
+- Não use telefone nem e-mail pessoal na descrição.
 
 ## 8. Eventos e inscrições
 
@@ -215,7 +229,6 @@ Uma correção num texto publicado cria uma **nova versão**. A versão antiga c
 
 ## 11. Limitações atuais (o painel ainda não faz)
 
-- **Cadastrar grupo novo** e **editar ministérios**. Hoje só a equipe técnica faz isso. Está previsto acrescentar ao painel.
 - **Contato, Multimídia, Colaborar e Privacidade** são textos fixos. A coordenação envia os dados (canais oficiais, vídeos, política aprovada) e a equipe técnica publica.
 - **E-mails automáticos** (confirmação de inscrição, "esqueci minha senha") ficam gravados no servidor e **não chegam** até ativar o provedor de e-mail.
 - **Google Agenda:** pronta, aguardando a chave da conta institucional (`docs/09-integracoes.md`).

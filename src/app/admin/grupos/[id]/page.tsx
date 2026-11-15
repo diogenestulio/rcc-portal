@@ -28,6 +28,7 @@ export default async function EditGroup({ params, searchParams }: PageProps<"/ad
       <h1 className="mt-3 text-3xl font-semibold">{g.name}</h1>
       <p className="text-sm text-tinta-3">Última confirmação: {g.lastConfirmedAt ? fmtPublished(g.lastConfirmedAt) : "nunca"}</p>
       {sp.ok && <div className="mt-4"><Notice tone="sucesso">Salvo.</Notice></div>}
+      {sp.novo && <div className="mt-4"><Notice tone="sucesso" title="Grupo criado (oculto)">Complete endereço, descrição, contato e mapa e salve. Depois de confirmar os dados com o grupo, clique em “Confirmar dados” e publique.</Notice></div>}
       {sp.erro && <div className="mt-4"><Notice tone="perigo">{sp.erro === "coord" && typeof sp.msg === "string" ? sp.msg : "Confira dia, horário e situação."}</Notice></div>}
       {isStale(g.lastConfirmedAt) && (
         <div className="mt-4"><Notice tone="alerta" title="Confirmação pendente">

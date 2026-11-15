@@ -6,7 +6,9 @@ import { db } from "@/db";
 import { groupCorrection, groupPrivateContact, prayerGroup } from "@/db/schema";
 import { requireAdmin, requireCan } from "@/server/session";
 import { decide } from "@/server/authz";
-import { confirmGroup, editGroup, parseCoord } from "@/server/groups";
+import { confirmGroup, createGroup, editGroup, parseCoord } from "@/server/groups";
+import { ForbiddenError } from "@/server/authz";
+import { InputError } from "@/server/errors";
 import { audit } from "@/server/audit";
 
 const STATUS = ["ativo", "pausado", "encerrado", "a_confirmar"] as const;
@@ -72,4 +74,25 @@ export async function moderar(fd: FormData) {
   await db.update(groupCorrection).set({ status: d, moderatedBy: s.userId, moderatedAt: new Date() }).where(eq(groupCorrection.id, id));
   await audit(db, { actorId: s.userId, action: `grupo.correcao_${d}`, resourceType: "group_correction", resourceId: id });
   redirect("/admin/grupos?ok=1#correcoes");
+}
+
+/** Cadastro de grupo novo: nasce oculto e "a confirmar"; abre a edição para completar e publicar. */
+export async function criarGrupo(fd: FormData) {
+  const s = await requireCan("grupo.criar");
+  const txt = (k: string) => String(fd.get(k) ?? "").trim();
+  const par = txt("paroquia");
+  const mun = txt("municipio");
+  let id: string;
+  try {
+    id = await createGroup(db, s, {
+      name: txt("nome"), venue: txt("local"), weekday: Number(txt("dia")), startTime: txt("inicio"), endTime: txt("fim") || null,
+      parishId: par && par !== "nova" ? par : null,
+      newParish: par === "nova" ? { name: txt("nova_paroquia"), municipalityId: mun && mun !== "novo" ? mun : null, newMunicipality: mun === "novo" ? txt("novo_municipio") : null, regionId: txt("regiao") || null } : null,
+    });
+  } catch (e) {
+    if (e instanceof InputError) redirect(`/admin/grupos/novo?erro=${encodeURIComponent(e.message)}`);
+    if (e instanceof ForbiddenError) redirect(`/admin/grupos/novo?erro=${encodeURIComponent("Você não tem permissão para esta ação.")}`);
+    throw e;
+  }
+  redirect(`/admin/grupos/${id}?novo=1`);
 }
