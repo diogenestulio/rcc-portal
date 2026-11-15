@@ -71,7 +71,8 @@ services:
       ALERT_EXPECT_BACKUP: "true"
       # Cópia externa (PC hoje; NAS da UP no futuro) registrada por backup-externo.sh; alerta após 50 h sem cópia.
       ALERT_EXPECT_BACKUP_EXTERNO: "true"
-    volumes: [emails:/data/emails]
+    # segredos/: chave da conta de serviço da Google Agenda (google-agenda.json), dono uid 100 (usuário app), só leitura.
+    volumes: [emails:/data/emails, ./segredos:/run/segredos:ro]
     # "saida": rede própria só para o worker acessar a internet (Telegram, SMTP). NÃO é a rede do HelpDesk.
     networks: [interna, saida]
     mem_limit: 192m

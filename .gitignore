@@ -45,3 +45,8 @@ next-env.d.ts
 
 # axe-core copiado só para revisão local de acessibilidade
 /public/_axe-dev.js
+
+# chaves de serviço (Google etc.) nunca no repositório
+segredos/
+*service-account*.json
+google-agenda*.json

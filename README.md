@@ -53,3 +53,4 @@ docs/               documentação              scripts/          worker, seed, 
 14. `docs/16-acessibilidade.md` — revisão de acessibilidade (método, achados, limitações)
 15. `docs/17-alertas-telegram.md` — alertas operacionais no Telegram (o que verifica, como configurar)
 16. `docs/18-backup-externo.md` — cópia externa criptografada do backup (PC hoje, NAS da UP no futuro) e como restaurar
+17. `docs/19-roteiro-nvda.md` — roteiro de teste com leitor de tela (NVDA) e ficha de resultado

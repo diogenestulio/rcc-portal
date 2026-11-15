@@ -5,7 +5,7 @@
 ## Método
 
 1. **Verificação automática** com axe-core 4.14.0 (dependência de desenvolvimento), regras `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa` e `best-practice`, executada no navegador em cada página, com dados de demonstração e sessão de administrador.
-   - O arquivo `public/_axe-dev.js` é uma cópia local do axe, fora do git (`.gitignore`), e não vai para a imagem.
+   - O arquivo `public/_axe-dev.js` é uma cópia local do axe, fora do git (`.gitignore`) e fora da imagem (`.dockerignore`, desde 15/11/2026; antes disso uma cópia chegou a ser servida na homologação). **Apague depois de usar.**
    - Como repetir: `copy node_modules\axe-core\axe.min.js public\_axe-dev.js`, abrir a página e executar no console:
      `eval(await (await fetch('/_axe-dev.js')).text()); (await axe.run()).violations`
 2. **Teste manual de teclado:** a primeira tecla Tab mostra “Pular para o conteúdo”, que leva a `#conteudo`; o foco é visível (contorno de 2,4 px, cor de destaque); o menu do celular (`<details>`) abre com Enter e mostra todos os itens.
@@ -39,7 +39,7 @@
 
 ## Limitações declaradas
 
-- **Sem teste com leitor de tela real** (NVDA, JAWS, TalkBack, VoiceOver) e sem participação de pessoas com deficiência. Ferramentas automáticas detectam só parte dos problemas.
+- **Sem teste com leitor de tela real** (NVDA, JAWS, TalkBack, VoiceOver) e sem participação de pessoas com deficiência. Roteiro pronto para o NVDA: `19-roteiro-nvda.md` (aguardando testador). Ferramentas automáticas detectam só parte dos problemas.
 - O menu do celular usa `<details>` nativo: a tecla Esc não o fecha (fecha com Enter no botão “Menu”). Não é falha WCAG, mas pode ser melhorado.
 - O mapa (Leaflet) tem teclado próprio, porém os marcadores circulares não recebem foco. Por isso a lista e “Grupos perto de mim” trazem as mesmas informações.
 - Zoom de 200 % e espaçamento de texto (1.4.12) não foram medidos separadamente; o layout usa unidades relativas e quebra de linha.

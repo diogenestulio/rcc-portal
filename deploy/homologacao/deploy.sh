@@ -18,6 +18,8 @@ echo "== 3. arquivos de implantação"
 ssh "$VPS" "mkdir -p $DIR /opt/backups/rcc-portal-hml && chmod 700 /opt/backups/rcc-portal-hml"
 scp -q deploy/homologacao/docker-compose.yml deploy/homologacao/backup.sh deploy/homologacao/backup-externo-vps.sh "$VPS:$DIR/"
 ssh "$VPS" "chmod 700 $DIR/backup.sh $DIR/backup-externo-vps.sh"
+# segredos/ (chave da Google Agenda): legível só pelo usuário do contêiner (uid 100)
+ssh "$VPS" "mkdir -p $DIR/segredos && chown -R 100:101 $DIR/segredos && chmod 700 $DIR/segredos"
 
 echo "== 4. .env (gerado NO SERVIDOR na primeira vez; segredos nunca passam pelo PC)"
 ssh "$VPS" "bash -s" <<EOF

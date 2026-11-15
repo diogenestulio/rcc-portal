@@ -14,6 +14,7 @@
     "db:seed": "tsx scripts/seed-dev.mts",
     "worker": "tsx scripts/worker.mts",
     "alerta:teste": "tsx scripts/alerta-teste.mts",
+    "agenda:teste": "tsx scripts/agenda-teste.mts",
     "docs:permissoes": "tsx scripts/gen-permissoes.mts"
   },
   "dependencies": {

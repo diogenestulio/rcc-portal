@@ -2,23 +2,78 @@
 
 | Integração | Código | Estado | Bloqueio |
 |---|---|---|---|
-| Google Calendar | `src/server/calendar/google.ts` | lógica validada com API simulada; cliente HTTP escrito, **nunca executado contra o Google** | conta institucional e decisão da fonte de verdade |
+| Google Calendar | `src/server/calendar/google.ts`, `scripts/agenda-teste.mts` | lógica validada com API simulada; cliente HTTP escrito, **nunca executado contra o Google**; homologação pronta para receber a chave (15/11/2026) | conta Google **institucional** (decidido em 15/11/2026) e a chave da conta de serviço |
 | Provedor de pagamento | `src/server/store/providers.ts` | contrato + simulador validados | entidade vendedora, provedor, conta recebedora |
 | E-mail transacional | `src/server/mail.ts`, `src/server/mail-jobs.ts` | **implementado e testado** com SMTP real (Mailpit local); falta provedor real | escolha do provedor e **domínio próprio** (SPF/DKIM/DMARC) |
 | Armazenamento de objetos (S3) | — | **não iniciado** (upload validado em memória, sem tela) | provedor/bucket |
-| Alertas Telegram/e-mail | worker registra em log | **não iniciado** | bot/canal institucional |
+| Alertas Telegram/e-mail | `src/server/alerts.ts` | Telegram **em uso** na homologação (`17-alertas-telegram.md`); e-mail depende do SMTP | provedor SMTP |
 
 ## Google Calendar — passos para ativar
 
-**Modo padrão `cms_to_google`:**
-1. Na conta Google institucional, criar uma agenda **só para eventos públicos** (ex.: “Agenda pública RCC”).
-2. No Google Cloud (projeto da instituição), ativar a *Google Calendar API* e criar uma *service account*; baixar a chave JSON para o servidor (fora do repositório, permissão 600).
-3. Compartilhar **essa agenda** com o e-mail da service account com “Fazer alterações nos eventos”. Sem compartilhamento, a service account não acessa a agenda.
-4. `.env`: `GOOGLE_CALENDAR_MODE=cms_to_google`, `GOOGLE_CALENDAR_ID=<id da agenda>`, `GOOGLE_SERVICE_ACCOUNT_JSON_PATH=/caminho/chave.json`. Escopo usado: `calendar.events`.
-5. Reiniciar o worker; publicar um evento de teste em homologação; conferir no Google; editar e cancelar; conferir de novo.
-6. Só então marcar a integração como validada na matriz.
+**Decisão (10/11 e 15/11/2026):** o portal é a fonte de verdade (`cms_to_google`). O Google recebe uma **cópia** dos eventos **publicados**, numa agenda própria da **conta institucional da RCC**. Quem edita é sempre o portal; uma alteração feita direto no Google é sobrescrita na próxima edição.
 
-**Modo alternativo `google_to_cms`:** mesmos passos 1–3 (permissão de leitura basta), `GOOGLE_CALENDAR_MODE=google_to_cms`. Eventos chegam como *candidato* e precisam ser publicados por um responsável.
+### Parte 1: na conta Google institucional (navegador, ~15 min)
+
+1. **Criar a agenda pública**
+   1. Entre em `calendar.google.com` com a conta institucional.
+   2. À esquerda, em **Outras agendas**, clique em **+** → **Criar nova agenda**.
+   3. Nome: “Agenda RCC Arquidiocese de Cuiabá”. Fuso horário: **(GMT-04:00) Cuiabá**. Clique em **Criar agenda**.
+2. **Criar o projeto e ativar a API**
+   1. Entre em `console.cloud.google.com` com a mesma conta.
+   2. No topo, clique no seletor de projeto → **Novo projeto**. Nome: “portal-rcc”. Clique em **Criar** e selecione o projeto.
+   3. Menu ☰ → **APIs e serviços** → **Biblioteca** → busque “Google Calendar API” → **Ativar**.
+3. **Criar a conta de serviço (o “robô” do portal)**
+   1. Menu ☰ → **IAM e administrador** → **Contas de serviço** → **Criar conta de serviço**.
+   2. Nome: “portal-agenda”. Clique em **Criar e continuar**. **Não** dê nenhum papel (pule) e clique em **Concluído**.
+   3. Copie o **e-mail** da conta criada (termina em `@portal-rcc….iam.gserviceaccount.com`).
+   4. Clique na conta → aba **Chaves** → **Adicionar chave** → **Criar nova chave** → **JSON** → **Criar**. Um arquivo `.json` é baixado.
+   5. **Esse arquivo é uma senha.** Não mande por WhatsApp ou e-mail e não coloque no Drive nem no repositório.
+   6. Se aparecer “A criação de chaves de conta de serviço está desativada” (política da organização, comum em Google Workspace novo): um administrador do Workspace precisa liberar a política `iam.disableServiceAccountKeyCreation` **só neste projeto**. Avise a equipe técnica.
+4. **Compartilhar a agenda com o robô**
+   1. Volte ao `calendar.google.com` → passe o mouse na agenda nova → ⋮ → **Configurações e compartilhamento**.
+   2. Em **Compartilhar com pessoas e grupos específicos** → **Adicionar pessoas** → cole o e-mail da conta de serviço → permissão **“Fazer alterações nos eventos”** → **Enviar**.
+   3. Na mesma página, em **Integrar agenda**, copie o **ID da agenda** (algo como `abc123…@group.calendar.google.com`).
+   4. (Opcional, para o público ver no Google) Em **Permissões de acesso a eventos**, marque **Disponibilizar publicamente**.
+
+### Parte 2: no PC, enviar a chave para a VPS (PowerShell)
+
+Troque `C:\caminho\da\chave.json` pelo arquivo baixado.
+
+```powershell
+scp "C:\caminho\da\chave.json" helpdesk-vps:/opt/rcc-portal-hml/segredos/google-agenda.json
+ssh helpdesk-vps "chown 100:101 /opt/rcc-portal-hml/segredos/google-agenda.json && chmod 400 /opt/rcc-portal-hml/segredos/google-agenda.json"
+```
+
+Depois **apague o arquivo `.json` da pasta Downloads** (a cópia que vale fica só na VPS; se perder, cria-se outra chave).
+
+### Parte 3: configurar e testar (PowerShell)
+
+1. Edite o `.env` da homologação e preencha `GOOGLE_CALENDAR_ID=` com o ID da agenda. A linha `GOOGLE_SERVICE_ACCOUNT_JSON_PATH=/run/segredos/google-agenda.json` já deve existir; se não existir, acrescente. **Cada variável numa linha própria.**
+   ```powershell
+   ssh -t helpdesk-vps "cd /opt/rcc-portal-hml && nano .env"
+   ```
+2. Reinicie e teste o acesso. O teste cria um evento “[TESTE]” para amanhã, altera e cancela.
+   ```powershell
+   ssh helpdesk-vps "cd /opt/rcc-portal-hml && docker compose up -d rcc-portal worker && docker compose exec -T worker node scripts/agenda-teste.mjs"
+   ```
+   O resultado esperado são quatro linhas `OK` e “Tudo certo”. Em caso de `FALHA`, a própria mensagem diz o que conferir.
+3. Ligue a sincronização: no `.env`, troque para `GOOGLE_CALENDAR_MODE=cms_to_google` e reinicie. Em seguida, envie todos os eventos já publicados.
+   ```powershell
+   ssh -t helpdesk-vps "cd /opt/rcc-portal-hml && nano .env"
+   ssh helpdesk-vps "cd /opt/rcc-portal-hml && docker compose up -d rcc-portal worker && docker compose exec -T worker node scripts/agenda-teste.mjs --todos"
+   ```
+4. Faça o teste de ponta a ponta no painel:
+   1. publique um evento e confira se aparece no Google em até 1 min;
+   2. edite o horário e confira de novo;
+   3. cancele ou despublique e confira se sumiu.
+   Se houver falha, ela aparece no Telegram como “tarefas que falharam (gcal.projetar)”.
+5. Marque a integração como validada na matriz (linha Google Calendar).
+
+**O que vai para o Google:** só título, data e hora, local e resumo do evento publicado, com o link “Detalhes e inscrições”. **Nunca** inscritos, e-mails ou notas internas.
+
+**Trocar ou revogar a chave:** no Google Cloud → conta de serviço → Chaves → excluir a antiga e criar outra. Repita as partes 2 e 3, passo 2.
+
+**Modo alternativo `google_to_cms`** (não escolhido): mesmos passos (leitura basta), com `GOOGLE_CALENDAR_MODE=google_to_cms`. Os eventos chegam como *candidato* e precisam ser publicados por um responsável.
 
 ## Pagamentos — passos para ativar
 1. Definir entidade vendedora (CNPJ), responsável, atendimento e políticas (`/termos`, troca, reembolso).
