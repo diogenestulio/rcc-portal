@@ -63,5 +63,5 @@ Total automatizado: **82 testes em 12 arquivos, todos passando** (`npm test`, 14
 | 17 | Backup criptografado, retenção, restauração | em andamento | Homologação: backup diário + restauração de teste automáticos na VPS (sem criptografia/cópia externa, dados fictícios); produção ainda não |
 | 18 | Auditoria append-only com cadeia de hash, logs JSON sem dados sensíveis | validado | |
 | 18 | Alertas e-mail/Telegram | não iniciado | Worker só registra em log |
-| 19 | CI | em andamento | GitHub Actions roda a cada push: tipos, lint, testes, migrações, build e auditoria de dependências passavam; o gitleaks falhava com 6 falsos positivos (valores fictícios de teste e do `.env.example`), corrigidos em 15/11/2026 — confirmar no próximo push |
+| 19 | CI | validado | GitHub Actions a cada push: tipos, lint, testes com PostgreSQL, migrações do zero, build, `npm audit` (alto/crítico) e gitleaks. Primeira execução verde em 15/11/2026 (run 43665130203) |
 | 19 | Orçamento mensal com preços consultados | não iniciado | `docs/12-custos.md` lista componentes; preços não consultados |
