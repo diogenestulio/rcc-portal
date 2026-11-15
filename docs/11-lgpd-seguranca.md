@@ -25,6 +25,9 @@
 | Segredos | Apenas no servidor; `.env*` fora do git; validação de ambiente | `env.ts`, `.gitignore` | — |
 
 ## Lacunas conhecidas (antes da produção)
+
+Servidor (SSH, fail2ban, reinício pendente) e plano de testes de segurança: ver `20-seguranca-vps.md`.
+
 - Recuperação de senha depende do e-mail transacional (não implementado).
 - Antivírus em uploads e armazenamento de objetos privado: não iniciados.
 - CI de dependências/segredos escrito mas não executado. `npm audit --omit=dev` em 10/11/2026: 4 alertas **moderados** (aviso do `esbuild` sobre o servidor de desenvolvimento, GHSA-67mh-4wv8-2f99); nenhum alto ou crítico. Reavaliar antes do lançamento.
