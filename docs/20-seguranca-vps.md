@@ -37,6 +37,8 @@ A VPS (Hostinger, Ubuntu 24.04) é **compartilhada**: HelpDesk (UP DESK), Querig
 
 ## Pendente (combinar janela de manutenção)
 
+**15/11/2026, 12:10 (Cuiabá):** a VPS foi reiniciada pelo painel da Hostinger e está no kernel 6.8.0-149. Os 16 contêineres voltaram sozinhos, o SSH continua só por chave e o fail2ban está ativo. **Ainda faltam** os 48 pacotes não urgentes (`apt-get upgrade`), para uma próxima janela.
+
 - **Reiniciar a VPS:** há atualização de kernel e libc aguardando reinício (`/var/run/reboot-required`), além de 48 pacotes não urgentes. O reinício tira **todos** os sistemas do ar por cerca de 2 a 5 minutos.
 - **Procedimento sugerido** (madrugada ou domingo):
   1. `apt-get upgrade`;
