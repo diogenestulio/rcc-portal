@@ -11,3 +11,6 @@ dist-scripts
 *.log
 .claude
 tests/_*
+
+# ferramenta local de acessibilidade (nunca na imagem)
+public/_axe-dev.js

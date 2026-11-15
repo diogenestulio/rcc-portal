@@ -16,8 +16,8 @@ docker save "rcc-portal:$VERSAO" | gzip | ssh "$VPS" docker load
 
 echo "== 3. arquivos de implantação"
 ssh "$VPS" "mkdir -p $DIR /opt/backups/rcc-portal-hml && chmod 700 /opt/backups/rcc-portal-hml"
-scp -q deploy/homologacao/docker-compose.yml deploy/homologacao/backup.sh "$VPS:$DIR/"
-ssh "$VPS" "chmod 700 $DIR/backup.sh"
+scp -q deploy/homologacao/docker-compose.yml deploy/homologacao/backup.sh deploy/homologacao/backup-externo-vps.sh "$VPS:$DIR/"
+ssh "$VPS" "chmod 700 $DIR/backup.sh $DIR/backup-externo-vps.sh"
 
 echo "== 4. .env (gerado NO SERVIDOR na primeira vez; segredos nunca passam pelo PC)"
 ssh "$VPS" "bash -s" <<EOF

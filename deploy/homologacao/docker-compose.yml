@@ -69,6 +69,8 @@ services:
       HEALTH_URL: http://rcc-portal:3000/api/health
       MONITOR_PUBLIC_URL: ${APP_URL}
       ALERT_EXPECT_BACKUP: "true"
+      # Cópia externa (PC hoje; NAS da UP no futuro) registrada por backup-externo.sh; alerta após 50 h sem cópia.
+      ALERT_EXPECT_BACKUP_EXTERNO: "true"
     volumes: [emails:/data/emails]
     # "saida": rede própria só para o worker acessar a internet (Telegram, SMTP). NÃO é a rede do HelpDesk.
     networks: [interna, saida]

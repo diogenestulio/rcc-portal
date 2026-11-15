@@ -29,7 +29,9 @@ Homologação na VPS atual (1 vCPU / 3,9 GB, compartilhada com outros sistemas),
 
 ## Backup
 
-`ops/backup.sh`: `pg_dump` (formato custom) → criptografia `age` → `sha256` → retenção (30 diários / 12 mensais) → cópia externa com `rclone --immutable`. Mídias (`STORAGE_DIR`) no mesmo ciclo.
+**Homologação (em uso):** `deploy/homologacao/backup.sh` na VPS (diário, com teste de restauração, 7 dias) + **cópia externa criptografada** puxada pelo PC (hoje) / NAS da UP (futuro), com conferência e restauração no destino, retenção de 30 diários + 12 mensais e alerta após 50 h sem cópia: ver `18-backup-externo.md`.
+
+**Produção (planejado):** `ops/backup.sh`: `pg_dump` (formato custom) → criptografia `age` → `sha256` → retenção (30 diários / 12 mensais) → cópia externa com `rclone --immutable`. Mídias (`STORAGE_DIR`) no mesmo ciclo.
 
 | Serviço | Meta proposta | Como atingir | Situação |
 |---|---|---|---|

@@ -12,6 +12,7 @@ O **worker** verifica o sistema a cada minuto e avisa um chat do Telegram quando
 | `fila.atrasada` | tarefas pendentes há mais de 15 min (e-mails, sincronizações) | 1 min |
 | `fila.morta` | tarefas que esgotaram as tentativas nos últimos 7 dias | 1 min |
 | `backup` | a última execução do `backup.sh` falhou, ou não há backup bem-sucedido há mais de 26 h | 1 min |
+| `backup.externo` | a última cópia externa (PC/NAS) falhou, ou não há cópia há mais de 50 h (`BACKUP_EXTERNO_MAX_H`) — ver `18-backup-externo.md` | 1 min |
 | `auditoria` | a cadeia de hash da auditoria não confere | 1 h |
 | exceção operacional | pagamento tardio, divergência de valor etc. (só o tipo; detalhe no painel) | na hora |
 

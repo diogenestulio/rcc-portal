@@ -49,6 +49,8 @@ async function monitor(withAudit: boolean) {
       healthUrl: env.HEALTH_URL || undefined,
       publicUrl: env.MONITOR_PUBLIC_URL || undefined,
       expectBackup: env.ALERT_EXPECT_BACKUP === "true",
+      expectExternalBackup: env.ALERT_EXPECT_BACKUP_EXTERNO === "true",
+      externalBackupMaxAgeH: Number(env.BACKUP_EXTERNO_MAX_H ?? 50),
     });
     checks.push({ key: "banco", title: "banco de dados inacessível para o worker", ok: true });
   } catch (e) {

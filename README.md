@@ -52,3 +52,4 @@ docs/               documentação              scripts/          worker, seed, 
 13. `docs/15-incidente-2026-11-10.md` — incidente de nome de serviço na rede compartilhada
 14. `docs/16-acessibilidade.md` — revisão de acessibilidade (método, achados, limitações)
 15. `docs/17-alertas-telegram.md` — alertas operacionais no Telegram (o que verifica, como configurar)
+16. `docs/18-backup-externo.md` — cópia externa criptografada do backup (PC hoje, NAS da UP no futuro) e como restaurar

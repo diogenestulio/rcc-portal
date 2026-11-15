@@ -60,9 +60,9 @@ Total automatizado: **82 testes em 12 arquivos, todos passando** (`npm test`, 14
 | 16 | Peso de transferência | validado (lab) | ~290 KB gzip por página (orçamento 1,5 MB) |
 | 16 | WCAG 2.2 AA — verificação automática (axe-core 4.14, ~45 rotas) + teclado + 320 px | validado (dev) | `docs/16-acessibilidade.md`; 4 achados corrigidos, revarredura sem violações |
 | 16 | WCAG 2.2 AA completo (leitor de tela, usuários reais), Core Web Vitals de campo | em andamento | Sem teste com NVDA/TalkBack nem com pessoas com deficiência; sem dados de campo |
-| 17 | Backup criptografado, retenção, restauração | em andamento | Homologação: backup diário + restauração de teste automáticos na VPS (sem criptografia/cópia externa, dados fictícios); produção ainda não |
+| 17 | Backup criptografado, retenção, restauração | em andamento | Homologação: backup diário + restauração de teste na VPS; cópia externa criptografada (GnuPG) no PC com conferência, restauração descartável, retenção 30+12 e alerta de 50 h (15/11/2026, `docs/18-backup-externo.md`). Falta: restauração completa numa VPS nova, NAS da UP, produção |
 | 18 | Auditoria append-only com cadeia de hash, logs JSON sem dados sensíveis | validado | |
-| 18 | Alertas Telegram | validado (dev) | `src/server/alerts.ts`, `tests/alerts.test.ts` (8 testes); banco, portal, endereço público, fila, backup e auditoria; anti-repetição e aviso de resolução — `docs/17-alertas-telegram.md` |
+| 18 | Alertas Telegram | validado (dev) | `src/server/alerts.ts`, `tests/alerts.test.ts` (9 testes); banco, portal, endereço público, fila, backup, cópia externa e auditoria; anti-repetição e aviso de resolução — `docs/17-alertas-telegram.md` |
 | 18 | Alertas por e-mail; monitor externo (worker/VPS fora) | não iniciado | Depende do provedor SMTP / serviço externo |
 | 19 | CI | validado | GitHub Actions a cada push: tipos, lint, testes com PostgreSQL, migrações do zero, build, `npm audit` (alto/crítico) e gitleaks. Primeira execução verde em 15/11/2026 (run 43665130203) |
 | 19 | Orçamento mensal com preços consultados | não iniciado | `docs/12-custos.md` lista componentes; preços não consultados |

@@ -72,6 +72,18 @@ export async function sendTelegram(c: TelegramConfig, text: string, fetchImpl: t
 }
 
 export const BACKUP_KEY = "backup";
+export const EXTERNAL_BACKUP_KEY = "backup.externo";
+
+async function backupCheck(db: DB, key: string, title: string, maxH: number, now: Date): Promise<Check> {
+  const [b] = await db.execute<{ ok_at: Date | null; err_at: Date | null; err: string | null }>(sql`select last_success_at as ok_at,
+    last_error_at as err_at, last_error as err from integration_state where key = ${key}`);
+  const okAt = b?.ok_at ? new Date(b.ok_at) : null, errAt = b?.err_at ? new Date(b.err_at) : null;
+  let ok = true, detail: string | undefined;
+  if (errAt && (!okAt || errAt > okAt)) { ok = false; detail = `Última execução falhou: ${(b?.err ?? "sem detalhe").slice(0, 200)}`; }
+  else if (!okAt) { ok = false; detail = "Nenhum backup registrado ainda."; }
+  else if (now.getTime() - okAt.getTime() > maxH * 3600_000) { ok = false; detail = `Último backup bem-sucedido há ${fmtDur(now.getTime() - okAt.getTime())}.`; }
+  return { key, title, ok, detail };
+}
 
 export type CheckOptions = {
   /** Verificar a cadeia da auditoria (mais pesado: o worker faz de hora em hora). */
@@ -83,6 +95,9 @@ export type CheckOptions = {
   /** Exigir backup recente (homologação/produção). */
   expectBackup?: boolean;
   backupMaxAgeH?: number;
+  /** Exigir cópia externa recente (feita pelo PC/NAS, que pode ficar desligado: limite padrão 50 h). */
+  expectExternalBackup?: boolean;
+  externalBackupMaxAgeH?: number;
   fetchImpl?: typeof fetch;
   now?: Date;
 };
@@ -103,18 +118,10 @@ export async function collectChecks(db: DB, o: CheckOptions = {}): Promise<Check
   checks.push({ key: "fila.morta", title: "tarefas que falharam em todas as tentativas (últimos 7 dias)", ok: dead.length === 0,
     detail: dead.length ? dead.map((r) => `${r.type}: ${r.n}${r.erro ? ` (último erro: ${r.erro})` : ""}`).join("\n") : undefined });
 
-  // Backup: o script de backup registra sucesso/falha em integration_state (chave "backup").
-  if (o.expectBackup) {
-    const [b] = await db.execute<{ ok_at: Date | null; err_at: Date | null; err: string | null }>(sql`select last_success_at as ok_at,
-      last_error_at as err_at, last_error as err from integration_state where key = ${BACKUP_KEY}`);
-    const maxH = o.backupMaxAgeH ?? 26;
-    const okAt = b?.ok_at ? new Date(b.ok_at) : null, errAt = b?.err_at ? new Date(b.err_at) : null;
-    let ok = true, detail: string | undefined;
-    if (errAt && (!okAt || errAt > okAt)) { ok = false; detail = `Última execução falhou: ${(b?.err ?? "sem detalhe").slice(0, 200)}`; }
-    else if (!okAt) { ok = false; detail = "Nenhum backup registrado ainda."; }
-    else if (now.getTime() - okAt.getTime() > maxH * 3600_000) { ok = false; detail = `Último backup bem-sucedido há ${fmtDur(now.getTime() - okAt.getTime())}.`; }
-    checks.push({ key: "backup", title: "backup diário", ok, detail });
-  }
+  // Backup: o script de backup registra sucesso/falha em integration_state (chave "backup");
+  // a cópia externa (backup-externo.sh, no PC/NAS) registra na chave "backup.externo".
+  if (o.expectBackup) checks.push(await backupCheck(db, BACKUP_KEY, "backup diário", o.backupMaxAgeH ?? 26, now));
+  if (o.expectExternalBackup) checks.push(await backupCheck(db, EXTERNAL_BACKUP_KEY, "cópia externa do backup", o.externalBackupMaxAgeH ?? 50, now));
 
   if (o.audit) {
     const bad = await verifyAuditChain(db);

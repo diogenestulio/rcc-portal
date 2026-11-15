@@ -80,6 +80,17 @@ describe("verificações", () => {
     expect((await collectChecks(db)).some((c) => c.key === "backup")).toBe(false); // sem expectBackup, não verifica
   });
 
+  it("cópia externa: chave própria, limite de 50 h (o PC pode ficar desligado)", async () => {
+    const now = new Date();
+    const ext = async () => (await collectChecks(db, { expectExternalBackup: true, now })).find((c) => c.key === "backup.externo")!;
+    expect(await ext()).toMatchObject({ ok: false, title: "cópia externa do backup", detail: "Nenhum backup registrado ainda." });
+    await db.execute(sql`insert into integration_state (key, last_success_at) values ('backup.externo', now() - interval '40 hours')`);
+    expect(await ext()).toMatchObject({ ok: true });
+    await db.execute(sql`update integration_state set last_success_at = now() - interval '60 hours' where key = 'backup.externo'`);
+    expect((await ext()).detail).toMatch(/há 3 dias/);       // 60 h, acima de 48 h é mostrado em dias
+    expect((await collectChecks(db, { expectBackup: true, now })).find((c) => c.key === "backup")).toMatchObject({ ok: false }); // chaves independentes
+  });
+
   it("portal e endereço público: saúde interna precisa de ok=true; público aceita qualquer resposta < 500", async () => {
     const resp = (status: number, body: unknown = {}) => new Response(JSON.stringify(body), { status });
     const run = async (f: typeof fetch) => Object.fromEntries((await collectChecks(db, { healthUrl: "http://h/api/health", publicUrl: "https://p/", fetchImpl: f })).map((c) => [c.key, c.ok]));
