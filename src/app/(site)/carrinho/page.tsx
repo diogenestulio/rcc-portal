@@ -52,7 +52,7 @@ export default async function Carrinho({ searchParams }: PageProps<"/carrinho">)
                         <input type="hidden" name="variante" value={l.variantId} />
                         <label className="sr-only" htmlFor={`q-${l.variantId}`}>Quantidade de {l.productName}</label>
                         <input id={`q-${l.variantId}`} name="quantidade" type="number" min={0} max={20} defaultValue={l.quantity} className="w-16 rounded-[var(--radius-sm)] border border-tinta-3 px-2 py-2" />
-                        <button className="text-sm text-vinho underline underline-offset-2">Atualizar</button>
+                        <button className="text-sm text-marca underline underline-offset-2">Atualizar</button>
                       </form>
                     </td>
                     <td className="p-3 text-right font-semibold">{formatBRL(l.lineCents)}</td>
@@ -83,7 +83,7 @@ export default async function Carrinho({ searchParams }: PageProps<"/carrinho">)
                   </div>
                 </fieldset>
                 <div className="max-w-48"><label htmlFor="cep" className={field.label}>CEP (para entrega)</label><input id="cep" name="cep" inputMode="numeric" maxLength={9} autoComplete="postal-code" className={field.input} /></div>
-                <div className="flex items-center justify-between border-t border-linha pt-4"><span className="font-semibold">Total a pagar</span><span className="text-xl font-semibold text-vinho">{formatBRL(pricing.totalCents)}</span></div>
+                <div className="flex items-center justify-between border-t border-linha pt-4"><span className="font-semibold">Total a pagar</span><span className="text-xl font-semibold text-marca">{formatBRL(pricing.totalCents)}</span></div>
                 <p className="text-sm text-tinta-2">O pagamento é feito na página segura do provedor. Os itens ficam reservados por 30 minutos. Seus dados são usados só para este pedido (<Link href="/privacidade">privacidade</Link>).</p>
                 <button className={btn.primario}>Ir para o pagamento</button>
               </form>

@@ -36,7 +36,7 @@ export default async function EditContent({ params, searchParams }: PageProps<"/
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <h1 className="text-3xl font-semibold">{cur.title}</h1>
         <Badge tone={tone}>{label}</Badge>
-        {doctrinal && <Badge tone="vinho">Revisão doutrinal obrigatória</Badge>}
+        {doctrinal && <Badge tone="marca">Revisão doutrinal obrigatória</Badge>}
       </div>
       <p className="mt-1 text-sm text-tinta-3">Revisão nº {cur.number} · {item.publishedRevisionId ? <Link href={`${PUBLIC_BASE[item.kind]}/${item.slug}`}>ver versão pública</Link> : "ainda não publicado"}</p>
       {typeof sp.erro === "string" && <div className="mt-4"><Notice tone="perigo">{sp.erro}</Notice></div>}
@@ -93,7 +93,7 @@ export default async function EditContent({ params, searchParams }: PageProps<"/
                 <li key={r.id}>
                   <span className="font-semibold">nº {r.number}</span> · {author ?? "—"} · {fmtPublished(r.createdAt)}
                   {r.approvedAt && <span className="text-verde"> · aprovada</span>}
-                  {r.id === item.publishedRevisionId && <span className="text-vinho"> · no ar</span>}
+                  {r.id === item.publishedRevisionId && <span className="text-marca"> · no ar</span>}
                 </li>
               ))}
             </ul>

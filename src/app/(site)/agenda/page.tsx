@@ -49,7 +49,7 @@ export default async function AgendaPage() {
                 <ul className="mt-4 space-y-3">
                   {list.map((o) => (
                     <li key={`${o.eventId}-${o.key}`} className="grid gap-1 rounded-[var(--radius-md)] border border-linha bg-papel p-4 sm:grid-cols-[7rem_1fr]">
-                      <p className="font-semibold text-vinho">{o.start ? <time dateTime={o.start.toISOString()}>{fmtTime(o.start)}</time> : "Dia inteiro"}</p>
+                      <p className="font-semibold text-marca">{o.start ? <time dateTime={o.start.toISOString()}>{fmtTime(o.start)}</time> : "Dia inteiro"}</p>
                       <div>
                         <h3 className={`text-lg font-semibold ${o.cancelled ? "line-through decoration-1" : ""}`}><Link href={`/agenda/${o.ev.slug}`} className="text-tinta no-underline hover:underline">{o.ev.title}</Link></h3>
                         {(o.location ?? o.ev.location) && <p className="text-tinta-2">{o.location ?? o.ev.location}</p>}

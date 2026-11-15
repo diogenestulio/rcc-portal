@@ -87,7 +87,7 @@ export default async function GruposPage({ searchParams }: PageProps<"/grupos">)
         ) : (
           <ul className="mt-4 grid gap-4 md:grid-cols-2">
             {res.rows.map((g) => (
-              <li key={g.id} className="rounded-[var(--radius-lg)] border border-linha bg-papel p-5">
+              <li key={g.id} className="rounded-[var(--radius-lg)] border border-linha bg-papel elevar p-5">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <h2 className="text-xl font-semibold"><Link href={`/grupos/${g.slug}`} className="text-tinta no-underline hover:underline">{g.name}</Link></h2>
                   <div className="flex gap-2">
@@ -96,7 +96,7 @@ export default async function GruposPage({ searchParams }: PageProps<"/grupos">)
                     <DemoBadge show={g.isDemo} />
                   </div>
                 </div>
-                <p className="mt-2 font-semibold text-vinho">{weekday(g.weekday)}, {hhmm(g.startTime)}{g.endTime ? ` às ${hhmm(g.endTime)}` : ""}</p>
+                <p className="mt-2 font-semibold text-marca">{weekday(g.weekday)}, {hhmm(g.startTime)}{g.endTime ? ` às ${hhmm(g.endTime)}` : ""}</p>
                 <p className="text-tinta-2">{g.venue} — {g.parish}</p>
                 <p className="text-sm text-tinta-3">{g.municipality}{g.region ? ` · ${g.region}` : ""}{g.lastConfirmedAt ? ` · confirmado em ${fmtPublished(g.lastConfirmedAt)}` : ""}</p>
               </li>

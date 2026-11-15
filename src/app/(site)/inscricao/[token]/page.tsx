@@ -24,11 +24,11 @@ export default async function Comprovante({ params }: PageProps<"/inscricao/[tok
   const { r, ev } = row;
   const [label, tone] = LABEL[r.status];
   // O QR contém SOMENTE o token opaco — nenhum dado pessoal.
-  const qr = r.status === "confirmada" ? await QRCode.toString(token, { type: "svg", margin: 1, errorCorrectionLevel: "M", color: { dark: "#1f1b16", light: "#ffffff" } }) : null;
+  const qr = r.status === "confirmada" ? await QRCode.toString(token, { type: "svg", margin: 1, errorCorrectionLevel: "M", color: { dark: "#14262e", light: "#ffffff" } }) : null;
 
   return (
     <Container narrow className="py-10">
-      <p className="text-sm font-semibold uppercase tracking-wider text-dourado-texto">Comprovante</p>
+      <p className="text-sm font-semibold uppercase tracking-wider text-sol-texto">Comprovante</p>
       <h1 className="mt-2 text-4xl font-semibold">{ev.title}</h1>
       <p className="mt-2 text-tinta-2">{ev.allDay ? fmtDateOnly(ev.startDate!) : fmtDateTime(ev.startsAt!)}{ev.location ? ` · ${ev.location}` : ""}</p>
       <div className="mt-4"><Badge tone={tone}>{label}</Badge></div>

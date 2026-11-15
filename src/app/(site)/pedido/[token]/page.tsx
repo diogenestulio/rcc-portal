@@ -28,7 +28,7 @@ export default async function Pedido({ params }: PageProps<"/pedido/[token]">) {
   const [label, tone] = STATUS[o.status];
   return (
     <Container narrow className="py-10">
-      <p className="text-sm font-semibold uppercase tracking-wider text-dourado-texto">Pedido {o.id.slice(0, 8).toUpperCase()}</p>
+      <p className="text-sm font-semibold uppercase tracking-wider text-sol-texto">Pedido {o.id.slice(0, 8).toUpperCase()}</p>
       <h1 className="mt-2 text-4xl font-semibold">Seu pedido</h1>
       <p className="mt-1 text-tinta-2">Feito em {fmtPublished(o.createdAt)}</p>
       <div className="mt-4 flex flex-wrap gap-2"><Badge tone={tone}>{label}</Badge>{o.status === "pago" || o.status === "concluido" ? <Badge tone="info">Entrega: {FULFILLMENT_LABEL[o.fulfillmentStatus]}</Badge> : null}</div>

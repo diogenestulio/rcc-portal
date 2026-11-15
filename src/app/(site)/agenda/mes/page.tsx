@@ -58,7 +58,7 @@ export default async function MesPage({ searchParams }: PageProps<"/agenda/mes">
                       <ul className="mt-1 space-y-1">
                         {(byDay.get(d) ?? []).slice(0, 3).map((o) => (
                           <li key={`${o.eventId}-${o.key}`} className="truncate text-xs">
-                            <Link href={`/agenda/${o.ev.slug}`} className={`no-underline ${o.cancelled ? "text-tinta-3 line-through" : "text-vinho"}`}>{o.start ? `${fmtTime(o.start)} ` : ""}{o.ev.title}</Link>
+                            <Link href={`/agenda/${o.ev.slug}`} className={`no-underline ${o.cancelled ? "text-tinta-3 line-through" : "text-marca"}`}>{o.start ? `${fmtTime(o.start)} ` : ""}{o.ev.title}</Link>
                           </li>
                         ))}
                         {(byDay.get(d)?.length ?? 0) > 3 && <li className="text-xs text-tinta-3">+{byDay.get(d)!.length - 3} na lista</li>}
@@ -77,7 +77,7 @@ export default async function MesPage({ searchParams }: PageProps<"/agenda/mes">
           <ul className="mt-4 divide-y divide-linha border-y border-linha">
             {[...byDay.entries()].sort((a, b) => a[0] - b[0]).flatMap(([d, list]) => list.map((o) => (
               <li key={`${o.eventId}-${o.key}`} className="flex flex-wrap gap-x-4 py-3">
-                <span className="w-40 font-semibold text-vinho">{d} de {label.split(" ")[0]}{o.start ? `, ${fmtTime(o.start)}` : ""}</span>
+                <span className="w-40 font-semibold text-marca">{d} de {label.split(" ")[0]}{o.start ? `, ${fmtTime(o.start)}` : ""}</span>
                 <Link href={`/agenda/${o.ev.slug}`} className={o.cancelled ? "line-through" : ""}>{o.ev.title}</Link>
                 {o.cancelled && <span className="font-semibold text-perigo">(cancelado)</span>}
               </li>

@@ -17,7 +17,7 @@ export default async function Ministerios() {
         {list.length === 0 ? <EmptyState title="Ministérios em atualização">A coordenação está confirmando a lista de ministérios locais. Veja também a <Link href="/formacao">formação</Link>.</EmptyState> : (
           <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {list.map((m) => (
-              <li key={m.id} className="rounded-[var(--radius-lg)] border border-linha bg-papel p-5">
+              <li key={m.id} className="rounded-[var(--radius-lg)] border border-linha bg-papel elevar p-5">
                 <h2 className="text-xl font-semibold"><Link href={`/ministerios/${m.slug}`} className="text-tinta no-underline hover:underline">{m.name}</Link> <DemoBadge show={m.isDemo} /></h2>
                 {m.summary && <p className="mt-2 text-tinta-2">{m.summary}</p>}
               </li>

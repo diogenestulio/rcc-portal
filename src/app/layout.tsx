@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   robots: env.APP_ENV === "producao" ? undefined : { index: false, follow: false },
 };
 
-export const viewport: Viewport = { themeColor: "#7a2335", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#007437", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

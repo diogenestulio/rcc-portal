@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { db } from "@/db";
 import { agenda, displayStatus } from "@/server/events";
 import { listPublished } from "@/server/content";
@@ -25,10 +26,10 @@ export default async function Home() {
   return (
     <>
       {/* 2. Destaque: mensagem curta + duas ações. Sem carrossel, sem produtos. */}
-      <section aria-labelledby="destaque" className="relative overflow-hidden border-b border-linha bg-[radial-gradient(ellipse_at_top_right,var(--color-vinho-claro),transparent_60%)]">
+      <section aria-labelledby="destaque" className="relative overflow-hidden border-b border-linha isolate bg-[radial-gradient(ellipse_at_top_right,var(--color-sol-claro),transparent_50%),radial-gradient(ellipse_at_bottom_left,var(--color-marca-claro),transparent_60%)]">
         <Container className="grid items-center gap-10 py-14 sm:py-20 md:grid-cols-[1.25fr_1fr]">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-dourado-texto">Renovação Carismática Católica</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-sol-texto">Renovação Carismática Católica</p>
             <h1 id="destaque" className="mt-3 text-display font-semibold">
               Há um lugar para você rezar conosco.
             </h1>
@@ -41,17 +42,10 @@ export default async function Home() {
               <ButtonLink href="/agenda" variant="secundario">Veja a agenda</ButtonLink>
             </div>
           </div>
-          {/* Sem fotografias autorizadas ainda: composição gráfica estática, sem imagem de pessoas ou eventos. */}
-          <div aria-hidden="true" className="hidden justify-self-center md:block">
-            <svg viewBox="0 0 220 260" className="h-72 w-auto">
-              <defs>
-                <linearGradient id="chama" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stopColor="#7a2335" /><stop offset="1" stopColor="#b8912f" /></linearGradient>
-              </defs>
-              <circle cx="110" cy="130" r="104" fill="none" stroke="#e3dacb" />
-              <circle cx="110" cy="130" r="78" fill="none" stroke="#e3dacb" strokeDasharray="2 6" />
-              <path d="M110 40c18 30 44 50 44 92a44 44 0 0 1-88 0c0-22 10-37 21-50 1 14 7 23 16 28-2-25 0-45 7-70Z" fill="url(#chama)" opacity=".92" />
-              <path d="M110 132c10 10 16 19 16 29a16 16 0 0 1-32 0c0-10 6-19 16-29Z" fill="#fbf8f1" opacity=".9" />
-            </svg>
+          {/* Sem fotografias autorizadas ainda: o brasão da RCC como elemento gráfico (decorativo para leitores de tela). */}
+          <div aria-hidden="true" className="relative hidden justify-self-center md:block">
+            <div className="absolute inset-0 -z-10 scale-125 rounded-full bg-[radial-gradient(circle,var(--color-sol-claro)_0%,var(--color-marca-claro)_45%,transparent_70%)]" />
+            <Image src="/marca/rcc-simbolo.png" alt="" width={283} height={215} priority className="surgir h-auto w-72 drop-shadow-[0_10px_24px_rgb(0_69_31/.18)] lg:w-80" />
           </div>
         </Container>
       </section>
@@ -68,8 +62,8 @@ export default async function Home() {
           ) : (
             <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {eventos.map((o) => (
-                <Card as="li" key={`${o.eventId}-${o.key}`} className="flex flex-col">
-                  <p className="text-sm font-semibold text-dourado-texto">{o.start ? `${fmtDay(o.start)} · ${fmtTime(o.start)}` : fmtDateOnly(o.date!, { weekday: "short", day: "2-digit", month: "short" })}</p>
+                <Card as="li" hover key={`${o.eventId}-${o.key}`} className="flex flex-col">
+                  <p className="text-sm font-semibold text-sol-texto">{o.start ? `${fmtDay(o.start)} · ${fmtTime(o.start)}` : fmtDateOnly(o.date!, { weekday: "short", day: "2-digit", month: "short" })}</p>
                   <h3 className="mt-1 text-lg font-semibold"><Link href={`/agenda/${o.ev.slug}`} className="text-tinta no-underline hover:underline">{o.ev.title}</Link></h3>
                   {o.ev.location && <p className="mt-1 text-tinta-2">{o.location ?? o.ev.location}</p>}
                   <div className="mt-auto flex flex-wrap gap-2 pt-3">
@@ -131,7 +125,7 @@ export default async function Home() {
             {ministerios.length === 0 ? <p className="mt-4 text-tinta-2">A lista de ministérios será publicada após confirmação da coordenação.</p> : (
               <ul className="mt-5 grid gap-3 sm:grid-cols-2">
                 {ministerios.map((m) => (
-                  <li key={m.id}><Link href={`/ministerios/${m.slug}`} className="block rounded-[var(--radius-md)] border border-linha bg-papel px-4 py-3 font-semibold text-tinta no-underline hover:border-vinho">{m.name} <DemoBadge show={m.isDemo} /></Link></li>
+                  <li key={m.id}><Link href={`/ministerios/${m.slug}`} className="block rounded-[var(--radius-md)] border border-linha bg-papel px-4 py-3 font-semibold text-tinta no-underline elevar hover:text-marca-escuro">{m.name} <DemoBadge show={m.isDemo} /></Link></li>
                 ))}
               </ul>
             )}

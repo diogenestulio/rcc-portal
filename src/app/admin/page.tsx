@@ -44,7 +44,7 @@ export default async function AdminHome() {
         {tiles.map((t) => (
           <Card as="li" key={t.label}>
             <Link href={t.href} className="block no-underline">
-              <span className="block font-titulo text-4xl font-semibold text-vinho">{t.n}</span>
+              <span className="block font-titulo text-4xl font-semibold text-marca">{t.n}</span>
               <span className="text-tinta">{t.label}</span>
             </Link>
           </Card>

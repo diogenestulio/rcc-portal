@@ -1,4 +1,4 @@
-export const STATUS_LABEL: Record<string, [string, "neutro" | "info" | "alerta" | "sucesso" | "perigo" | "vinho"]> = {
+export const STATUS_LABEL: Record<string, [string, "neutro" | "info" | "alerta" | "sucesso" | "perigo" | "marca"]> = {
   rascunho: ["Rascunho", "neutro"], em_revisao: ["Em revisão", "alerta"], aprovado: ["Aprovado", "info"],
   agendado: ["Agendado", "info"], publicado: ["Publicado", "sucesso"], arquivado: ["Arquivado", "neutro"],
 };

@@ -39,7 +39,7 @@ export default async function GrupoPage({ params, searchParams }: PageProps<"/gr
       )}
 
       <dl className="mt-8 grid gap-6 rounded-[var(--radius-lg)] border border-linha bg-papel p-6 sm:grid-cols-2">
-        <div><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Quando</dt><dd className="mt-1 text-lg font-semibold text-vinho">Toda {weekday(g.weekday)}, {hhmm(g.startTime)}{g.endTime ? ` às ${hhmm(g.endTime)}` : ""}</dd></div>
+        <div><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Quando</dt><dd className="mt-1 text-lg font-semibold text-marca">Toda {weekday(g.weekday)}, {hhmm(g.startTime)}{g.endTime ? ` às ${hhmm(g.endTime)}` : ""}</dd></div>
         <div><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Onde</dt><dd className="mt-1">{g.venue}{g.publicAddress && <><br />{g.publicAddress}</>}</dd></div>
         {g.accessibilityInfo && <div className="sm:col-span-2"><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Acessibilidade informada</dt><dd className="mt-1">{g.accessibilityInfo}</dd></div>}
         {(g.publicContact || g.authorizedPhone) && <div className="sm:col-span-2"><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Contato</dt><dd className="mt-1">{g.publicContact}{g.authorizedPhone && <><br />Telefone (autorizado): {g.authorizedPhone}</>}</dd></div>}

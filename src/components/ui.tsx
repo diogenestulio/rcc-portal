@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ComponentProps, ReactNode } from "react";
 import { instituicaoProvisoria as INST } from "@/config/instituicao";
 
@@ -8,10 +9,10 @@ export function Container({ children, className, narrow }: { children: ReactNode
   return <div className={cx("mx-auto w-full px-4 sm:px-6", narrow ? "max-w-3xl" : "max-w-6xl", className)}>{children}</div>;
 }
 
-const btnBase = "inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-base font-semibold no-underline transition-colors duration-[var(--dur)] min-h-12 disabled:opacity-60 disabled:cursor-not-allowed";
+const btnBase = "inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-base font-semibold no-underline min-h-12 transition-[background-color,color,border-color,box-shadow,transform] duration-[var(--dur)] ease-[var(--ease-suave)] active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none";
 export const btn = {
-  primario: cx(btnBase, "bg-vinho text-white hover:bg-vinho-escuro hover:text-white"),
-  secundario: cx(btnBase, "border border-vinho bg-papel text-vinho hover:bg-vinho-claro"),
+  primario: cx(btnBase, "bg-marca text-white shadow-[0_1px_2px_rgb(0_69_31/.25)] hover:bg-marca-escuro hover:text-white hover:shadow-[0_6px_16px_rgb(0_90_43/.28)] hover:-translate-y-px"),
+  secundario: cx(btnBase, "border border-marca bg-papel text-marca hover:bg-marca-claro hover:text-marca-escuro hover:-translate-y-px"),
   discreto: cx(btnBase, "text-tinta-2 hover:bg-marfim-2 hover:text-tinta"),
   perigo: cx(btnBase, "bg-perigo text-white hover:opacity-90"),
 };
@@ -26,7 +27,7 @@ const tones = {
   sucesso: "bg-verde-claro text-verde",
   alerta: "bg-alerta-claro text-alerta",
   perigo: "bg-perigo-claro text-perigo",
-  vinho: "bg-vinho-claro text-vinho",
+  marca: "bg-marca-claro text-marca",
 };
 export function Badge({ tone = "neutro", children }: { tone?: keyof typeof tones; children: ReactNode }) {
   return <span className={cx("inline-flex items-center rounded-full px-2.5 py-0.5 text-sm font-semibold", tones[tone])}>{children}</span>;
@@ -40,9 +41,9 @@ export function DemoBadge({ show }: { show?: boolean }) {
 
 export function PageHeader({ title, intro, eyebrow, children }: { title: string; intro?: ReactNode; eyebrow?: string; children?: ReactNode }) {
   return (
-    <header className="border-b border-linha bg-marfim-2/60">
+    <header className="border-b border-linha bg-[radial-gradient(ellipse_at_top_right,var(--color-sol-claro),transparent_55%),linear-gradient(180deg,var(--color-marca-claro),var(--color-marfim))]">
       <Container className="py-10 sm:py-14">
-        {eyebrow && <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-dourado-texto">{eyebrow}</p>}
+        {eyebrow && <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-sol-texto">{eyebrow}</p>}
         <h1 className="text-display font-semibold">{title}</h1>
         {intro && <div className="mt-3 max-w-2xl text-lg text-tinta-2">{intro}</div>}
         {children}
@@ -61,8 +62,8 @@ export function EmptyState({ title, children, action }: { title: string; childre
   );
 }
 
-export function Card({ children, className, as: As = "div" }: { children: ReactNode; className?: string; as?: "div" | "article" | "li" | "section" }) {
-  return <As className={cx("rounded-[var(--radius-lg)] border border-linha bg-papel p-5 shadow-[var(--sombra)]", className)}>{children}</As>;
+export function Card({ children, className, as: As = "div", hover }: { children: ReactNode; className?: string; as?: "div" | "article" | "li" | "section"; hover?: boolean }) {
+  return <As className={cx("rounded-[var(--radius-lg)] border border-linha bg-papel p-5 shadow-[var(--sombra)]", hover && "elevar", className)}>{children}</As>;
 }
 
 export function Notice({ tone = "info", title, children }: { tone?: "info" | "alerta" | "sucesso" | "perigo"; title?: string; children: ReactNode }) {
@@ -82,17 +83,14 @@ export const field = {
   error: "mt-1 text-sm font-semibold text-perigo",
 };
 
-/** Marca tipográfica provisória: NÃO é o logotipo oficial (aguardando arquivo autorizado). */
-export function Wordmark({ compact }: { compact?: boolean }) {
+/** Brasão da RCC + nome da instituição. A imagem é decorativa (alt vazio): o nome em texto é o rótulo. */
+export function Wordmark({ compact, inverse }: { compact?: boolean; inverse?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-2.5">
-      <svg aria-hidden="true" viewBox="0 0 24 32" className={compact ? "h-7 w-5" : "h-9 w-7"}>
-        <path d="M12 2c2.8 5 7 8.3 7 15a7 7 0 0 1-14 0c0-3.6 1.6-6 3.4-8 .2 2.3 1.1 3.8 2.6 4.6C10.6 9.8 10.9 6 12 2Z" fill="var(--color-vinho)" />
-        <path d="M12 17c1.6 1.7 2.6 3.1 2.6 4.8a2.6 2.6 0 0 1-5.2 0c0-1.7 1-3.1 2.6-4.8Z" fill="var(--color-dourado)" />
-      </svg>
+    <span className="inline-flex items-center gap-3">
+      <Image src="/marca/rcc-simbolo-192.webp" alt="" width={253} height={192} priority className={compact ? "h-9 w-auto" : "h-11 w-auto sm:h-12"} />
       <span className="leading-tight">
-        <span className="block font-titulo text-base font-bold text-tinta sm:text-lg">{INST.nomePublico}</span>
-        {!compact && <span className="hidden text-xs text-tinta-3 sm:block">Renovação Carismática Católica</span>}
+        <span className={cx("block font-titulo text-base font-bold sm:text-lg", inverse ? "text-white" : "text-marca-escuro")}>{INST.nomePublico}</span>
+        {!compact && <span className={cx("hidden text-xs font-medium tracking-wide sm:block", inverse ? "text-prata" : "text-tinta-3")}>Renovação Carismática Católica</span>}
       </span>
     </span>
   );

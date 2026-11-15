@@ -29,3 +29,6 @@ Contrato `PaymentProvider` (`src/server/store/providers.ts`). O portal nunca rec
 
 ## ADR-009 — Editor de texto simples
 Volunteers escrevem num formato leve (parágrafos, `##`, `>`, listas, negrito/itálico, links https), convertido no servidor e sanitizado por lista de permissões. Evita editores pesados e colagem de HTML perigoso. Revisitar se a equipe pedir editor visual.
+
+## ADR-010 — Identidade visual a partir do brasão da RCC (14/11/2026)
+**Decisão do coordenador:** a cor do portal deriva do brasão da RCC (verde #007437, amarelo #FFCB04, petróleo #004159, prata #B8D0DC), em harmonia com RCC Brasil e RCCMT. Substitui a cor vinho provisória. O amarelo só aparece como decoração ou sobre fundo escuro (contraste 1,5:1 no claro). Brasão como imagem decorativa (`alt=""`) ao lado do nome em texto. **Pendente:** autorização formal de uso da marca e versão vetorial oficial. Detalhes em `docs/10-design-system.md`.

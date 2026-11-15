@@ -47,7 +47,7 @@ export function UploadForm() {
 export function CopySnippet({ text }: { text: string }) {
   const [ok, setOk] = useState(false);
   return (
-    <button type="button" className="text-sm text-vinho underline underline-offset-2"
+    <button type="button" className="text-sm text-marca underline underline-offset-2"
       onClick={async () => { try { await navigator.clipboard.writeText(text); setOk(true); setTimeout(() => setOk(false), 2000); } catch { /* sem permissão: o texto continua visível para copiar à mão */ } }}>
       {ok ? "Copiado!" : "Copiar código para o texto"}
     </button>
@@ -59,7 +59,7 @@ export function EditMedia({ id, alt, decorative, credit, isImage }: { id: string
   const [dec, setDec] = useState(decorative);
   return (
     <details className="mt-2 text-sm">
-      <summary className="cursor-pointer text-vinho">Editar descrição e crédito</summary>
+      <summary className="cursor-pointer text-marca">Editar descrição e crédito</summary>
       <form action={action} className="mt-2 space-y-2">
         <input type="hidden" name="id" value={id} />
         <input name="alt" aria-label="Descrição" defaultValue={alt ?? ""} disabled={dec} maxLength={300} className={field.input} />
@@ -78,7 +78,7 @@ export function MediaButtons({ id, isPrivate }: { id: string; isPrivate: boolean
   return (
     <div className="mt-2 space-y-1">
       <div className="flex flex-wrap gap-3 text-sm">
-        {isPrivate && <form action={linkAction}><input type="hidden" name="id" value={id} /><button className="text-vinho underline underline-offset-2" disabled={lp}>Gerar link (1 h)</button></form>}
+        {isPrivate && <form action={linkAction}><input type="hidden" name="id" value={id} /><button className="text-marca underline underline-offset-2" disabled={lp}>Gerar link (1 h)</button></form>}
         <form action={delAction} onSubmit={(e) => { if (!confirm("Excluir este arquivo? Não dá para desfazer.")) e.preventDefault(); }}>
           <input type="hidden" name="id" value={id} /><button className="text-perigo underline underline-offset-2" disabled={dp}>Excluir</button>
         </form>

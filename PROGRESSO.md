@@ -24,7 +24,7 @@ Arquidiocese de Cuiabá · homologação na VPS atual (servidor próprio ao ativ
 7. ~~Telas da loja~~ (feito em 14/11/2026: vitrine, produto, carrinho, checkout com retirada, pedido; painel de produtos/estoque/pedidos/exceções). **Desligada** até definir entidade vendedora, provedor real e frete.
 
 ## Decisões tomadas sem consulta (substituíveis)
-Cor vinho provisória, marca tipográfica provisória, retenção de 60 dias para pedidos de oração, editor de texto simples. Detalhes em `docs/13-adrs.md`.
+Paleta derivada do brasão da RCC (14/11/2026, ver docs/10), retenção de 60 dias para pedidos de oração, editor de texto simples. Detalhes em `docs/13-adrs.md`.
 
 ## Ambiente local desta sessão
 - PostgreSQL em Docker: container `rcc-pg-dev`, porta 127.0.0.1:55432.

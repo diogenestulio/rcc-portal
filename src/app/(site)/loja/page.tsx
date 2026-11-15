@@ -54,7 +54,7 @@ export default async function Loja({ searchParams }: PageProps<"/loja">) {
             {items.map((p) => {
               const img = imgs.find((m) => m.id === p.coverMediaId);
               return (
-                <li key={p.id} className="flex flex-col overflow-hidden rounded-[var(--radius-lg)] border border-linha bg-papel">
+                <li key={p.id} className="flex flex-col overflow-hidden rounded-[var(--radius-lg)] border border-linha bg-papel elevar">
                   {img ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={publicUrl(img, 640)} alt={img.altText ?? ""} width={img.width ?? undefined} height={img.height ?? undefined} loading="lazy" className="aspect-[4/3] w-full object-cover" />
@@ -62,7 +62,7 @@ export default async function Loja({ searchParams }: PageProps<"/loja">) {
                   <div className="flex flex-1 flex-col p-4">
                     <p className="flex gap-2 text-sm text-tinta-3">{p.category}<DemoBadge show={p.isDemo} /></p>
                     <h2 className="mt-1 text-lg font-semibold"><Link href={`/loja/${p.slug}`} className="text-tinta no-underline hover:underline">{p.name}</Link></h2>
-                    <p className="mt-auto pt-3 font-semibold text-vinho">{p.variants > 1 ? "a partir de " : ""}{formatBRL(p.fromCents!)}</p>
+                    <p className="mt-auto pt-3 font-semibold text-marca">{p.variants > 1 ? "a partir de " : ""}{formatBRL(p.fromCents!)}</p>
                     {!p.available && <div className="mt-2"><Badge>Esgotado</Badge></div>}
                   </div>
                 </li>

@@ -2,30 +2,41 @@
 
 /*
  * Design system — RCC Arquidiocesana (docs/10-design-system.md)
- * Cor principal PROVISÓRIA (vinho) até receber a identidade autorizada.
- * Contrastes calculados (WCAG 2.x): tinta/marfim 16,1:1 · vinho/marfim 9,3:1 ·
- * dourado-texto/marfim 6,0:1 · branco/vinho 9,9:1. O dourado decorativo (#B8912F, 2,8:1)
- * NÃO é usado em texto nem em botões.
+ * Paleta derivada do brasão da RCC (verde #007437, amarelo #FFCB04, petróleo #004159, prata #B8D0DC),
+ * em harmonia com RCC Brasil e RCCMT. Contrastes (WCAG 2.x, sobre branco / fundo #F6F9F7):
+ * tinta 15,6/14,7 · tinta-2 8,9/8,4 · tinta-3 6,0/5,6 · marca 5,9/5,6 · marca-escuro 8,4/7,9 ·
+ * petróleo 11,1/10,4 · sol-texto 6,3/5,9 · branco sobre marca 5,9 · branco sobre marca-noite 11,2 ·
+ * amarelo sobre marca-noite 7,4. O amarelo (#FFCB04, 1,5:1 no claro) e o prata são DECORATIVOS:
+ * nunca texto sobre fundo claro.
  */
 @theme {
-  --color-marfim: #fbf8f1;
-  --color-marfim-2: #f4eee1;
+  /* Neutros (nomes históricos mantidos: "marfim" = fundo da página) */
+  --color-marfim: #f6f9f7;
+  --color-marfim-2: #eaf2ed;
   --color-papel: #ffffff;
-  --color-tinta: #1f1b16;
-  --color-tinta-2: #4a4339;
-  --color-tinta-3: #6b6256;
-  --color-linha: #e3dacb;
-  --color-vinho: #7a2335;
-  --color-vinho-escuro: #5a1726;
-  --color-vinho-claro: #f6e9ea;
-  --color-dourado: #b8912f;      /* decorativo: filetes, ícones grandes */
-  --color-dourado-texto: #7a5a1c;
-  --color-azul: #1f4e79;          /* informação e foco */
-  --color-azul-claro: #e8f0f8;
-  --color-verde: #2f6b3a;         /* sucesso / confirmado */
-  --color-verde-claro: #e7f2e8;
-  --color-alerta: #8a5a00;        /* atenção (texto) */
-  --color-alerta-claro: #fdf3dc;
+  --color-tinta: #14262e;
+  --color-tinta-2: #3b4c54;
+  --color-tinta-3: #56666e;
+  --color-linha: #d5e1db;
+
+  /* Marca (brasão) */
+  --color-marca: #007437;         /* verde do brasão: links, botões, destaques */
+  --color-marca-escuro: #005a2b;  /* hover, títulos de destaque */
+  --color-marca-noite: #00451f;   /* rodapé e faixas escuras */
+  --color-marca-claro: #e6f2ea;   /* fundos suaves */
+  --color-sol: #ffcb04;           /* amarelo do brasão — decorativo ou sobre fundo escuro */
+  --color-sol-texto: #7a5c00;     /* dourado legível sobre fundo claro */
+  --color-sol-claro: #fff6d6;
+  --color-petroleo: #004159;      /* contorno do brasão: foco, informação */
+  --color-prata: #b8d0dc;         /* decorativo */
+
+  /* Estados */
+  --color-azul: #004159;          /* informação (= petróleo) */
+  --color-azul-claro: #e6f1f8;
+  --color-verde: #1e6b3c;         /* sucesso / confirmado */
+  --color-verde-claro: #e3f1e7;
+  --color-alerta: #7a5200;        /* atenção (texto) */
+  --color-alerta-claro: #fff4d1;
   --color-perigo: #9b1c1c;        /* erro / cancelado */
   --color-perigo-claro: #fbeaea;
 
@@ -40,12 +51,15 @@
   --text-display--line-height: 1.1;
 
   --ease-suave: cubic-bezier(.2, .7, .2, 1);
+  --ease-saida: cubic-bezier(.16, 1, .3, 1);
 }
 
 :root {
-  --foco: 3px solid var(--color-azul);
-  --sombra: 0 1px 2px rgb(31 27 22 / .06), 0 4px 14px rgb(31 27 22 / .06);
-  --dur: 160ms;
+  --foco: 3px solid var(--color-petroleo);
+  --sombra: 0 1px 2px rgb(0 65 89 / .06), 0 4px 14px rgb(0 65 89 / .07);
+  --sombra-alta: 0 2px 4px rgb(0 65 89 / .06), 0 12px 28px rgb(0 65 89 / .12);
+  --dur: 180ms;
+  --faixa: linear-gradient(90deg, var(--color-marca) 0%, var(--color-marca) 55%, var(--color-sol) 100%);
   color-scheme: light;
 }
 
@@ -61,8 +75,10 @@ body {
 }
 h1, h2, h3, h4 { font-family: var(--font-titulo); line-height: 1.2; color: var(--color-tinta); text-wrap: balance; }
 p { text-wrap: pretty; }
-a { color: var(--color-vinho); text-underline-offset: .18em; text-decoration-thickness: 1px; }
-a:hover { color: var(--color-vinho-escuro); text-decoration-thickness: 2px; }
+a { color: var(--color-marca); text-underline-offset: .18em; text-decoration-thickness: 1px;
+  transition: color var(--dur) var(--ease-suave), text-decoration-color var(--dur) var(--ease-suave), background-color var(--dur) var(--ease-suave); }
+a:hover { color: var(--color-marca-escuro); text-decoration-thickness: 2px; }
+::selection { background: var(--color-sol-claro); color: var(--color-tinta); }
 
 /* Foco sempre visível e consistente */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
@@ -86,13 +102,25 @@ a:hover { color: var(--color-vinho-escuro); text-decoration-thickness: 2px; }
 .prosa h3 { font-size: 1.3rem; margin-top: 1.5em; }
 .prosa ul { list-style: disc; padding-left: 1.4em; }
 .prosa ol { list-style: decimal; padding-left: 1.4em; }
-.prosa blockquote { border-left: 3px solid var(--color-dourado); padding-left: 1em; color: var(--color-tinta-2); font-style: italic; }
+.prosa blockquote { border-left: 3px solid var(--color-sol); padding-left: 1em; color: var(--color-tinta-2); font-style: italic; }
 .prosa img { border-radius: var(--radius-md); height: auto; }
 .prosa figure img { width: 100%; max-width: 100%; }
 .prosa figcaption { margin-top: .4em; font-size: .9rem; color: var(--color-tinta-3); }
 
-/* Filete com chama discreta — elemento de identidade, estático */
-.filete { height: 1px; background: linear-gradient(90deg, transparent, var(--color-dourado), transparent); }
+/* Filete e faixa — ecoam a fita verde e amarela do brasão (estáticos) */
+.filete { height: 1px; background: linear-gradient(90deg, transparent, var(--color-sol), transparent); }
+.faixa-marca { height: 4px; background: var(--faixa); }
+
+/* Movimento discreto: cartões e links de cartão sobem levemente; tudo some com prefers-reduced-motion */
+.elevar { transition: transform var(--dur) var(--ease-suave), box-shadow var(--dur) var(--ease-suave), border-color var(--dur) var(--ease-suave); }
+.elevar:hover, .elevar:focus-within { transform: translateY(-2px); box-shadow: var(--sombra-alta); border-color: color-mix(in srgb, var(--color-marca) 35%, var(--color-linha)); }
+
+/* Entrada suave do conteúdo da página (só opacidade e 6 px) */
+@keyframes surgir { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.surgir { animation: surgir 420ms var(--ease-saida) both; }
+
+/* Menu do celular abre com leve deslize */
+details[open] > .menu-painel { animation: surgir 200ms var(--ease-saida) both; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }

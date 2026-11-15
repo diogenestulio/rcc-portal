@@ -22,11 +22,11 @@ export async function ContentList({ kind, base, title, intro, page = 1 }: { kind
         {items.length === 0 ? <EmptyState title="Ainda não há conteúdos publicados aqui">Os conteúdos passam por revisão antes de serem publicados.</EmptyState> : (
           <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {items.slice(0, per).map((n) => (
-              <li key={n.id} className="rounded-[var(--radius-lg)] border border-linha bg-papel p-5">
+              <li key={n.id} className="rounded-[var(--radius-lg)] border border-linha bg-papel elevar p-5">
                 <article>
                   <p className="flex flex-wrap items-center gap-2 text-sm text-tinta-3">
                     {kind !== "pagina" && <time dateTime={new Date(n.published_at).toISOString()}>{fmtPublished(n.published_at)}</time>}
-                    {kind === "formacao" && <Badge tone="vinho">{NATURE_LABEL[n.nature]}</Badge>}
+                    {kind === "formacao" && <Badge tone="marca">{NATURE_LABEL[n.nature]}</Badge>}
                     <DemoBadge show={n.is_demo} />
                   </p>
                   <h2 className="mt-2 text-xl font-semibold"><Link href={`${base}/${n.slug}`} className="text-tinta no-underline hover:underline">{n.title}</Link></h2>
@@ -57,7 +57,7 @@ export async function ContentPage({ kind, slug, back }: { kind: "noticia" | "for
         <header>
           <p className="flex flex-wrap items-center gap-2 text-sm text-tinta-3">
             {kind !== "pagina" && <time dateTime={new Date(c.published_at).toISOString()}>{fmtPublished(c.published_at)}</time>}
-            {kind === "formacao" && <Badge tone="vinho">{NATURE_LABEL[c.nature]}</Badge>}
+            {kind === "formacao" && <Badge tone="marca">{NATURE_LABEL[c.nature]}</Badge>}
             <DemoBadge show={c.is_demo} />
           </p>
           <h1 className="mt-2 text-display font-semibold">{c.title}</h1>

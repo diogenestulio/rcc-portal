@@ -45,7 +45,7 @@ export function GroupMap({ groups, totalNaLista }: { groups: MapGroup[]; totalNa
         const a = document.createElement("a"); a.href = `/grupos/${g.slug}`; a.textContent = g.name; a.style.fontWeight = "600";
         const p = document.createElement("div"); p.textContent = `${DIAS[g.weekday]}, ${hora(g.startTime)} · ${g.venue} · ${g.municipality}`;
         box.append(a, p);
-        L.circleMarker([g.lat, g.lng], { radius: 9, color: "#5a1726", weight: 2, fillColor: "#7a2335", fillOpacity: 0.85 })
+        L.circleMarker([g.lat, g.lng], { radius: 9, color: "#004159", weight: 2, fillColor: "#007437", fillOpacity: 0.9 })
           .bindPopup(box).bindTooltip(g.name).addTo(map);
         bounds.extend([g.lat, g.lng]);
       }
