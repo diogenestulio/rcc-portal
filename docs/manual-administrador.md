@@ -84,6 +84,8 @@ Todo o conteúdo do site é cadastrado **pelo painel**. Não é preciso programa
 | **A RCC** (identidade, história, coordenação, documentos) | **Conteúdo** → tipo *Página*: cada página publicada vira um item em `/a-rcc/endereço-curto` | editor + aprovação |
 | **Contato**, **Multimídia**, **Colaborar**, **Privacidade** | textos fixos, hoje com aviso de "pendente"; **mudam pela equipe técnica** quando a coordenação enviar os dados (seção 11) | equipe técnica |
 | **Notícias** | **Conteúdo** → tipo *Notícia* | editor + aprovação |
+| **Igreja e Renovação** (acontecimentos da Igreja e da RCC: campanhas, congressos, JMJ, datas) | **Conteúdo** → tipo *Igreja e Renovação*, com data, local e **link da fonte oficial** | editor + aprovação |
+| **Multimídia** (vídeos, PDFs, galeria) | vídeos: lista de canais oficiais (equipe técnica); PDFs e fotos: **Mídia** (a galeria mostra só imagens com autorização) | editor |
 | **Formação** | **Conteúdo** → tipo *Formação* (natureza doutrina, orientação pastoral ou devoção) | editor + **revisor** |
 | **Comunicados** | **Conteúdo** → tipo *Comunicado* | editor + gestor |
 | **Grupos de Oração** (lista, página do grupo e mapa) | **Grupos** → **Novo grupo** (gestor) e edição | gestor ou responsável local |
@@ -118,11 +120,14 @@ Uma correção num texto publicado cria uma **nova versão**. A versão antiga c
    1. Escolha o **tipo**: página, notícia, formação ou comunicado.
    2. Escolha um **endereço curto**, sem acentos nem espaços (ex.: `retiro-de-jovens-2027`).
 2. Escolha a **natureza**: notícia, institucional, doutrina, orientação pastoral, devoção ou testemunho. As quatro últimas só vão ao ar com o **revisor**.
-3. Escreva o texto. A formatação é simples:
+3. Escolha a **imagem de capa** (opcional) e, em *Igreja e Renovação*, preencha **data, local e link da fonte oficial**.
+4. Escreva o texto. A formatação é simples:
    - parágrafos separados por uma linha em branco;
    - `## Subtítulo` numa linha;
    - `**negrito**`;
-   - `- item` para listas.
+   - `- item` para listas;
+   - **vídeo do YouTube**, numa linha sozinha: `[video: título](https://www.youtube.com/watch?v=…)` (só de canais oficiais; carrega só com o clique);
+   - **PDF para baixar**, numa linha sozinha: o código copiado em **Mídia**.
 4. Indique as **fontes** (documento, livro, site) e os **direitos** (quem fez a foto, de quem é o texto).
 5. **Salvar como rascunho → Enviar para revisão.**
 6. O revisor aprova ou devolve com observação.

@@ -19,3 +19,12 @@ export const instituicaoProvisoria = {
 export const instituicaoHome: { videoDestaque: { youtubeId: string; titulo: string } | null } = {
   videoDestaque: null, // PENDENTE: vídeo oficial autorizado
 };
+
+/**
+ * Vídeos da página Multimídia: só de canais OFICIAIS (RCC Brasil, Vatican News, CNBB, arquidiocese), incorporados
+ * pelo YouTube (o vídeo continua hospedado no canal de origem e só carrega após o clique).
+ * Cada ID foi conferido no oEmbed do YouTube antes de entrar aqui.
+ */
+export const videosMultimidia: { youtubeId: string; titulo: string; canal: string }[] = [
+  { youtubeId: "OvCqsKWvyR0", titulo: "Moções espirituais para a Sede Nacional da RCCBRASIL – Semana Espalhar a Chama", canal: "RCCBRASIL" },
+];

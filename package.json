@@ -15,6 +15,7 @@
     "worker": "tsx scripts/worker.mts",
     "alerta:teste": "tsx scripts/alerta-teste.mts",
     "agenda:teste": "tsx scripts/agenda-teste.mts",
+    "conteudo:proposto": "tsx scripts/conteudo-proposto.mts",
     "docs:permissoes": "tsx scripts/gen-permissoes.mts"
   },
   "dependencies": {

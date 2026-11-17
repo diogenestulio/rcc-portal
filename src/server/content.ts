@@ -22,7 +22,8 @@ export class WorkflowError extends Error {}
 export function sanitizeRichText(html: string): string {
   return sanitizeHtml(html, {
     allowedTags: ["p", "br", "h2", "h3", "h4", "strong", "em", "u", "s", "blockquote", "ul", "ol", "li", "a", "figure", "figcaption", "img", "hr", "cite"],
-    allowedAttributes: { a: ["href", "title", "rel", "target"], img: ["src", "srcset", "sizes", "alt", "width", "height", "loading", "decoding"] },
+    allowedAttributes: { a: ["href", "title", "rel", "target"], img: ["src", "srcset", "sizes", "alt", "width", "height", "loading", "decoding"], p: ["data-video", "data-titulo", "class"] },
+    allowedClasses: { p: ["anexo"] },
     allowedSchemes: ["https", "mailto", "tel"],
     allowedSchemesByTag: { img: ["https"] },
     allowProtocolRelative: false,
@@ -37,11 +38,33 @@ export function sanitizeRichText(html: string): string {
 export type RevisionInput = {
   title: string; summary?: string | null; bodyHtml: string; nature: Nature;
   authorName?: string | null; sourceReference?: string | null; rightsNotice?: string | null; coverMediaId?: string | null;
+  /** Só para "Igreja e Renovação" (opcionais): data (AAAA-MM-DD), término, local e link da fonte oficial (https). */
+  eventDate?: string | null; eventEndDate?: string | null; eventPlace?: string | null; externalUrl?: string | null;
 };
+
+export type ContentKind = "pagina" | "noticia" | "formacao" | "comunicado" | "igreja";
+
+/** Valida e normaliza os campos de evento/link (lança WorkflowError com mensagem para o usuário). */
+function extras(i: RevisionInput) {
+  const d = (v?: string | null) => {
+    if (!v) return null;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v) || Number.isNaN(Date.parse(`${v}T12:00:00Z`))) throw new WorkflowError("Data inválida: use o seletor de data.");
+    return v;
+  };
+  const eventDate = d(i.eventDate), eventEndDate = d(i.eventEndDate);
+  if (eventEndDate && !eventDate) throw new WorkflowError("Informe a data de início antes da data de término.");
+  if (eventDate && eventEndDate && eventEndDate < eventDate) throw new WorkflowError("A data de término é anterior à de início.");
+  let externalUrl: string | null = (i.externalUrl ?? "").trim() || null;
+  if (externalUrl) {
+    try { const u = new URL(externalUrl); if (u.protocol !== "https:") throw new Error(); externalUrl = u.toString(); }
+    catch { throw new WorkflowError("Link oficial inválido: use um endereço completo começando com https://"); }
+  }
+  return { eventDate, eventEndDate, eventPlace: (i.eventPlace ?? "").trim().slice(0, 200) || null, externalUrl, coverMediaId: i.coverMediaId || null };
+}
 
 const kindNatureOk = (kind: string, nature: Nature) => !(kind === "noticia" && nature === "doutrina");
 
-export async function createDraft(db: DB, s: Subject, input: { kind: "pagina" | "noticia" | "formacao" | "comunicado"; slug: string } & RevisionInput) {
+export async function createDraft(db: DB, s: Subject, input: { kind: ContentKind; slug: string } & RevisionInput) {
   assertCan(s, "conteudo.criar");
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input.slug)) throw new WorkflowError("Endereço (slug) inválido: use letras minúsculas, números e hífens.");
   if (!kindNatureOk(input.kind, input.nature)) throw new WorkflowError("Notícia não pode ser classificada como doutrina; use Formação.");
@@ -51,7 +74,7 @@ export async function createDraft(db: DB, s: Subject, input: { kind: "pagina" | 
       itemId: item.id, number: 1, title: input.title.trim(), summary: input.summary ?? null,
       bodyHtml: sanitizeRichText(input.bodyHtml), nature: input.nature, authorName: input.authorName ?? null,
       sourceReference: input.sourceReference ?? null, rightsNotice: input.rightsNotice ?? null,
-      coverMediaId: input.coverMediaId ?? null, createdBy: s.userId,
+      ...extras(input), createdBy: s.userId,
       searchVector: `${input.title} ${input.summary ?? ""} ${sanitizeHtml(input.bodyHtml, { allowedTags: [] })}`,
     }).returning();
     await tx.update(contentItem).set({ currentRevisionId: rev.id }).where(eq(contentItem.id, item.id));
@@ -78,7 +101,7 @@ export async function editContent(db: DB, s: Subject, itemId: string, input: Rev
       itemId, number: Number(max) + 1, title: input.title.trim(), summary: input.summary ?? null,
       bodyHtml: sanitizeRichText(input.bodyHtml), nature: input.nature, authorName: input.authorName ?? null,
       sourceReference: input.sourceReference ?? null, rightsNotice: input.rightsNotice ?? null,
-      coverMediaId: input.coverMediaId ?? null, createdBy: s.userId,
+      ...extras(input), createdBy: s.userId,
       searchVector: `${input.title} ${input.summary ?? ""} ${sanitizeHtml(input.bodyHtml, { allowedTags: [] })}`,
     }).returning();
     // publishedRevisionId é preservado: a versão pública anterior continua no ar.
@@ -165,19 +188,48 @@ export async function archive(db: DB, s: Subject, itemId: string) {
 }
 
 /** Leitura pública: SEMPRE a revisão publicada, nunca a de trabalho. */
+export type PublicContent = {
+  id: string; slug: string; kind: string; published_at: Date; title: string; summary: string | null; body_html: string; nature: string;
+  author_name: string | null; source_reference: string | null; rights_notice: string | null; approved_at: Date; updated_at: Date; is_demo: boolean;
+  event_date: string | null; event_end_date: string | null; event_place: string | null; external_url: string | null;
+  cover_id: string | null; cover_key: string | null; cover_alt: string | null; cover_w: number | null; cover_h: number | null; cover_credit: string | null;
+};
+const COLS = sql`ci.id, ci.slug, ci.kind, ci.published_at, ci.is_demo, r.title, r.summary, r.nature,
+  to_char(r.event_date, 'YYYY-MM-DD') as event_date, to_char(r.event_end_date, 'YYYY-MM-DD') as event_end_date, r.event_place, r.external_url,
+  m.id as cover_id, m.storage_key as cover_key, m.alt_text as cover_alt, m.width as cover_w, m.height as cover_h, m.credit as cover_credit`;
+const FROM = sql`from content_item ci join content_revision r on r.id = ci.published_revision_id
+  left join media m on m.id = r.cover_media_id and not m.is_private`;
+
 export async function getPublished(db: DB, kind: string, slug: string) {
-  const rows = await db.execute<{ id: string; slug: string; kind: string; published_at: Date; title: string; summary: string | null; body_html: string; nature: string; author_name: string | null; source_reference: string | null; rights_notice: string | null; approved_at: Date; updated_at: Date; is_demo: boolean }>(sql`
-    select ci.id, ci.slug, ci.kind, ci.published_at, ci.is_demo, r.title, r.summary, r.body_html, r.nature, r.author_name,
-           r.source_reference, r.rights_notice, r.approved_at, r.created_at as updated_at
-    from content_item ci join content_revision r on r.id = ci.published_revision_id
+  const rows = await db.execute<PublicContent>(sql`
+    select ${COLS}, r.body_html, r.author_name, r.source_reference, r.rights_notice, r.approved_at, r.created_at as updated_at
+    ${FROM}
     where ci.kind = ${kind}::content_kind and ci.slug = ${slug} and ci.published_revision_id is not null and ci.status <> 'arquivado'`);
   return rows[0] ?? null;
 }
 
+export type ListedContent = Omit<PublicContent, "body_html" | "author_name" | "source_reference" | "rights_notice" | "approved_at" | "updated_at">;
+
 export async function listPublished(db: DB, kind: string, limit = 12, offset = 0) {
-  return db.execute<{ id: string; slug: string; published_at: Date; title: string; summary: string | null; nature: string; is_demo: boolean }>(sql`
-    select ci.id, ci.slug, ci.published_at, ci.is_demo, r.title, r.summary, r.nature
-    from content_item ci join content_revision r on r.id = ci.published_revision_id
+  return db.execute<ListedContent>(sql`
+    select ${COLS} ${FROM}
     where ci.kind = ${kind}::content_kind and ci.published_revision_id is not null and ci.status <> 'arquivado'
     order by ci.published_at desc limit ${Math.min(limit, 50)} offset ${Math.max(0, offset)}`);
+}
+
+/**
+ * "Igreja e Renovação": acontecimentos com data a partir de hoje (o mais próximo primeiro) e,
+ * separadamente, a cobertura (sem data futura), mais recente primeiro.
+ */
+export async function listIgreja(db: DB, opts: { proximos: boolean; hoje: string; limit?: number; offset?: number }) {
+  const lim = Math.min(opts.limit ?? 12, 50), off = Math.max(0, opts.offset ?? 0);
+  return opts.proximos
+    ? db.execute<ListedContent>(sql`select ${COLS} ${FROM}
+        where ci.kind = 'igreja' and ci.published_revision_id is not null and ci.status <> 'arquivado'
+          and coalesce(r.event_end_date, r.event_date) >= ${opts.hoje}::date
+        order by r.event_date asc, ci.published_at desc limit ${lim} offset ${off}`)
+    : db.execute<ListedContent>(sql`select ${COLS} ${FROM}
+        where ci.kind = 'igreja' and ci.published_revision_id is not null and ci.status <> 'arquivado'
+          and (r.event_date is null or coalesce(r.event_end_date, r.event_date) < ${opts.hoje}::date)
+        order by ci.published_at desc limit ${lim} offset ${off}`);
 }

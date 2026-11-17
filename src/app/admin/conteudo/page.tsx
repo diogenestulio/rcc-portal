@@ -7,7 +7,7 @@ import { fmtPublished } from "@/components/site/format";
 import { STATUS_LABEL } from "./labels";
 
 export const metadata = { title: "Conteúdo" };
-const KIND: Record<string, string> = { pagina: "Página", noticia: "Notícia", formacao: "Formação", comunicado: "Comunicado" };
+const KIND: Record<string, string> = { pagina: "Página", noticia: "Notícia", formacao: "Formação", comunicado: "Comunicado", igreja: "Igreja e Renovação" };
 
 export default async function ConteudoList({ searchParams }: PageProps<"/admin/conteudo">) {
   const s = await requireAdmin();

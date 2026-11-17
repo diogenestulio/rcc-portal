@@ -10,11 +10,6 @@ import { instituicaoProvisoria as INST } from "@/config/instituicao";
  * DEVEM ser validados pelo encarregado/jurídico antes da produção (docs/11-lgpd.md).
  */
 const PAGES: Record<string, { title: string; intro?: string; body: React.ReactNode; draft?: boolean }> = {
-  multimidia: {
-    title: "Multimídia",
-    intro: "Transmissões, vídeos, fotos e materiais para download.",
-    body: <EmptyState title="Acervo em organização">Os vídeos e materiais serão publicados aqui com tipo, tamanho e descrição. Transmissões só carregam quando você clicar.</EmptyState>,
-  },
   contato: {
     title: "Contato",
     intro: `Canais oficiais de atendimento da ${INST.nomePublico}.`,

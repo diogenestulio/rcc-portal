@@ -12,7 +12,7 @@ COPY . .
 RUN APP_ENV=development DATABASE_URL=postgres://build:build@localhost:5432/build \
     BETTER_AUTH_SECRET=build-only-build-only-build-only-0000 APP_SIGNING_KEY=build-only-build-only-build-only-0000 \
     npx next build \
- && npx esbuild scripts/worker.mts scripts/migrate.mts scripts/seed-dev.mts scripts/create-admin.mts scripts/verify-audit.mts scripts/alerta-teste.mts scripts/agenda-teste.mts \
+ && npx esbuild scripts/worker.mts scripts/migrate.mts scripts/seed-dev.mts scripts/create-admin.mts scripts/verify-audit.mts scripts/alerta-teste.mts scripts/agenda-teste.mts scripts/conteudo-proposto.mts \
       --bundle --platform=node --format=esm --target=node24 --outdir=dist-scripts --out-extension:.js=.mjs \
       --alias:@=./src --external:sharp \
       --banner:js="import { createRequire } from 'module'; const require = createRequire(import.meta.url);"
@@ -25,6 +25,8 @@ COPY --from=build --chown=app:app /src/.next/standalone ./
 COPY --from=build --chown=app:app /src/.next/static ./.next/static
 COPY --from=build --chown=app:app /src/public ./public
 COPY --from=build --chown=app:app /src/dist-scripts ./scripts
+# Ilustrações e PDFs do conteúdo proposto (scripts/conteudo-proposto.mts; só homologação/desenvolvimento)
+COPY --from=build --chown=app:app /src/scripts/conteudo-proposto/*.png /src/scripts/conteudo-proposto/*.pdf ./scripts/conteudo-proposto/
 COPY --from=build --chown=app:app /src/drizzle ./drizzle
 USER app
 EXPOSE 3000

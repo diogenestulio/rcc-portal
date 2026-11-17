@@ -7,7 +7,7 @@ import { approveRevision, archive, createDraft, editContent, publish, returnToDr
 import { ForbiddenError } from "@/server/authz";
 import { textToHtml } from "@/server/richtext";
 
-const KINDS = ["pagina", "noticia", "formacao", "comunicado"] as const;
+const KINDS = ["pagina", "noticia", "formacao", "comunicado", "igreja"] as const;
 const NATURES = ["doutrina", "orientacao_pastoral", "devocao", "testemunho", "institucional", "noticia"] as const;
 
 function input(fd: FormData) {
@@ -21,6 +21,9 @@ function input(fd: FormData) {
     authorName: String(fd.get("autor") ?? "").trim().slice(0, 120) || null,
     sourceReference: String(fd.get("fontes") ?? "").trim().slice(0, 1000) || null,
     rightsNotice: String(fd.get("direitos") ?? "").trim().slice(0, 300) || null,
+    coverMediaId: /^[0-9a-f-]{36}$/.test(String(fd.get("capa") ?? "")) ? String(fd.get("capa")) : null,
+    eventDate: String(fd.get("data") ?? "") || null, eventEndDate: String(fd.get("data_fim") ?? "") || null,
+    eventPlace: String(fd.get("local") ?? ""), externalUrl: String(fd.get("link") ?? ""),
   };
 }
 

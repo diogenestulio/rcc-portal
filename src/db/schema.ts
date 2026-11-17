@@ -219,7 +219,7 @@ export const ministry = pgTable("ministry", {
 });
 
 // ───────────────────────── Conteúdo editorial ─────────────────────────
-export const contentKindEnum = pgEnum("content_kind", ["pagina", "noticia", "formacao", "comunicado"]);
+export const contentKindEnum = pgEnum("content_kind", ["pagina", "noticia", "formacao", "comunicado", "igreja"]);
 export const contentStatusEnum = pgEnum("content_status", ["rascunho", "em_revisao", "aprovado", "agendado", "publicado", "arquivado"]);
 export const contentNatureEnum = pgEnum("content_nature", ["doutrina", "orientacao_pastoral", "devocao", "testemunho", "institucional", "noticia"]);
 
@@ -257,6 +257,11 @@ export const contentRevision = pgTable("content_revision", {
   sourceReference: text("source_reference"),
   rightsNotice: text("rights_notice"),
   coverMediaId: uuid("cover_media_id"),
+  /** "Igreja e Renovação": quando e onde acontece o evento da Igreja/RCC (opcional) e o link da fonte oficial. */
+  eventDate: date("event_date"),
+  eventEndDate: date("event_end_date"),
+  eventPlace: text("event_place"),
+  externalUrl: text("external_url"),
   createdBy: text("created_by").references(() => user.id),
   createdAt: createdAt(),
   /** Aprovação vale SOMENTE para esta revisão (imutável depois de criada). */

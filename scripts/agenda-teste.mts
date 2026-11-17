@@ -23,7 +23,10 @@ const api = new GoogleHttpCalendarApi(id!, key!);
 
 if (process.argv.includes("--todos")) {
   if (mode !== "cms_to_google") sair("Use --todos só com GOOGLE_CALENDAR_MODE=cms_to_google.");
-  const { db } = await import("../src/db");
+  const postgres = (await import("postgres")).default;
+  const { drizzle } = await import("drizzle-orm/postgres-js");
+  const schema = await import("../src/db/schema");
+  const db = drizzle(postgres(process.env.DATABASE_URL!, { max: 1 }), { schema }) as unknown as import("../src/db").DB;
   const { event } = await import("../src/db/schema");
   const { enqueue } = await import("../src/server/jobs");
   const evs = await db.select({ id: event.id }).from(event).where(and(eq(event.source, "cms"), eq(event.publication, "publicado")));

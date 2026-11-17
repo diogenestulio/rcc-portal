@@ -7,11 +7,11 @@ import { instituicaoProvisoria as INST } from "@/config/instituicao";
 export const NAV = [
   { href: "/a-rcc", label: "A RCC" },
   { href: "/grupos", label: "Grupos de Oração" },
-  { href: "/formacao", label: "Ministérios e Formação" },
   { href: "/agenda", label: "Agenda" },
+  { href: "/igreja-e-renovacao", label: "Igreja e Renovação" },
+  { href: "/formacao", label: "Formação" },
   { href: "/noticias", label: "Notícias" },
   { href: "/multimidia", label: "Multimídia" },
-  { href: "/loja", label: "Loja" },
 ];
 
 function SearchIcon() {
@@ -93,6 +93,8 @@ export function SiteFooter() {
             <li><Link href="/acessibilidade">Acessibilidade</Link></li>
             <li><Link href="/termos">Termos de uso</Link></li>
             <li><a href="/agenda.ics">Assinar a agenda (iCal)</a></li>
+            <li><Link href="/ministerios">Ministérios</Link></li>
+            <li><Link href="/loja">Loja</Link></li>
           </ul>
         </nav>
         <nav aria-label="Vínculos oficiais">

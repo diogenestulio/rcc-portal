@@ -3,6 +3,8 @@
  * branco, "## " subtítulo, "> " citação, "- " lista, **negrito**, *itálico*, [texto](https://link),
  * e imagem da biblioteca sozinha numa linha: ![descrição](/midia/<id>/arquivo.webp) — com legenda opcional
  * na linha seguinte começando com "— ".
+ * Vídeo do YouTube sozinho numa linha: [video: título](https://www.youtube.com/watch?v=ID) — vira player que só
+ * carrega após o clique. PDF da biblioteca sozinho numa linha: [pdf: título](/midia/<id>/arquivo.pdf) — vira cartão de download.
  * O HTML resultante ainda passa por sanitizeRichText no servidor.
  */
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -24,6 +26,10 @@ export function textToHtml(text: string): string {
       const cap = lines[1] ? `<figcaption>${inline(lines[1].slice(2))}</figcaption>` : "";
       return `<figure><img src="${base}/arquivo.webp" srcset="${base}/w640/arquivo.webp 640w, ${base}/w1280/arquivo.webp 1280w, ${base}/arquivo.webp 2400w" sizes="(max-width: 720px) 100vw, 720px" alt="${esc(alt)}" loading="lazy" decoding="async">${cap}</figure>`;
     }
+    const vid = /^\[(?:video|vídeo):\s*([^\]]+)\]\((https:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{6,20})[^\s)]*)\)$/i.exec(block.trim());
+    if (vid) return `<p data-video="${vid[3]}" data-titulo="${esc(vid[1].trim())}"><a href="https://www.youtube.com/watch?v=${vid[3]}">Vídeo: ${esc(vid[1].trim())} (YouTube)</a></p>`;
+    const pdf = /^\[pdf:\s*([^\]]+)\]\((\/midia\/[0-9a-f-]{36}\/arquivo\.pdf)\)$/i.exec(block.trim());
+    if (pdf) return `<p class="anexo"><a href="${pdf[2]}">${esc(pdf[1].trim())}</a></p>`;
     if (block.startsWith("## ")) return `<h2>${inline(block.slice(3))}</h2>`;
     if (block.startsWith("### ")) return `<h3>${inline(block.slice(4))}</h3>`;
     if (lines.every((l) => l.startsWith("> "))) return `<blockquote><p>${lines.map((l) => inline(l.slice(2))).join("<br>")}</p></blockquote>`;
@@ -36,6 +42,8 @@ export function textToHtml(text: string): string {
 /** Conversão inversa aproximada para reabrir no editor de texto. */
 export function htmlToText(html: string): string {
   return html
+    .replace(/<p data-video="([A-Za-z0-9_-]+)" data-titulo="([^"]*)">.*?<\/p>/g, (_m, id, t) => `[video: ${t}](https://www.youtube.com/watch?v=${id})\n\n`)
+    .replace(/<p class="anexo"><a href="([^"]+)"[^>]*>(.*?)<\/a><\/p>/g, (_m, href, t) => `[pdf: ${t}](${href})\n\n`)
     .replace(/<figure><img [^>]*?src="(\/midia\/[0-9a-f-]{36}\/arquivo\.webp)"[^>]*?alt="([^"]*)"[^>]*>(?:<figcaption>(.*?)<\/figcaption>)?<\/figure>/g,
       (_m, src, alt, cap) => `![${alt}](${src})${cap ? `
 — ${cap}` : ""}

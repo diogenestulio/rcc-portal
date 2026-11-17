@@ -1,6 +1,7 @@
 import { requireCan } from "@/server/session";
 import { field, Notice } from "@/components/ui";
 import { ContentFields } from "../ContentForm";
+import { imagensPublicas } from "../imagens";
 import { criar } from "../actions";
 
 export const metadata = { title: "Novo conteúdo" };
@@ -19,6 +20,7 @@ export default async function Novo({ searchParams }: PageProps<"/admin/conteudo/
             <select id="tipo" name="tipo" className={field.input}>
               <option value="noticia">Notícia</option><option value="formacao">Formação</option>
               <option value="pagina">Página institucional</option><option value="comunicado">Comunicado</option>
+              <option value="igreja">Igreja e Renovação (acontecimentos da Igreja e da RCC)</option>
             </select>
           </div>
           <div>
@@ -27,7 +29,7 @@ export default async function Novo({ searchParams }: PageProps<"/admin/conteudo/
             <p className={field.hint}>Minúsculas, números e hífens. Não muda depois de publicado.</p>
           </div>
         </div>
-        <ContentFields />
+        <ContentFields imagens={await imagensPublicas()} />
       </form>
     </div>
   );

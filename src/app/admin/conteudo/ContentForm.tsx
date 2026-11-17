@@ -7,9 +7,13 @@ export const NATURE_OPTIONS = [
   ["testemunho", "Testemunho pessoal (exige revisor doutrinal)"],
 ] as const;
 
-type Values = { titulo?: string; resumo?: string | null; texto?: string; natureza?: string; autor?: string | null; fontes?: string | null; direitos?: string | null };
+type Values = {
+  titulo?: string; resumo?: string | null; texto?: string; natureza?: string; autor?: string | null; fontes?: string | null; direitos?: string | null;
+  capa?: string | null; data?: string | null; dataFim?: string | null; local?: string | null; link?: string | null;
+};
+export type Imagem = { id: string; alt: string | null };
 
-export function ContentFields({ v = {}, disabled }: { v?: Values; disabled?: boolean }) {
+export function ContentFields({ v = {}, disabled, imagens = [] }: { v?: Values; disabled?: boolean; imagens?: Imagem[] }) {
   return (
     <fieldset disabled={disabled} className="space-y-5">
       <div>
@@ -30,8 +34,25 @@ export function ContentFields({ v = {}, disabled }: { v?: Values; disabled?: boo
       <div>
         <label htmlFor="texto" className={field.label}>Texto</label>
         <textarea id="texto" name="texto" required rows={16} defaultValue={v.texto} className={field.input + " font-mono text-sm"} aria-describedby="texto-dica" />
-        <p id="texto-dica" className={field.hint}>Parágrafos separados por linha em branco. <code>## Subtítulo</code>, <code>&gt; citação</code>, <code>- item</code>, <code>**negrito**</code>, <code>*itálico*</code>, <code>[texto](https://endereço)</code>. Imagem: cole numa linha sozinha o código copiado em <Link href="/admin/midia">Mídia</Link> (legenda opcional na linha de baixo começando com “— ”). Não invente citações: indique a fonte abaixo.</p>
+        <p id="texto-dica" className={field.hint}>Parágrafos separados por linha em branco. <code>## Subtítulo</code>, <code>&gt; citação</code>, <code>- item</code>, <code>**negrito**</code>, <code>*itálico*</code>, <code>[texto](https://endereço)</code>. Imagem ou PDF: cole numa linha sozinha o código copiado em <Link href="/admin/midia">Mídia</Link> (legenda da imagem opcional na linha de baixo, começando com “— ”). Vídeo do YouTube numa linha sozinha: <code>[video: título](https://www.youtube.com/watch?v=…)</code> (só carrega quando a pessoa clica). Não invente citações: indique a fonte abaixo.</p>
       </div>
+      <div>
+        <label htmlFor="capa" className={field.label}>Imagem de capa (opcional)</label>
+        <select id="capa" name="capa" defaultValue={v.capa ?? ""} className={field.input} aria-describedby="capa-dica">
+          <option value="">Sem imagem de capa</option>
+          {imagens.map((m) => <option key={m.id} value={m.id}>{m.alt ?? `Imagem ${m.id.slice(0, 8)}`}</option>)}
+        </select>
+        <p id="capa-dica" className={field.hint}>Aparece nas listas e no topo do texto. Envie antes em <Link href="/admin/midia">Mídia</Link>, com descrição e autorização de imagem.</p>
+      </div>
+      <fieldset className="rounded-[var(--radius-md)] border border-linha p-4">
+        <legend className="px-1 font-semibold">Acontecimento (para “Igreja e Renovação”; opcional nos demais)</legend>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div><label htmlFor="data" className={field.label}>Data de início</label><input id="data" name="data" type="date" defaultValue={v.data ?? ""} className={field.input} /></div>
+          <div><label htmlFor="data_fim" className={field.label}>Data de término</label><input id="data_fim" name="data_fim" type="date" defaultValue={v.dataFim ?? ""} className={field.input} /></div>
+          <div className="sm:col-span-2"><label htmlFor="local" className={field.label}>Local</label><input id="local" name="local" maxLength={200} defaultValue={v.local ?? ""} className={field.input} placeholder="Ex.: Seul, Coreia do Sul · Canção Nova, Cachoeira Paulista (SP)" /></div>
+          <div className="sm:col-span-2"><label htmlFor="link" className={field.label}>Link da fonte oficial</label><input id="link" name="link" type="url" inputMode="url" defaultValue={v.link ?? ""} className={field.input} placeholder="https://" aria-describedby="link-dica" /><p id="link-dica" className={field.hint}>Site do Vaticano, da CNBB, da RCC Brasil ou da organização do evento. Sempre confira a informação na fonte.</p></div>
+        </div>
+      </fieldset>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="autor" className={field.label}>Autor</label>

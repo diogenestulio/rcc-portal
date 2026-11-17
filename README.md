@@ -55,3 +55,4 @@ docs/               documentação              scripts/          worker, seed, 
 16. `docs/18-backup-externo.md` — cópia externa criptografada do backup (PC hoje, NAS da UP no futuro) e como restaurar
 17. `docs/19-roteiro-nvda.md` — roteiro de teste com leitor de tela (NVDA) e ficha de resultado
 18. `docs/20-seguranca-vps.md` — segurança da VPS compartilhada (SSH só por chave, fail2ban) e plano de testes de segurança
+19. `docs/21-estudo-sites-catolicos.md` — estudo de sites católicos e da RCC, o que foi incorporado e sugestões de dados

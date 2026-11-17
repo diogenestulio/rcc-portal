@@ -7,7 +7,7 @@ import { btn, Container, EmptyState, field, PageHeader } from "@/components/ui";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Busca", robots: { index: false, follow: true } };
 
-const HREF = { conteudo: { noticia: "/noticias", formacao: "/formacao", pagina: "/a-rcc", comunicado: "/noticias" } as Record<string, string>, grupo: "/grupos", evento: "/agenda" };
+const HREF = { conteudo: { noticia: "/noticias", formacao: "/formacao", pagina: "/a-rcc", comunicado: "/noticias", igreja: "/igreja-e-renovacao" } as Record<string, string>, grupo: "/grupos", evento: "/agenda" };
 const TYPE = { conteudo: "Conteúdo", grupo: "Grupo de Oração", evento: "Evento" };
 
 export default async function Busca({ searchParams }: PageProps<"/busca">) {

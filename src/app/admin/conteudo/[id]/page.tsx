@@ -9,11 +9,12 @@ import { htmlToText } from "@/server/richtext";
 import { Badge, btn, field, Notice } from "@/components/ui";
 import { fmtPublished } from "@/components/site/format";
 import { ContentFields } from "../ContentForm";
+import { imagensPublicas } from "../imagens";
 import { salvar, transicao } from "../actions";
 import { STATUS_LABEL } from "../labels";
 
 export const metadata = { title: "Editar conteúdo" };
-const PUBLIC_BASE: Record<string, string> = { pagina: "/a-rcc", noticia: "/noticias", formacao: "/formacao", comunicado: "/noticias" };
+const PUBLIC_BASE: Record<string, string> = { pagina: "/a-rcc", noticia: "/noticias", formacao: "/formacao", comunicado: "/noticias", igreja: "/igreja-e-renovacao" };
 const OK: Record<string, string> = { criado: "Rascunho criado.", salvo: "Nova revisão salva como rascunho.", enviar: "Enviado para revisão.", aprovar: "Revisão aprovada.", devolver: "Devolvido ao autor.", publicar: "Publicado (ou agendado).", arquivar: "Arquivado." };
 
 export default async function EditContent({ params, searchParams }: PageProps<"/admin/conteudo/[id]">) {
@@ -48,7 +49,9 @@ export default async function EditContent({ params, searchParams }: PageProps<"/
         <form action={salvar}>
           <input type="hidden" name="id" value={id} />
           <ContentFields disabled={!canView(s, "conteudo.editar") || item.status === "arquivado"}
-            v={{ titulo: cur.title, resumo: cur.summary, texto: htmlToText(cur.bodyHtml), natureza: cur.nature, autor: cur.authorName, fontes: cur.sourceReference, direitos: cur.rightsNotice }} />
+            imagens={await imagensPublicas()}
+            v={{ titulo: cur.title, resumo: cur.summary, texto: htmlToText(cur.bodyHtml), natureza: cur.nature, autor: cur.authorName, fontes: cur.sourceReference, direitos: cur.rightsNotice,
+              capa: cur.coverMediaId, data: cur.eventDate, dataFim: cur.eventEndDate, local: cur.eventPlace, link: cur.externalUrl }} />
           <p className="mt-3 text-sm text-tinta-3">Salvar cria uma nova revisão e exige nova aprovação antes de publicar.</p>
         </form>
 

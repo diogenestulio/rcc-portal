@@ -2,11 +2,12 @@ import Link from "next/link";
 import { sql, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { agenda, displayStatus } from "@/server/events";
-import { listPublished } from "@/server/content";
+import { listIgreja, listPublished } from "@/server/content";
+import { CartaoAcontecimento } from "@/components/site/IgrejaCards";
 import { filterOptions } from "@/server/groups";
 import { ministry } from "@/db/schema";
 import { Badge, ButtonLink, Container, DemoBadge, btn, cx, field } from "@/components/ui";
-import { cap, dateParts, fmtPublished, WEEKDAY_OPTIONS } from "@/components/site/format";
+import { cap, dateParts, fmtPublished, TZ, WEEKDAY_OPTIONS } from "@/components/site/format";
 import { IconeCalendario, IconeChama, IconeLivro, IconeMaos, IconePomba } from "@/components/site/Icones";
 import { LazyVideo } from "@/components/site/LazyVideo";
 import { instituicaoHome } from "@/config/instituicao";
@@ -29,7 +30,8 @@ const plural = (n: number, um: string, varios: string) => `${n} ${n === 1 ? um :
 
 export default async function Home() {
   const now = new Date();
-  const [proximos, noticias, formacao, ministerios, opts, [contagem]] = await Promise.all([
+  const hoje = new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(now);
+  const [proximos, noticias, formacao, ministerios, opts, [contagem], igreja] = await Promise.all([
     agenda(db, now, new Date(now.getTime() + 90 * 86_400_000)),
     listPublished(db, "noticia", 4),
     listPublished(db, "formacao", 3),
@@ -37,6 +39,7 @@ export default async function Home() {
     filterOptions(db),
     db.execute<{ grupos: number; municipios: number }>(sql`select count(*)::int as grupos, count(distinct municipality_id)::int as municipios
       from prayer_group where published and status <> 'encerrado'`),
+    listIgreja(db, { proximos: true, hoje, limit: 3 }),
   ]);
   const eventos = proximos.filter((o) => !o.cancelled).slice(0, 4);
   const [principal, ...seguintes] = eventos;
@@ -188,6 +191,18 @@ export default async function Home() {
           )}
         </Container>
       </section>
+
+      {/* ───── Igreja e Renovação: grandes acontecimentos da Igreja e da RCC ───── */}
+      {igreja.length > 0 && (
+        <section aria-labelledby="igreja" className="py-20 sm:py-24">
+          <Container>
+            <SectionHead id="igreja" title="Igreja e Renovação" intro="Grandes encontros, campanhas e celebrações da Igreja Católica e da RCC, no Brasil e no mundo." href="/igreja-e-renovacao" more="Ver todos os acontecimentos" />
+            <ul className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {igreja.map((c) => <li key={c.id}><CartaoAcontecimento c={c} /></li>)}
+            </ul>
+          </Container>
+        </section>
+      )}
 
       {/* ───── A Palavra: Pentecostes, a origem da Renovação ───── */}
       <section aria-labelledby="palavra" className="estandarte textura-losangos sobre-estandarte relative isolate overflow-hidden py-24 sm:py-28">

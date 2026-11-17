@@ -29,6 +29,13 @@
       "when": 1794688971692,
       "tag": "0003_anonimizar_ips",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794879008945,
+      "tag": "0004_igreja_e_renovacao",
+      "breakpoints": true
     }
   ]
 }
