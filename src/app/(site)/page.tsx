@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { sql, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { agenda, displayStatus } from "@/server/events";
@@ -63,7 +62,8 @@ export default async function Home() {
           </div>
           <div aria-hidden="true" className="relative order-first justify-self-start md:order-none md:justify-self-center">
             <div className="brilho -inset-[30%]" />
-            <Image src="/marca/rcc-livre.webp" alt="" width={598} height={462} priority className="brasao-livre brasao-entrada relative h-auto w-40 sm:w-52 md:w-[24rem] lg:w-[27rem]" />
+            {/* eslint-disable-next-line @next/next/no-img-element -- SVG vetorial oficial (nítido em qualquer tamanho) */}
+            <img src="/marca/rcc-simbolo.svg" alt="" width={141} height={107} fetchPriority="high" className="brasao-livre brasao-entrada relative h-auto w-40 sm:w-52 md:w-[24rem] lg:w-[28rem]" />
           </div>
         </Container>
         <div aria-hidden="true" className="filete-ouro no-claro" />

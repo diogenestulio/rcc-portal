@@ -1,14 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Albert_Sans, Libre_Caslon_Display, Libre_Caslon_Text } from "next/font/google";
+import { Lato, Libre_Caslon_Display, Libre_Caslon_Text } from "next/font/google";
 import "./globals.css";
 import { env } from "@/lib/env";
 import { instituicaoProvisoria as INST } from "@/config/instituicao";
 
 // next/font baixa as fontes no build e as serve do próprio domínio (sem requisição ao Google
-// no navegador). Todas sob SIL Open Font License. Caslon (títulos) + Albert Sans (texto): docs/10-design-system.md.
+// no navegador). Todas sob SIL Open Font License. Lato é a fonte principal do Manual de Identidade Visual da RCC
+// (assinatura e texto); Caslon é a fonte editorial dos títulos grandes. Ver docs/10-design-system.md.
 const display = Libre_Caslon_Display({ variable: "--font-caslon-display", subsets: ["latin"], weight: "400", display: "swap" });
 const serif = Libre_Caslon_Text({ variable: "--font-caslon-text", subsets: ["latin"], weight: ["400", "700"], style: ["normal", "italic"], display: "swap" });
-const sans = Albert_Sans({ variable: "--font-albert", subsets: ["latin"], display: "swap" });
+const sans = Lato({ variable: "--font-lato", subsets: ["latin"], weight: ["400", "700", "900"], style: ["normal", "italic"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.APP_URL),

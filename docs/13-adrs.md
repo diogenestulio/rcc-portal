@@ -51,3 +51,10 @@ Volunteers escrevem num formato leve (parágrafos, `##`, `>`, listas, negrito/it
 - **Pedido de oração:** em painel próprio.
 - **Verificação:** Lighthouse com acessibilidade 100 no celular e no computador, sem rolagem lateral em 390 px.
 - **Pendente:** a imagem do brasão é ampliada a partir de um PNG de 283 px. A versão vetorial oficial deixará a abertura nítida em telas de alta resolução.
+
+## ADR-013 — Marca conforme o Manual de Identidade Visual da RCC (16/11/2026)
+O coordenador enviou o manual oficial (PDF). O símbolo, que estava em vetor no próprio PDF, foi extraído para SVG (`public/marca/rcc-simbolo.svg`) e substitui as imagens ampliadas: fica nítido em qualquer tela.
+- **Cores e fonte:** cores alinhadas às do manual (#006036, #004058, #FDC800, #B8D0DC e os gradientes oficiais). Lato, a fonte principal do manual, entra na assinatura e no texto; Caslon fica só nos títulos editoriais.
+- **Assinatura:** "Renovação Carismática Católica" + "Arquidiocese de Cuiabá", conforme as páginas 23 e 24 do manual.
+- **Cabeçalho:** reorganizado em duas faixas (assinatura e ações; menu), porque o nome oficial é mais longo.
+- **Fundo verde:** sobre o verde, o símbolo leva um contorno claro finíssimo para cumprir a proibição de "fundo da mesma cor".

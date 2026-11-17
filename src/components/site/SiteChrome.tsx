@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Container, Wordmark } from "@/components/ui";
 import { env } from "@/lib/env";
 import { instituicaoProvisoria } from "@/config/instituicao";
@@ -29,21 +28,14 @@ export function SiteHeader() {
           Ambiente de {env.APP_ENV === "development" ? "desenvolvimento" : "homologação"}: conteúdos marcados como “Demonstração” são fictícios.
         </p>
       )}
+      {/* Faixa 1: assinatura oficial + ações */}
       <Container className="flex items-center justify-between gap-4 py-3.5">
         <Link href="/" className="no-underline"><Wordmark inverse /><span className="sr-only">, página inicial</span></Link>
-        <nav aria-label="Principal" className="hidden xl:block">
-          <ul className="flex items-center gap-0.5">
-            {NAV.map((n) => (
-              <li key={n.href}>
-                <Link href={n.href} className="relative block whitespace-nowrap rounded-[var(--radius-sm)] px-3 py-2 text-[0.95rem] font-medium !text-marfim-texto no-underline after:absolute after:inset-x-3 after:bottom-1 after:h-px after:origin-left after:scale-x-0 after:bg-ouro after:transition-transform after:duration-[var(--dur)] hover:!text-white hover:after:scale-x-100">{n.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 sm:gap-2">
           <Link href="/busca" className="rounded-[var(--radius-sm)] p-3 !text-marfim-texto hover:bg-white/10 hover:!text-white" aria-label="Buscar no portal"><SearchIcon /></Link>
+          <Link href="/pedido-de-oracao" className="hidden rounded-[var(--radius-md)] border border-ouro-suave/60 px-4 py-2 text-[0.95rem] font-bold !text-ouro-suave no-underline transition-colors hover:border-ouro hover:bg-ouro hover:!text-estandarte lg:inline-block">Pedido de oração</Link>
           {/* Menu móvel sem JavaScript: <details> é acessível por teclado e leitor de tela */}
-          <details className="group relative xl:hidden">
+          <details className="group relative lg:hidden">
             <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded-[var(--radius-sm)] px-3 font-semibold text-marfim-texto transition-colors hover:bg-white/10 hover:text-white group-open:bg-white/10 [&::-webkit-details-marker]:hidden">
               <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
               <span className="sr-only sm:not-sr-only">Menu</span>
@@ -58,6 +50,18 @@ export function SiteHeader() {
           </details>
         </div>
       </Container>
+      {/* Faixa 2: menu principal (telas largas) */}
+      <nav aria-label="Principal" className="hidden border-t border-white/10 bg-noite/40 lg:block">
+        <Container>
+          <ul className="flex items-center justify-between">
+            {NAV.map((n) => (
+              <li key={n.href}>
+                <Link href={n.href} className="relative block whitespace-nowrap px-3 py-3 text-[0.98rem] font-bold tracking-[0.01em] !text-marfim-texto no-underline after:absolute after:inset-x-3 after:bottom-0 after:h-[2px] after:origin-left after:scale-x-0 after:bg-ouro after:transition-transform after:duration-[var(--dur)] first:pl-0 first:after:left-0 hover:!text-white hover:after:scale-x-100">{n.label}</Link>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </nav>
     </header>
   );
 }
@@ -70,7 +74,8 @@ export function SiteFooter() {
       <Container className="grid gap-12 py-14 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-4">
-            <Image src="/marca/rcc-livre-96.webp" alt="" width={187} height={145} className="brasao-livre h-14 w-auto shrink-0" />
+            {/* eslint-disable-next-line @next/next/no-img-element -- SVG vetorial oficial */}
+            <img src="/marca/rcc-simbolo.svg" alt="" width={141} height={107} className="brasao-livre h-14 w-auto shrink-0" />
             <p className="font-display text-2xl leading-snug text-white">{instituicaoProvisoria.nomeCompleto}</p>
           </div>
           <p className="mt-5 max-w-md text-marfim-texto">

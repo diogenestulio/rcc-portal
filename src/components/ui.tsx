@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { ComponentProps, ReactNode } from "react";
 import { instituicaoProvisoria as INST } from "@/config/instituicao";
 
@@ -89,14 +88,19 @@ export const field = {
   error: "mt-1 text-sm font-semibold text-perigo",
 };
 
-/** Brasão da RCC (livre, com contorno claro e brilho) + nome da instituição. A imagem é decorativa (alt vazio): o nome em texto é o rótulo. */
+/**
+ * Assinatura visual conforme o Manual de Identidade Visual da RCC (versão horizontal, linha única + nome de instância):
+ * símbolo à esquerda; "Renovação Carismática Católica" em Lato Bold; nome da instância alinhado à esquerda, com 70%
+ * do tamanho. O símbolo é o SVG oficial (decorativo, alt vazio): o texto é o nome acessível.
+ */
 export function Wordmark({ compact, inverse }: { compact?: boolean; inverse?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-3">
-      <Image src="/marca/rcc-livre-96.webp" alt="" width={187} height={145} priority className={cx(inverse && "brasao-livre", "w-auto shrink-0", compact ? "h-9" : "h-11 sm:h-[3.25rem]")} />
-      <span className="leading-tight">
-        <span className={cx("block font-display", compact ? "text-[1.05rem]" : "text-[1.15rem] sm:whitespace-nowrap sm:text-[1.35rem]", inverse ? "text-white" : "text-estandarte")}>{INST.nomePublico}</span>
-        {!compact && <span className={cx("hidden text-[0.8rem] font-medium tracking-[0.02em] sm:block", inverse ? "text-ouro-suave" : "text-tinta-3")}>Renovação Carismática Católica</span>}
+    <span className="inline-flex items-center gap-3 font-marca">
+      {/* eslint-disable-next-line @next/next/no-img-element -- SVG vetorial oficial; next/image não otimiza SVG */}
+      <img src="/marca/rcc-simbolo.svg" alt="" width={141} height={107} className={cx(inverse && "brasao-livre", "w-auto shrink-0", compact ? "h-9" : "h-11 sm:h-[3.4rem]")} />
+      <span className="leading-[1.15]">
+        <span className={cx("block font-bold tracking-[-0.005em]", compact ? "text-[0.95rem]" : "text-[1.02rem] sm:whitespace-nowrap sm:text-[1.28rem]", inverse ? "text-white" : "text-marca")}>Renovação Carismática Católica</span>
+        <span className={cx("block font-bold", compact ? "text-[0.67rem]" : "text-[0.72rem] sm:text-[0.9rem]", inverse ? "text-ouro-suave" : "text-petroleo")}>{INST.arquidiocese ?? "Arquidiocese de Cuiabá"}</span>
       </span>
     </span>
   );

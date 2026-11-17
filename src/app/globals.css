@@ -27,22 +27,24 @@
   --color-marfim-texto: #efeadb;  /* texto claro sobre o estandarte */
 
   /* Metais */
-  --color-ouro: #ffcb04;          /* amarelo do brasão: botão de destaque e filetes */
+  --color-ouro: #fdc800;          /* amarelo do manual (Pantone 7406): botão de destaque e filetes */
   --color-ouro-suave: #e8c660;    /* títulos e links sobre o estandarte */
   --color-prata: #b8d0dc;         /* texto secundário sobre o estandarte */
 
   /* Marca (brasão) */
-  --color-marca: #007437;
-  --color-marca-escuro: #005a2b;
+  --color-marca: #006036;         /* verde do manual (Pantone 364) */
+  --color-marca-escuro: #004a29;
   --color-marca-noite: #00451f;
   --color-marca-claro: #e6f2ea;
-  --color-sol: #ffcb04;
+  --color-sol: #fdc800;
+  --color-limao: #fdfa00;         /* amarelo-limão do gradiente oficial (decorativo) */
+  --color-verde-vivo: #009049;    /* verde claro do gradiente oficial (decorativo: 4,1:1 no branco) */
   --color-sol-texto: #7a5c00;
   --color-sol-claro: #fff6d6;
-  --color-petroleo: #004159;
+  --color-petroleo: #004058;       /* petróleo do manual (Pantone 548) */
 
   /* Estados */
-  --color-azul: #004159;
+  --color-azul: #004058;
   --color-azul-claro: #e6f1f8;
   --color-verde: #1e6b3c;
   --color-verde-claro: #e3f1e7;
@@ -51,10 +53,12 @@
   --color-perigo: #9b1c1c;
   --color-perigo-claro: #fbeaea;
 
-  /* Caslon: a letra dos missais e das Bíblias impressas. Display para títulos grandes, Text para os menores. */
+  /* Lato: fonte principal do Manual de Identidade Visual da RCC (assinatura e texto).
+     Caslon: fonte editorial dos títulos grandes (a letra dos missais), fora da assinatura. */
   --font-display: var(--font-caslon-display), "Libre Caslon Text", Georgia, serif;
   --font-titulo: var(--font-caslon-text), Georgia, serif;
-  --font-corpo: var(--font-albert), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-corpo: var(--font-lato), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-marca: var(--font-lato), system-ui, sans-serif;
 
   --radius-sm: 4px;
   --radius-md: 6px;
@@ -116,7 +120,7 @@ a:hover { color: var(--color-marca-escuro); text-decoration-thickness: 2px; }
 .estandarte {
   background-color: var(--color-estandarte);
   background-image:
-    radial-gradient(120% 90% at 85% 10%, rgb(255 203 4 / .07), transparent 55%),
+    radial-gradient(120% 90% at 85% 10%, rgb(253 200 0 / .07), transparent 55%),
     radial-gradient(90% 120% at 0% 100%, rgb(0 116 55 / .35), transparent 60%);
   color: var(--color-marfim-texto);
 }
@@ -134,14 +138,18 @@ a:hover { color: var(--color-marca-escuro); text-decoration-thickness: 2px; }
 .filete-ouro.no-claro::after { box-shadow: 0 0 0 4px var(--color-marfim); }
 .faixa-marca { height: 4px; background: var(--faixa); }
 
-/* Brasão livre (sem moldura): contorno claro já na imagem + brilho dourado por CSS */
-.brasao-livre { filter: drop-shadow(0 0 1px rgb(255 248 220 / .6)) drop-shadow(0 6px 22px rgb(255 203 4 / .22)); }
+/* Brasão oficial (SVG extraído do Manual) sobre o estandarte. O manual proíbe aplicar o símbolo em fundo da
+   mesma cor: um contorno claro finíssimo separa a fita verde do fundo verde, e o brilho dourado dá relevo. */
+.brasao-livre {
+  filter: drop-shadow(0 0 .6px #fbf8ee) drop-shadow(0 0 .6px #fbf8ee) drop-shadow(0 0 .8px #fbf8ee)
+          drop-shadow(0 8px 26px rgb(253 200 0 / .22));
+}
 
 /* Textura heráldica: pequenos losangos dourados espaçados ("semeado"), por cima das luzes do estandarte */
 .estandarte.textura-losangos {
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M22 18l4 4-4 4-4-4z' fill='%23e8c660' fill-opacity='.10'/%3E%3Cpath d='M0 -4l4 4-4 4-4-4zM44 -4l4 4-4 4-4-4zM0 40l4 4-4 4-4-4zM44 40l4 4-4 4-4-4z' fill='%23e8c660' fill-opacity='.06'/%3E%3C/svg%3E"),
-    radial-gradient(120% 90% at 85% 10%, rgb(255 203 4 / .07), transparent 55%),
+    radial-gradient(120% 90% at 85% 10%, rgb(253 200 0 / .07), transparent 55%),
     radial-gradient(90% 120% at 0% 100%, rgb(0 116 55 / .35), transparent 60%);
   background-size: 44px 44px, auto, auto;
 }
@@ -149,14 +157,14 @@ a:hover { color: var(--color-marca-escuro); text-decoration-thickness: 2px; }
 /* Abertura da página inicial: raios dourados saindo de trás do brasão (Pentecostes) */
 .raios {
   position: absolute; inset: -40% -20% -40% 30%; pointer-events: none;
-  background: repeating-conic-gradient(from 0deg at 62% 50%, rgb(255 203 4 / .07) 0deg 3deg, transparent 3deg 14deg);
+  background: repeating-conic-gradient(from 0deg at 62% 50%, rgb(253 200 0 / .07) 0deg 3deg, transparent 3deg 14deg);
   mask-image: radial-gradient(closest-side at 62% 50%, #000 20%, transparent 78%);
   -webkit-mask-image: radial-gradient(closest-side at 62% 50%, #000 20%, transparent 78%);
   animation: raios 1800ms var(--ease-saida) both;
 }
 .brilho {
   position: absolute; pointer-events: none; border-radius: 9999px;
-  background: radial-gradient(circle, rgb(255 214 74 / .32) 0%, rgb(255 203 4 / .10) 40%, transparent 70%);
+  background: radial-gradient(circle, rgb(255 214 74 / .32) 0%, rgb(253 200 0 / .10) 40%, transparent 70%);
 }
 .brasao-entrada { animation: brasao 1100ms var(--ease-saida) both; }
 @keyframes raios { from { opacity: 0; transform: rotate(-6deg) scale(.96); } to { opacity: 1; transform: none; } }
