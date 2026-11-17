@@ -39,3 +39,15 @@ Volunteers escrevem num formato leve (parágrafos, `##`, `>`, listas, negrito/it
 - **Movimento:** um único momento ao carregar, o medalhão do brasão na página inicial. Os cartões não "pulam" mais no hover; mudam só a borda e a sombra.
 - **Sem rótulos em caixa alta:** os rótulos de seção passam a usar itálico Caslon.
 - **Verificação:** contrastes AA e Lighthouse com acessibilidade 100 nas páginas verificadas. Detalhes em `docs/10-design-system.md`.
+
+## ADR-012 — Página inicial mais rica e brasão livre (16/11/2026)
+**Decisão do coordenador:** o layout do ADR-011 ficou simples demais. A paleta "Verde majestoso" foi mantida e o brasão saiu do círculo: agora é o **brasão livre**, com contorno claro fino (gerado a partir do PNG em `public/marca/rcc-livre*.webp`) e brilho dourado.
+- **Abertura:** raios dourados de Pentecostes, textura "semeada" de pequenos losangos e **buscador de grupos** (município e dia) sobreposto ao filete.
+- **"Por onde começar":** blocos para explorar o site, com ícones próprios (chama, calendário, livro, pomba e mãos). O bloco maior é Grupos de Oração, com contagens reais.
+- **Agenda:** o próximo encontro em destaque, com a data grande em ouro.
+- **Faixa da Palavra:** At 2,4.
+- **Notícias:** em cartões.
+- **Ministérios:** em selos que ficam verdes ao passar o mouse.
+- **Pedido de oração:** em painel próprio.
+- **Verificação:** Lighthouse com acessibilidade 100 no celular e no computador, sem rolagem lateral em 390 px.
+- **Pendente:** a imagem do brasão é ampliada a partir de um PNG de 283 px. A versão vetorial oficial deixará a abertura nítida em telas de alta resolução.

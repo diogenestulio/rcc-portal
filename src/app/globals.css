@@ -134,26 +134,40 @@ a:hover { color: var(--color-marca-escuro); text-decoration-thickness: 2px; }
 .filete-ouro.no-claro::after { box-shadow: 0 0 0 4px var(--color-marfim); }
 .faixa-marca { height: 4px; background: var(--faixa); }
 
-/* Selo do brasão: disco claro com aro de ouro (o brasão tem pomba branca e fita verde, que somem sobre o verde) */
-.selo {
-  display: inline-grid; place-items: center; border-radius: 9999px; background: #fbfaf4;
-  box-shadow: 0 0 0 2px var(--color-ouro-suave), 0 0 0 5px var(--color-estandarte), 0 0 0 6px rgb(232 198 96 / .55);
+/* Brasão livre (sem moldura): contorno claro já na imagem + brilho dourado por CSS */
+.brasao-livre { filter: drop-shadow(0 0 1px rgb(255 248 220 / .6)) drop-shadow(0 6px 22px rgb(255 203 4 / .22)); }
+
+/* Textura heráldica: pequenos losangos dourados espaçados ("semeado"), por cima das luzes do estandarte */
+.estandarte.textura-losangos {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M22 18l4 4-4 4-4-4z' fill='%23e8c660' fill-opacity='.10'/%3E%3Cpath d='M0 -4l4 4-4 4-4-4zM44 -4l4 4-4 4-4-4zM0 40l4 4-4 4-4-4zM44 40l4 4-4 4-4-4z' fill='%23e8c660' fill-opacity='.06'/%3E%3C/svg%3E"),
+    radial-gradient(120% 90% at 85% 10%, rgb(255 203 4 / .07), transparent 55%),
+    radial-gradient(90% 120% at 0% 100%, rgb(0 116 55 / .35), transparent 60%);
+  background-size: 44px 44px, auto, auto;
 }
 
-/* Medalhão da página inicial: o único momento de movimento do site (ao carregar) */
-.medalhao { position: relative; display: grid; place-items: center; aspect-ratio: 1; width: 100%; }
-.medalhao::before { /* halo */
-  content: ""; position: absolute; inset: -22%; border-radius: 9999px;
-  background: radial-gradient(circle, rgb(255 203 4 / .22) 0%, rgb(232 198 96 / .10) 38%, transparent 68%);
-  animation: halo 1600ms var(--ease-saida) both;
+/* Abertura da página inicial: raios dourados saindo de trás do brasão (Pentecostes) */
+.raios {
+  position: absolute; inset: -40% -20% -40% 30%; pointer-events: none;
+  background: repeating-conic-gradient(from 0deg at 62% 50%, rgb(255 203 4 / .07) 0deg 3deg, transparent 3deg 14deg);
+  mask-image: radial-gradient(closest-side at 62% 50%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(closest-side at 62% 50%, #000 20%, transparent 78%);
+  animation: raios 1800ms var(--ease-saida) both;
 }
-.medalhao-disco {
-  position: relative; display: grid; place-items: center; width: 100%; height: 100%; border-radius: 9999px; background: #fbfaf4;
-  box-shadow: 0 0 0 2px var(--color-ouro), 0 0 0 10px var(--color-estandarte), 0 0 0 11px rgb(232 198 96 / .7), 0 24px 60px rgb(0 0 0 / .35);
-  animation: medalhao 900ms var(--ease-saida) both;
+.brilho {
+  position: absolute; pointer-events: none; border-radius: 9999px;
+  background: radial-gradient(circle, rgb(255 214 74 / .32) 0%, rgb(255 203 4 / .10) 40%, transparent 70%);
 }
-@keyframes medalhao { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
-@keyframes halo { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
+.brasao-entrada { animation: brasao 1100ms var(--ease-saida) both; }
+@keyframes raios { from { opacity: 0; transform: rotate(-6deg) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes brasao { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+
+/* Caminhos: blocos para explorar o site (realce responde ao mouse/teclado) */
+.caminho { position: relative; overflow: hidden; transition: background-color var(--dur) var(--ease-suave), box-shadow var(--dur) var(--ease-suave), border-color var(--dur) var(--ease-suave); }
+.caminho .caminho-icone { transition: transform 320ms var(--ease-saida), color var(--dur) var(--ease-suave); }
+.caminho:hover .caminho-icone, .caminho:focus-within .caminho-icone { transform: translateY(-3px) scale(1.06); }
+.caminho .caminho-ir { background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size 320ms var(--ease-saida); }
+.caminho:hover .caminho-ir, .caminho:focus-within .caminho-ir { background-size: 100% 1px; }
 
 /* Texto rico vindo do CMS (já sanitizado no servidor) */
 .prosa { max-width: 68ch; }

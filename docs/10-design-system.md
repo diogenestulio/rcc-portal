@@ -4,7 +4,8 @@ Implementação: tokens em `src/app/globals.css` (`@theme` do Tailwind 4) e comp
 
 ## Princípios
 **Direção "Verde majestoso" (ADR-011, 16/11/2026).** O verde-escuro do brasão é o **estandarte**: domina o cabeçalho, as aberturas de página e o rodapé. **Ouro e prata** são os metais: filete dourado com losango entre o estandarte e o conteúdo, selo do brasão com aro de ouro e botão de destaque em ouro. O conteúdo fica claro, silencioso e editorial.
-- **Uma ousadia só:** o medalhão do brasão na abertura da página inicial, o único elemento com movimento ao carregar.
+- **Brasão livre (ADR-012):** sem moldura, com contorno claro e brilho dourado (`.brasao-livre`), sobre raios dourados (`.raios`) e textura de losangos (`.estandarte.textura-losangos`). O único movimento ao carregar é a entrada do brasão e dos raios.
+- **Convite a explorar:** buscador de grupos logo na abertura e blocos "Por onde começar" (`.caminho`) com ícones próprios em `src/components/site/Icones.tsx`.
 - **A data é a informação da agenda:** por isso aparece grande, como num calendário litúrgico.
 - **Notícias com hierarquia:** uma em destaque e as outras em lista.
 - **Rótulos:** em itálico Caslon e em caixa normal, nunca em caixa alta. Links sem setas.
@@ -16,6 +17,7 @@ Implementação: tokens em `src/app/globals.css` (`@theme` do Tailwind 4) e comp
 |---|---|
 | `rcc-logo-completo.png` | brasão com o texto “Renovação Carismática Católica”, fundo transparente (materiais, impressão) |
 | `rcc-simbolo.png` | só o símbolo, fundo transparente — destaque da página inicial |
+| `rcc-livre.webp` / `rcc-livre-96.webp` | brasão livre com contorno claro: abertura, cabeçalho e rodapé (sobre o verde) |
 | `rcc-simbolo-96.webp` / `-192.webp` | cabeçalho e rodapé (o rodapé usa um selo branco, porque a pomba é branca) |
 | `src/app/icon.png`, `apple-icon.png`, `favicon.ico` | ícones do navegador e do celular |
 
@@ -49,10 +51,10 @@ Três estilos de duas famílias, servidas do próprio domínio via `next/font` (
 Corpo de 17 px com entrelinha 1,62. A abertura da página inicial usa `text-monumental` (até 4,9 rem).
 
 ## Componentes
-`Container`, `PageHeader` (faixa do estandarte com filete dourado), `ButtonLink`/`btn` (primário, secundário, discreto e perigo no claro; **ouro** e **claro** sobre o estandarte; altura mínima de 48 px), `Badge`, `DemoBadge`, `Card` (`hover` ativa a elevação), `Notice` (status/alerta com `role`), `EmptyState`, `field` (rótulo, dica, erro) e `Wordmark` (brasão no selo de ouro + nome em Caslon). Classes globais: `.estandarte`, `.sobre-estandarte` (foco em ouro), `.filete-ouro`, `.selo` e `.medalhao`.
+`Container`, `PageHeader` (faixa do estandarte com filete dourado), `ButtonLink`/`btn` (primário, secundário, discreto e perigo no claro; **ouro** e **claro** sobre o estandarte; altura mínima de 48 px), `Badge`, `DemoBadge`, `Card` (`hover` ativa a elevação), `Notice` (status/alerta com `role`), `EmptyState`, `field` (rótulo, dica, erro) e `Wordmark` (brasão no selo de ouro + nome em Caslon). Classes globais: `.estandarte`, `.textura-losangos`, `.sobre-estandarte` (foco em ouro), `.filete-ouro`, `.brasao-livre`, `.raios`, `.brilho` e `.caminho`.
 
 ## Movimento e foco
-- **Um momento só:** ao carregar a página inicial, o medalhão do brasão aparece com o halo dourado (`.medalhao`, cerca de 0,9 s).
+- **Um momento só:** ao carregar a página inicial, o brasão sobe levemente e os raios dourados se abrem (cerca de 1,1 a 1,8 s).
 - **Respostas à ação:** cor e sublinhado nos links, sublinhado dourado no menu principal, borda e sombra nas listagens (`.elevar`, sem deslocamento) e menu do celular abrindo com leve deslize.
 - `prefers-reduced-motion: reduce` desliga todas as animações e transições.
 - **Foco:** contorno de 3 px, petróleo no claro e ouro sobre o estandarte, sempre visível. Link "Pular para o conteúdo" em todas as páginas.

@@ -46,7 +46,7 @@ export function DemoBadge({ show }: { show?: boolean }) {
 /** Cabeçalho das páginas internas: faixa do estandarte com o título em Caslon e o filete dourado. */
 export function PageHeader({ title, intro, eyebrow, children }: { title: string; intro?: ReactNode; eyebrow?: string; children?: ReactNode }) {
   return (
-    <header className="estandarte sobre-estandarte">
+    <header className="estandarte textura-losangos sobre-estandarte">
       <Container className="pb-12 pt-10 sm:pb-16 sm:pt-14">
         {eyebrow && <p className="mb-3 font-titulo text-lg italic text-ouro-suave">{eyebrow}</p>}
         <h1 className="text-display">{title}</h1>
@@ -89,16 +89,14 @@ export const field = {
   error: "mt-1 text-sm font-semibold text-perigo",
 };
 
-/** Brasão da RCC no selo de ouro + nome da instituição. A imagem é decorativa (alt vazio): o nome em texto é o rótulo. */
+/** Brasão da RCC (livre, com contorno claro e brilho) + nome da instituição. A imagem é decorativa (alt vazio): o nome em texto é o rótulo. */
 export function Wordmark({ compact, inverse }: { compact?: boolean; inverse?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-3.5">
-      <span className={cx("selo shrink-0", compact ? "h-10 w-10" : "h-12 w-12 sm:h-14 sm:w-14")}>
-        <Image src="/marca/rcc-simbolo-96.webp" alt="" width={126} height={96} priority className={compact ? "h-6 w-auto" : "h-7 w-auto sm:h-9"} />
-      </span>
+    <span className="inline-flex items-center gap-3">
+      <Image src="/marca/rcc-livre-96.webp" alt="" width={187} height={145} priority className={cx(inverse && "brasao-livre", "w-auto shrink-0", compact ? "h-9" : "h-11 sm:h-[3.25rem]")} />
       <span className="leading-tight">
         <span className={cx("block font-display", compact ? "text-[1.05rem]" : "text-[1.15rem] sm:whitespace-nowrap sm:text-[1.35rem]", inverse ? "text-white" : "text-estandarte")}>{INST.nomePublico}</span>
-        {!compact && <span className={cx("hidden text-[0.8rem] font-medium tracking-[0.02em] sm:block", inverse ? "text-prata" : "text-tinta-3")}>Renovação Carismática Católica</span>}
+        {!compact && <span className={cx("hidden text-[0.8rem] font-medium tracking-[0.02em] sm:block", inverse ? "text-ouro-suave" : "text-tinta-3")}>Renovação Carismática Católica</span>}
       </span>
     </span>
   );

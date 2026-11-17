@@ -65,12 +65,12 @@ export function SiteHeader() {
 export function SiteFooter() {
   const year = new Date().getFullYear();
   return (
-    <footer className="estandarte sobre-estandarte mt-24">
+    <footer className="estandarte textura-losangos sobre-estandarte mt-24">
       <div aria-hidden="true" className="filete-ouro" />
       <Container className="grid gap-12 py-14 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-4">
-            <span className="selo h-16 w-16 shrink-0"><Image src="/marca/rcc-simbolo-96.webp" alt="" width={126} height={96} className="h-10 w-auto" /></span>
+            <Image src="/marca/rcc-livre-96.webp" alt="" width={187} height={145} className="brasao-livre h-14 w-auto shrink-0" />
             <p className="font-display text-2xl leading-snug text-white">{instituicaoProvisoria.nomeCompleto}</p>
           </div>
           <p className="mt-5 max-w-md text-marfim-texto">
