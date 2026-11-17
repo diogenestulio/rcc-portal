@@ -38,9 +38,9 @@ export default async function MesPage({ searchParams }: PageProps<"/agenda/mes">
     <>
       <PageHeader eyebrow="Agenda" title={`Agenda de ${label}`}>
         <nav aria-label="Navegar entre meses" className="mt-6 flex flex-wrap gap-3">
-          <Link href={`/agenda/mes?m=${prev}`} className={btn.secundario}>← Mês anterior</Link>
-          <Link href={`/agenda/mes?m=${next}`} className={btn.secundario}>Próximo mês →</Link>
-          <Link href="/agenda" className={btn.discreto}>Ver em lista</Link>
+          <Link href={`/agenda/mes?m=${prev}`} className={btn.claro}>← Mês anterior</Link>
+          <Link href={`/agenda/mes?m=${next}`} className={btn.claro}>Próximo mês →</Link>
+          <Link href="/agenda" className={btn.claro}>Ver em lista</Link>
         </nav>
       </PageHeader>
       <Container className="py-10">

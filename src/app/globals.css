@@ -1,54 +1,69 @@
 @import "tailwindcss";
 
 /*
- * Design system — RCC Arquidiocesana (docs/10-design-system.md)
- * Paleta derivada do brasão da RCC (verde #007437, amarelo #FFCB04, petróleo #004159, prata #B8D0DC),
- * em harmonia com RCC Brasil e RCCMT. Contrastes (WCAG 2.x, sobre branco / fundo #F6F9F7):
- * tinta 15,6/14,7 · tinta-2 8,9/8,4 · tinta-3 6,0/5,6 · marca 5,9/5,6 · marca-escuro 8,4/7,9 ·
- * petróleo 11,1/10,4 · sol-texto 6,3/5,9 · branco sobre marca 5,9 · branco sobre marca-noite 11,2 ·
- * amarelo sobre marca-noite 7,4. O amarelo (#FFCB04, 1,5:1 no claro) e o prata são DECORATIVOS:
- * nunca texto sobre fundo claro.
+ * Design system — RCC Arquidiocese de Cuiabá · direção "Verde majestoso" (docs/10-design-system.md)
+ * O verde-escuro do brasão é o estandarte: domina cabeçalho, abertura e rodapé; ouro e prata são os
+ * metais (filetes, selo do brasão, destaques); o conteúdo fica claro e silencioso.
+ * Contrastes (WCAG 2.x) calculados em 16/11/2026:
+ *   sobre estandarte #0A3A22 — branco 12,8 · marfim-texto 10,6 · ouro 8,4 · ouro-suave 7,7 · prata 8,0
+ *   sobre noite #062616      — branco 16,2 · ouro-suave 9,8 · prata 10,1
+ *   estandarte sobre ouro (botão) 8,4 · marca sobre névoa 5,5 · sol-texto sobre branco 6,3
+ * O amarelo puro e o ouro NUNCA são texto sobre fundo claro.
  */
 @theme {
-  /* Neutros (nomes históricos mantidos: "marfim" = fundo da página) */
-  --color-marfim: #f6f9f7;
-  --color-marfim-2: #eaf2ed;
+  /* Neutros (nomes históricos mantidos: "marfim" = fundo claro da página, um verde-névoa frio) */
+  --color-marfim: #f5f8f6;
+  --color-marfim-2: #e9f0ec;
   --color-papel: #ffffff;
-  --color-tinta: #14262e;
+  --color-tinta: #13262d;
   --color-tinta-2: #3b4c54;
   --color-tinta-3: #56666e;
-  --color-linha: #d5e1db;
+  --color-linha: #d6e1db;
+
+  /* Estandarte (verde-escuro do brasão) */
+  --color-estandarte: #0a3a22;
+  --color-estandarte-2: #0f4a2c;
+  --color-noite: #062616;
+  --color-marfim-texto: #efeadb;  /* texto claro sobre o estandarte */
+
+  /* Metais */
+  --color-ouro: #ffcb04;          /* amarelo do brasão: botão de destaque e filetes */
+  --color-ouro-suave: #e8c660;    /* títulos e links sobre o estandarte */
+  --color-prata: #b8d0dc;         /* texto secundário sobre o estandarte */
 
   /* Marca (brasão) */
-  --color-marca: #007437;         /* verde do brasão: links, botões, destaques */
-  --color-marca-escuro: #005a2b;  /* hover, títulos de destaque */
-  --color-marca-noite: #00451f;   /* rodapé e faixas escuras */
-  --color-marca-claro: #e6f2ea;   /* fundos suaves */
-  --color-sol: #ffcb04;           /* amarelo do brasão — decorativo ou sobre fundo escuro */
-  --color-sol-texto: #7a5c00;     /* dourado legível sobre fundo claro */
+  --color-marca: #007437;
+  --color-marca-escuro: #005a2b;
+  --color-marca-noite: #00451f;
+  --color-marca-claro: #e6f2ea;
+  --color-sol: #ffcb04;
+  --color-sol-texto: #7a5c00;
   --color-sol-claro: #fff6d6;
-  --color-petroleo: #004159;      /* contorno do brasão: foco, informação */
-  --color-prata: #b8d0dc;         /* decorativo */
+  --color-petroleo: #004159;
 
   /* Estados */
-  --color-azul: #004159;          /* informação (= petróleo) */
+  --color-azul: #004159;
   --color-azul-claro: #e6f1f8;
-  --color-verde: #1e6b3c;         /* sucesso / confirmado */
+  --color-verde: #1e6b3c;
   --color-verde-claro: #e3f1e7;
-  --color-alerta: #7a5200;        /* atenção (texto) */
+  --color-alerta: #7a5200;
   --color-alerta-claro: #fff4d1;
-  --color-perigo: #9b1c1c;        /* erro / cancelado */
+  --color-perigo: #9b1c1c;
   --color-perigo-claro: #fbeaea;
 
-  --font-titulo: var(--font-source-serif), "Georgia", serif;
-  --font-corpo: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Caslon: a letra dos missais e das Bíblias impressas. Display para títulos grandes, Text para os menores. */
+  --font-display: var(--font-caslon-display), "Libre Caslon Text", Georgia, serif;
+  --font-titulo: var(--font-caslon-text), Georgia, serif;
+  --font-corpo: var(--font-albert), system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
 
-  --text-display: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
-  --text-display--line-height: 1.1;
+  --text-display: clamp(2.2rem, 1.5rem + 2.6vw, 3.4rem);
+  --text-display--line-height: 1.08;
+  --text-monumental: clamp(2.6rem, 1.4rem + 4.6vw, 4.9rem);
+  --text-monumental--line-height: 1.02;
 
   --ease-suave: cubic-bezier(.2, .7, .2, 1);
   --ease-saida: cubic-bezier(.16, 1, .3, 1);
@@ -56,8 +71,8 @@
 
 :root {
   --foco: 3px solid var(--color-petroleo);
-  --sombra: 0 1px 2px rgb(0 65 89 / .06), 0 4px 14px rgb(0 65 89 / .07);
-  --sombra-alta: 0 2px 4px rgb(0 65 89 / .06), 0 12px 28px rgb(0 65 89 / .12);
+  --sombra: 0 1px 2px rgb(6 38 22 / .05), 0 3px 10px rgb(6 38 22 / .05);
+  --sombra-alta: 0 2px 4px rgb(6 38 22 / .06), 0 14px 32px rgb(6 38 22 / .14);
   --dur: 180ms;
   --faixa: linear-gradient(90deg, var(--color-marca) 0%, var(--color-marca) 55%, var(--color-sol) 100%);
   color-scheme: light;
@@ -70,56 +85,95 @@ body {
   color: var(--color-tinta);
   font-family: var(--font-corpo);
   font-size: 1.0625rem;
-  line-height: 1.6;
+  line-height: 1.62;
   text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga";
 }
-h1, h2, h3, h4 { font-family: var(--font-titulo); line-height: 1.2; color: var(--color-tinta); text-wrap: balance; }
+h1, h2 { font-family: var(--font-display); font-weight: 400; font-synthesis-weight: none; letter-spacing: -0.005em; line-height: 1.12; color: var(--color-tinta); text-wrap: balance; }
+h3, h4 { font-family: var(--font-titulo); line-height: 1.25; color: var(--color-tinta); text-wrap: balance; }
 p { text-wrap: pretty; }
-a { color: var(--color-marca); text-underline-offset: .18em; text-decoration-thickness: 1px;
+a { color: var(--color-marca); text-underline-offset: .2em; text-decoration-thickness: 1px;
   transition: color var(--dur) var(--ease-suave), text-decoration-color var(--dur) var(--ease-suave), background-color var(--dur) var(--ease-suave); }
 a:hover { color: var(--color-marca-escuro); text-decoration-thickness: 2px; }
 ::selection { background: var(--color-sol-claro); color: var(--color-tinta); }
 
-/* Foco sempre visível e consistente */
+/* Foco sempre visível: petróleo no claro, ouro sobre o estandarte */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
   outline: var(--foco);
   outline-offset: 2px;
   border-radius: 4px;
 }
+.sobre-estandarte :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline-color: var(--color-ouro); }
 
 .skip-link {
   position: absolute; left: 1rem; top: -100px; z-index: 100;
-  background: var(--color-tinta); color: #fff; padding: .6rem 1rem; border-radius: var(--radius-sm);
+  background: var(--color-ouro); color: var(--color-estandarte); padding: .6rem 1rem; border-radius: var(--radius-sm); font-weight: 600;
 }
-.skip-link:focus { top: 1rem; color: #fff; }
+.skip-link:focus { top: 1rem; color: var(--color-estandarte); }
+}
 
+/* ───────── Estandarte: superfícies verde-escuras (cabeçalho, abertura, rodapé) ───────── */
+.estandarte {
+  background-color: var(--color-estandarte);
+  background-image:
+    radial-gradient(120% 90% at 85% 10%, rgb(255 203 4 / .07), transparent 55%),
+    radial-gradient(90% 120% at 0% 100%, rgb(0 116 55 / .35), transparent 60%);
+  color: var(--color-marfim-texto);
 }
+.estandarte h1, .estandarte h2, .estandarte h3 { color: #fff; }
+.estandarte a:not([class*="bg-"]) { color: var(--color-ouro-suave); }
+.estandarte a:not([class*="bg-"]):hover { color: #fff; }
+
+/* Filete dourado com losango central: o "galão" que separa o estandarte do conteúdo */
+.filete-ouro { position: relative; height: 1px; background: linear-gradient(90deg, transparent, var(--color-ouro-suave) 18%, var(--color-ouro) 50%, var(--color-ouro-suave) 82%, transparent); }
+.filete-ouro::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 9px; height: 9px;
+  transform: translate(-50%, -50%) rotate(45deg); background: var(--color-ouro);
+  box-shadow: 0 0 0 4px var(--color-estandarte);
+}
+.filete-ouro.no-claro::after { box-shadow: 0 0 0 4px var(--color-marfim); }
+.faixa-marca { height: 4px; background: var(--faixa); }
+
+/* Selo do brasão: disco claro com aro de ouro (o brasão tem pomba branca e fita verde, que somem sobre o verde) */
+.selo {
+  display: inline-grid; place-items: center; border-radius: 9999px; background: #fbfaf4;
+  box-shadow: 0 0 0 2px var(--color-ouro-suave), 0 0 0 5px var(--color-estandarte), 0 0 0 6px rgb(232 198 96 / .55);
+}
+
+/* Medalhão da página inicial: o único momento de movimento do site (ao carregar) */
+.medalhao { position: relative; display: grid; place-items: center; aspect-ratio: 1; width: 100%; }
+.medalhao::before { /* halo */
+  content: ""; position: absolute; inset: -22%; border-radius: 9999px;
+  background: radial-gradient(circle, rgb(255 203 4 / .22) 0%, rgb(232 198 96 / .10) 38%, transparent 68%);
+  animation: halo 1600ms var(--ease-saida) both;
+}
+.medalhao-disco {
+  position: relative; display: grid; place-items: center; width: 100%; height: 100%; border-radius: 9999px; background: #fbfaf4;
+  box-shadow: 0 0 0 2px var(--color-ouro), 0 0 0 10px var(--color-estandarte), 0 0 0 11px rgb(232 198 96 / .7), 0 24px 60px rgb(0 0 0 / .35);
+  animation: medalhao 900ms var(--ease-saida) both;
+}
+@keyframes medalhao { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+@keyframes halo { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
 
 /* Texto rico vindo do CMS (já sanitizado no servidor) */
 .prosa { max-width: 68ch; }
 .prosa > * + * { margin-top: 1em; }
-.prosa h2 { font-size: 1.6rem; margin-top: 1.8em; }
+.prosa h2 { font-size: 1.75rem; margin-top: 1.8em; }
 .prosa h3 { font-size: 1.3rem; margin-top: 1.5em; }
 .prosa ul { list-style: disc; padding-left: 1.4em; }
 .prosa ol { list-style: decimal; padding-left: 1.4em; }
-.prosa blockquote { border-left: 3px solid var(--color-sol); padding-left: 1em; color: var(--color-tinta-2); font-style: italic; }
+.prosa blockquote { border-left: 2px solid var(--color-ouro); padding-left: 1em; color: var(--color-tinta-2); font-family: var(--font-titulo); font-style: italic; font-size: 1.1em; }
 .prosa img { border-radius: var(--radius-md); height: auto; }
 .prosa figure img { width: 100%; max-width: 100%; }
 .prosa figcaption { margin-top: .4em; font-size: .9rem; color: var(--color-tinta-3); }
 
-/* Filete e faixa — ecoam a fita verde e amarela do brasão (estáticos) */
-.filete { height: 1px; background: linear-gradient(90deg, transparent, var(--color-sol), transparent); }
-.faixa-marca { height: 4px; background: var(--faixa); }
+/* Listagens: realce discreto no passar do mouse ou no foco do teclado (sem "pular") */
+.elevar { transition: border-color var(--dur) var(--ease-suave), box-shadow var(--dur) var(--ease-suave), background-color var(--dur) var(--ease-suave); }
+.elevar:hover, .elevar:focus-within { border-color: color-mix(in srgb, var(--color-marca) 45%, var(--color-linha)); box-shadow: var(--sombra-alta); }
 
-/* Movimento discreto: cartões e links de cartão sobem levemente; tudo some com prefers-reduced-motion */
-.elevar { transition: transform var(--dur) var(--ease-suave), box-shadow var(--dur) var(--ease-suave), border-color var(--dur) var(--ease-suave); }
-.elevar:hover, .elevar:focus-within { transform: translateY(-2px); box-shadow: var(--sombra-alta); border-color: color-mix(in srgb, var(--color-marca) 35%, var(--color-linha)); }
-
-/* Entrada suave do conteúdo da página (só opacidade e 6 px) */
+/* Menu do celular abre com leve deslize (resposta à ação da pessoa) */
 @keyframes surgir { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .surgir { animation: surgir 420ms var(--ease-saida) both; }
-
-/* Menu do celular abre com leve deslize */
 details[open] > .menu-painel { animation: surgir 200ms var(--ease-saida) both; }
 
 @media (prefers-reduced-motion: reduce) {

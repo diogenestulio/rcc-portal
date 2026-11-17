@@ -36,10 +36,10 @@ export function LoginForm({ volta }: { volta?: string }) {
   }
 
   if (step === "totp") return (
-    <form onSubmit={onTotp} className="mt-6 space-y-4">
+    <form key="totp" onSubmit={onTotp} className="mt-6 space-y-4">
       <div>
         <label htmlFor="codigo" className={field.label}>Código do aplicativo autenticador</label>
-        <input id="codigo" name="codigo" inputMode="numeric" autoComplete="one-time-code" required className={field.input} autoFocus />
+        <input key="codigo" id="codigo" name="codigo" defaultValue="" inputMode="numeric" autoComplete="one-time-code" required className={field.input} autoFocus />
         <p className={field.hint}>6 dígitos. Sem acesso ao aplicativo? Use um código de recuperação.</p>
       </div>
       {err && <p role="alert" className={field.error}>{err}</p>}

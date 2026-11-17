@@ -59,10 +59,10 @@ export default async function EventoPage({ params }: PageProps<"/agenda/[slug]">
       {st === "adiado" && <div className="mt-6"><Notice tone="alerta" title="Este evento foi adiado">A nova data será publicada aqui.</Notice></div>}
 
       <dl className="mt-8 grid gap-5 rounded-[var(--radius-lg)] border border-linha bg-papel p-6 sm:grid-cols-2">
-        <div><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Quando</dt><dd className="mt-1 font-semibold text-marca">{ev.rrule ? "Evento recorrente — próximas datas abaixo" : when}</dd></div>
-        {ev.location && <div><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Onde</dt><dd className="mt-1">{ev.location}{ev.address && <><br />{ev.address}</>}</dd></div>}
-        {vagas != null && st === "agendado" && <div><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Vagas</dt><dd className="mt-1">{vagas > 0 ? `${vagas} de ${ev.capacity}` : "Esgotadas"}</dd></div>}
-        {batches.length > 0 && <div><dt className="text-sm font-semibold uppercase tracking-wide text-tinta-3">Valores</dt><dd className="mt-1">{batches.map((b) => <span key={b.id} className="block">{b.name}: {b.priceCents === 0 ? "gratuito" : formatBRL(b.priceCents)}</span>)}</dd></div>}
+        <div><dt className="font-titulo text-[0.95rem] italic text-sol-texto">Quando</dt><dd className="mt-1 font-semibold text-marca">{ev.rrule ? "Evento recorrente — próximas datas abaixo" : when}</dd></div>
+        {ev.location && <div><dt className="font-titulo text-[0.95rem] italic text-sol-texto">Onde</dt><dd className="mt-1">{ev.location}{ev.address && <><br />{ev.address}</>}</dd></div>}
+        {vagas != null && st === "agendado" && <div><dt className="font-titulo text-[0.95rem] italic text-sol-texto">Vagas</dt><dd className="mt-1">{vagas > 0 ? `${vagas} de ${ev.capacity}` : "Esgotadas"}</dd></div>}
+        {batches.length > 0 && <div><dt className="font-titulo text-[0.95rem] italic text-sol-texto">Valores</dt><dd className="mt-1">{batches.map((b) => <span key={b.id} className="block">{b.name}: {b.priceCents === 0 ? "gratuito" : formatBRL(b.priceCents)}</span>)}</dd></div>}
       </dl>
 
       {next.length > 0 && (

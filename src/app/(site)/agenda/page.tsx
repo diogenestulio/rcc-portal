@@ -27,8 +27,8 @@ export default async function AgendaPage() {
     <>
       <PageHeader eyebrow="Agenda" title="Próximos eventos" intro="Encontros, retiros e formações. As reuniões semanais dos grupos estão em Grupos de Oração.">
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link href="/agenda/mes" className={btn.secundario}>Ver por mês</Link>
-          <a href="/agenda.ics" className={btn.discreto}>Assinar agenda (iCal)</a>
+          <Link href="/agenda/mes" className={btn.claro}>Ver por mês</Link>
+          <a href="/agenda.ics" className={btn.claro}>Assinar agenda (iCal)</a>
         </div>
       </PageHeader>
       <Container className="py-10">

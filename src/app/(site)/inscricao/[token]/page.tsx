@@ -28,7 +28,7 @@ export default async function Comprovante({ params }: PageProps<"/inscricao/[tok
 
   return (
     <Container narrow className="py-10">
-      <p className="text-sm font-semibold uppercase tracking-wider text-sol-texto">Comprovante</p>
+      <p className="font-titulo text-lg italic text-sol-texto">Comprovante</p>
       <h1 className="mt-2 text-4xl font-semibold">{ev.title}</h1>
       <p className="mt-2 text-tinta-2">{ev.allDay ? fmtDateOnly(ev.startDate!) : fmtDateTime(ev.startsAt!)}{ev.location ? ` · ${ev.location}` : ""}</p>
       <div className="mt-4"><Badge tone={tone}>{label}</Badge></div>

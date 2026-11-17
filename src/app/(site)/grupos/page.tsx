@@ -19,7 +19,7 @@ export default async function GruposPage({ searchParams }: PageProps<"/grupos">)
 
   return (
     <>
-      <PageHeader eyebrow="Grupos de Oração" title="Encontre um Grupo de Oração"
+      <PageHeader title="Encontre um Grupo de Oração"
         intro="Os grupos são abertos a todos. Não é preciso cadastro: escolha o município e o dia, e vá ao encontro." />
       <Container className="py-10">
         <form method="get" role="search" aria-label="Filtrar grupos" className="grid gap-4 rounded-[var(--radius-lg)] border border-linha bg-papel p-5 sm:grid-cols-2 lg:grid-cols-6">

@@ -32,3 +32,10 @@ Volunteers escrevem num formato leve (parágrafos, `##`, `>`, listas, negrito/it
 
 ## ADR-010 — Identidade visual a partir do brasão da RCC (14/11/2026)
 **Decisão do coordenador:** a cor do portal deriva do brasão da RCC (verde #007437, amarelo #FFCB04, petróleo #004159, prata #B8D0DC), em harmonia com RCC Brasil e RCCMT. Substitui a cor vinho provisória. O amarelo só aparece como decoração ou sobre fundo escuro (contraste 1,5:1 no claro). Brasão como imagem decorativa (`alt=""`) ao lado do nome em texto. **Pendente:** autorização formal de uso da marca e versão vetorial oficial. Detalhes em `docs/10-design-system.md`.
+
+## ADR-011 — Layout "Verde majestoso" (16/11/2026)
+**Decisão do coordenador** (escolhida entre três direções: Cenáculo, Luz clara e Verde majestoso): o verde-escuro do brasão vira **estandarte** no cabeçalho, nas aberturas de página e no rodapé, com **ouro e prata** como metais (filete dourado com losango, selo do brasão com aro de ouro, botão de destaque em ouro). O conteúdo continua claro.
+- **Tipografia:** Libre Caslon (Display e Text), a letra de missais e Bíblias impressas, nos títulos; Albert Sans no texto.
+- **Movimento:** um único momento ao carregar, o medalhão do brasão na página inicial. Os cartões não "pulam" mais no hover; mudam só a borda e a sombra.
+- **Sem rótulos em caixa alta:** os rótulos de seção passam a usar itálico Caslon.
+- **Verificação:** contrastes AA e Lighthouse com acessibilidade 100 nas páginas verificadas. Detalhes em `docs/10-design-system.md`.

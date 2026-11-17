@@ -40,7 +40,7 @@ export default async function GruposAdmin({ searchParams }: PageProps<"/admin/gr
               <tr key={g.id} className="border-t border-linha">
                 <td className="p-3"><Link href={`/admin/grupos/${g.id}`} className="font-semibold">{g.name}</Link></td>
                 <td className="p-3">{weekday(g.weekday)}, {hhmm(g.startTime)}</td>
-                <td className="p-3 space-x-1">{g.published ? <Badge tone="sucesso">Publicado</Badge> : <Badge>Oculto</Badge>} {g.status !== "ativo" && <Badge tone="alerta">{g.status}</Badge>}</td>
+                <td className="p-3 space-x-1">{g.published ? <Badge tone="sucesso">Publicado</Badge> : <Badge>Oculto</Badge>} {g.status !== "ativo" && <Badge tone="alerta">{{ pausado: "Pausado", encerrado: "Encerrado", a_confirmar: "A confirmar" }[g.status as "pausado"] ?? g.status}</Badge>}</td>
                 <td className="p-3 text-sm">{g.lastConfirmedAt ? fmtPublished(g.lastConfirmedAt) : "nunca"} {isStale(g.lastConfirmedAt) && <Badge tone="alerta">Conferir</Badge>}</td>
               </tr>
             ))}

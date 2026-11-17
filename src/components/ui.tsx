@@ -9,12 +9,16 @@ export function Container({ children, className, narrow }: { children: ReactNode
   return <div className={cx("mx-auto w-full px-4 sm:px-6", narrow ? "max-w-3xl" : "max-w-6xl", className)}>{children}</div>;
 }
 
-const btnBase = "inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-base font-semibold no-underline min-h-12 transition-[background-color,color,border-color,box-shadow,transform] duration-[var(--dur)] ease-[var(--ease-suave)] active:translate-y-px disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none";
+const btnBase = "inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] px-5 py-3 text-base font-semibold tracking-[0.01em] no-underline min-h-12 transition-[background-color,color,border-color,box-shadow] duration-[var(--dur)] ease-[var(--ease-suave)] disabled:opacity-60 disabled:cursor-not-allowed";
 export const btn = {
-  primario: cx(btnBase, "bg-marca text-white shadow-[0_1px_2px_rgb(0_69_31/.25)] hover:bg-marca-escuro hover:text-white hover:shadow-[0_6px_16px_rgb(0_90_43/.28)] hover:-translate-y-px"),
-  secundario: cx(btnBase, "border border-marca bg-papel text-marca hover:bg-marca-claro hover:text-marca-escuro hover:-translate-y-px"),
+  primario: cx(btnBase, "bg-marca text-white shadow-[inset_0_-2px_0_rgb(0_0_0/.12)] hover:bg-marca-escuro hover:text-white"),
+  secundario: cx(btnBase, "border border-marca bg-papel text-marca hover:bg-marca-claro hover:text-marca-escuro"),
   discreto: cx(btnBase, "text-tinta-2 hover:bg-marfim-2 hover:text-tinta"),
   perigo: cx(btnBase, "bg-perigo text-white hover:opacity-90"),
+  /** Sobre o estandarte (verde-escuro): ouro do brasão com texto verde. */
+  ouro: cx(btnBase, "bg-ouro text-estandarte shadow-[inset_0_-2px_0_rgb(0_0_0/.14)] hover:bg-[#ffd94a] hover:text-estandarte"),
+  /** Sobre o estandarte: contorno claro. */
+  claro: cx(btnBase, "border border-ouro-suave/70 text-marfim-texto hover:border-ouro hover:bg-white/5 hover:text-white"),
 };
 
 export function ButtonLink({ variant = "primario", className, ...p }: ComponentProps<typeof Link> & { variant?: keyof typeof btn }) {
@@ -39,15 +43,17 @@ export function DemoBadge({ show }: { show?: boolean }) {
   return <Badge tone="alerta">Demonstração</Badge>;
 }
 
+/** Cabeçalho das páginas internas: faixa do estandarte com o título em Caslon e o filete dourado. */
 export function PageHeader({ title, intro, eyebrow, children }: { title: string; intro?: ReactNode; eyebrow?: string; children?: ReactNode }) {
   return (
-    <header className="border-b border-linha bg-[radial-gradient(ellipse_at_top_right,var(--color-sol-claro),transparent_55%),linear-gradient(180deg,var(--color-marca-claro),var(--color-marfim))]">
-      <Container className="py-10 sm:py-14">
-        {eyebrow && <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-sol-texto">{eyebrow}</p>}
-        <h1 className="text-display font-semibold">{title}</h1>
-        {intro && <div className="mt-3 max-w-2xl text-lg text-tinta-2">{intro}</div>}
+    <header className="estandarte sobre-estandarte">
+      <Container className="pb-12 pt-10 sm:pb-16 sm:pt-14">
+        {eyebrow && <p className="mb-3 font-titulo text-lg italic text-ouro-suave">{eyebrow}</p>}
+        <h1 className="text-display">{title}</h1>
+        {intro && <div className="mt-4 max-w-2xl text-lg text-prata">{intro}</div>}
         {children}
       </Container>
+      <div aria-hidden="true" className="filete-ouro no-claro" />
     </header>
   );
 }
@@ -55,7 +61,7 @@ export function PageHeader({ title, intro, eyebrow, children }: { title: string;
 export function EmptyState({ title, children, action }: { title: string; children?: ReactNode; action?: ReactNode }) {
   return (
     <div className="rounded-[var(--radius-lg)] border border-dashed border-linha bg-papel p-8 text-center">
-      <p className="font-titulo text-xl font-semibold">{title}</p>
+      <p className="font-display text-2xl">{title}</p>
       {children && <div className="mx-auto mt-2 max-w-prose text-tinta-2">{children}</div>}
       {action && <div className="mt-5">{action}</div>}
     </div>
@@ -83,14 +89,16 @@ export const field = {
   error: "mt-1 text-sm font-semibold text-perigo",
 };
 
-/** Brasão da RCC + nome da instituição. A imagem é decorativa (alt vazio): o nome em texto é o rótulo. */
+/** Brasão da RCC no selo de ouro + nome da instituição. A imagem é decorativa (alt vazio): o nome em texto é o rótulo. */
 export function Wordmark({ compact, inverse }: { compact?: boolean; inverse?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-3">
-      <Image src="/marca/rcc-simbolo-192.webp" alt="" width={253} height={192} priority className={compact ? "h-9 w-auto" : "h-11 w-auto sm:h-12"} />
+    <span className="inline-flex items-center gap-3.5">
+      <span className={cx("selo shrink-0", compact ? "h-10 w-10" : "h-12 w-12 sm:h-14 sm:w-14")}>
+        <Image src="/marca/rcc-simbolo-96.webp" alt="" width={126} height={96} priority className={compact ? "h-6 w-auto" : "h-7 w-auto sm:h-9"} />
+      </span>
       <span className="leading-tight">
-        <span className={cx("block font-titulo text-base font-bold sm:text-lg", inverse ? "text-white" : "text-marca-escuro")}>{INST.nomePublico}</span>
-        {!compact && <span className={cx("hidden text-xs font-medium tracking-wide sm:block", inverse ? "text-prata" : "text-tinta-3")}>Renovação Carismática Católica</span>}
+        <span className={cx("block font-display", compact ? "text-[1.05rem]" : "text-[1.15rem] sm:whitespace-nowrap sm:text-[1.35rem]", inverse ? "text-white" : "text-estandarte")}>{INST.nomePublico}</span>
+        {!compact && <span className={cx("hidden text-[0.8rem] font-medium tracking-[0.02em] sm:block", inverse ? "text-prata" : "text-tinta-3")}>Renovação Carismática Católica</span>}
       </span>
     </span>
   );
