@@ -32,7 +32,7 @@ export function SiteHeader() {
       )}
       {/* Faixa 1: assinatura oficial + ações */}
       <Container className="flex items-center justify-between gap-4 py-3.5">
-        <Link href="/" className="no-underline"><Wordmark inverse /><span className="sr-only">, página inicial</span></Link>
+        <Link href="/" className="shrink-0 no-underline" aria-label="Renovação Carismática Católica — Arquidiocese de Cuiabá, página inicial"><Wordmark inverse /></Link>
         <div className="flex items-center gap-1 sm:gap-2">
           <Link href="/busca" className="rounded-[var(--radius-sm)] p-3 !text-marfim-texto hover:bg-white/10 hover:!text-white" aria-label="Buscar no portal"><SearchIcon /></Link>
           <Link href="/pedido-de-oracao" className="hidden rounded-[var(--radius-md)] border border-ouro-suave/60 px-4 py-2 text-[0.95rem] font-bold !text-ouro-suave no-underline transition-colors hover:border-ouro hover:bg-ouro hover:!text-estandarte lg:inline-block">Pedido de oração</Link>

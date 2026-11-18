@@ -52,7 +52,7 @@ export default async function Home() {
            proíbe o símbolo sobre grafismos). Quando houver foto autorizada de um Grupo de Oração, ela entra aqui. ───── */}
       <section aria-labelledby="destaque" className="estandarte textura-losangos sobre-estandarte relative isolate overflow-hidden">
         <div aria-hidden="true" className="raios -z-10" />
-        <Container className="pb-32 pt-14 sm:pb-36 sm:pt-20 lg:pt-24">
+        <Container className="grid items-center gap-10 pb-32 pt-14 sm:pb-36 sm:pt-20 lg:grid-cols-[1.2fr_1fr] lg:pt-24">
           <div className="max-w-4xl">
             <h1 id="destaque" className="text-monumental">Há um lugar para você rezar conosco.</h1>
             <p className="mt-7 max-w-2xl text-lg leading-relaxed text-marfim-texto sm:text-xl">
@@ -64,6 +64,11 @@ export default async function Home() {
               <ButtonLink href="/a-rcc" variant="claro">Conhecer a RCC</ButtonLink>
             </div>
           </div>
+          {/* Assinatura oficial completa (versão vertical, p. 24) sobre área limpa branca, sem filtros nem animação. */}
+          <figure className="w-full max-w-[26rem] justify-self-center rounded-[var(--radius-lg)] bg-white p-6 shadow-[var(--sombra-alta)] sm:p-8 lg:justify-self-end">
+            {/* eslint-disable-next-line @next/next/no-img-element -- SVG vetorial da assinatura */}
+            <img src="/marca/assinatura-vertical.svg" alt="Renovação Carismática Católica — Arquidiocese de Cuiabá" width={182} height={90} className="block h-auto w-full" />
+          </figure>
         </Container>
         <div aria-hidden="true" className="filete-ouro no-claro" />
       </section>

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
-import { instituicaoProvisoria as INST } from "@/config/instituicao";
 
 export const cx = (...c: (string | false | null | undefined)[]) => c.filter(Boolean).join(" ");
 
@@ -89,17 +88,20 @@ export const field = {
 };
 
 /**
- * Identificação TEXTUAL simples da instituição (cabeçalho, rodapé, painel, entrar).
- * NÃO é a assinatura visual da RCC: o Manual de Identidade Visual (págs. 5–11 e 23) exige a arte oficial com o
- * nome da instância, que as dioceses recebem da coordenação estadual. Enquanto o arquivo oficial
- * "Renovação Carismática Católica — Arquidiocese de Cuiabá" não chega, não se monta logotipo com o símbolo +
- * texto HTML (docs/10-design-system.md). Quando chegar, trocar este componente pela arte oficial (img).
+ * Assinatura visual da RCC com o nome da instância — public/marca/assinatura-horizontal.svg, montada por
+ * scripts/marca/montar-assinatura.py a partir dos VETORES OFICIAIS do Manual de Identidade Visual: símbolo e logotipo
+ * inalterados; só o nome de instância "Arquidiocese de Cuiabá" em Lato Bold a 70%, alinhado à esquerda (p. 23);
+ * margem de proteção da barra do "i" (p. 20) e fundo branco (p. 22). Sem filtros, sombras ou cortes.
+ * Substituir pelo arquivo oficial da coordenação estadual quando ele chegar (docs/22).
  */
+export const ASSINATURA_ALT = "Renovação Carismática Católica — Arquidiocese de Cuiabá";
 export function Wordmark({ compact, inverse }: { compact?: boolean; inverse?: boolean }) {
+  // Proporção da arte: 281 × 54,6. A altura mínima no cabeçalho mantém o nome da instância legível (≥ 9 px).
   return (
-    <span className="inline-block leading-tight">
-      <span className={cx("block font-display", compact ? "text-[1.1rem]" : "text-[1.2rem] sm:text-[1.45rem]", inverse ? "text-white" : "text-estandarte")}>{INST.nomePublico}</span>
-      {!compact && <span className={cx("block text-[0.8rem] tracking-[0.01em] sm:text-[0.85rem]", inverse ? "text-prata" : "text-tinta-3")}>Renovação Carismática Católica</span>}
+    <span className={cx("inline-block bg-white leading-none", inverse && "rounded-[var(--radius-md)] p-1 shadow-[0_1px_2px_rgb(0_0_0/.2)]")}>
+      {/* eslint-disable-next-line @next/next/no-img-element -- SVG vetorial da assinatura; next/image não otimiza SVG */}
+      <img src="/marca/assinatura-horizontal.svg" alt={ASSINATURA_ALT} width={281} height={55}
+        className={cx("block w-auto", compact ? "h-10" : "h-[3.1rem] sm:h-16")} />
     </span>
   );
 }

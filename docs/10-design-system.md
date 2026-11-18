@@ -24,15 +24,19 @@ Implementação: tokens em `src/app/globals.css` (`@theme` do Tailwind 4) e comp
 | `rcc-logo-completo.png`, `rcc-simbolo.png` | PNGs antigos, mantidos para impressão e para gerar os ícones |
 | `src/app/icon.png`, `apple-icon.png`, `favicon.ico` | ícones do navegador e do celular |
 
-**Identificação no site (desde 18/11/2026):** **não** há assinatura montada.
-- O manual exige a arte oficial com o nome da instância (p. 5–11 e 23: "as dioceses possuem o arquivo digital com seu nome próprio") e proíbe alterar proporção, fonte e aplicação.
-- Até chegar o arquivo "Renovação Carismática Católica — Arquidiocese de Cuiabá" da coordenação estadual, o componente `Wordmark` mostra **só texto** ("RCC Arquidiocese de Cuiabá / Renovação Carismática Católica"), **sem o símbolo**, no cabeçalho, no rodapé, no painel, na tela de entrar e nos PDFs.
-- A capa é **tipográfica**, sem o símbolo ampliado: não há filtro, contorno, brilho nem animação sobre a marca.
-- **Ao receber o arquivo oficial:**
-  1. usar a versão **horizontal** no cabeçalho, com o nome da instância alinhado à esquerda e a 70% do tamanho (p. 23), sem combinar condensada, linha única e sigla (p. 5);
-  2. conferir a redução mínima (p. 18–19) e a margem da barra do "i" (p. 20);
-  3. se o fundo verde prejudicar a leitura, colocar a arte sobre área clara, sem filtro.
-- `rcc-simbolo.svg` (vetor extraído do manual) fica guardado para a arte oficial e para material impresso. **Não é usado sozinho no site.**
+**Assinatura no site (desde 18/11/2026, a pedido do coordenador):** "Renovação Carismática Católica — Arquidiocese de Cuiabá", montada por `scripts/marca/montar-assinatura.py` a partir dos **vetores oficiais** do manual (`docs/marca-referencia/linha-unica-*.svg`).
+- **O que não muda:** símbolo, logotipo, cores, proporção e posição são os da arte oficial.
+- **O que muda:** só o **nome de instância** ("Brasil" → "Arquidiocese de Cuiabá"), seguindo as regras do manual:
+  - **horizontal** (`public/marca/assinatura-horizontal.svg`, cabeçalho e painel): Lato Bold a **70%** do logotipo, **alinhado à esquerda** com "Renovação Carismática Católica" (p. 23). Medido na arte oficial: logotipo em corpo 14,24 e "Brasil" em corpo 10,0, ou seja 70,2%. Foi mantido o mesmo corpo, posição e linha de base;
+  - **vertical** (`public/marca/assinatura-vertical.svg`, capa): Lato Bold a **60%**, **centralizado**, espaçamento normal (p. 24). **Divergência registrada:** a arte "Brasil" da RCC Brasil usa cerca de 80%; seguimos o texto do manual.
+- **Fundo branco e margem de proteção:** a margem é a barra do "i", 0,13 do corpo do logotipo (p. 20). Não há filtro, sombra sobre a marca, corte nem animação (p. 21–22).
+- **Uso no site:**
+  - no **cabeçalho**, uma placa branca sobre o verde, com 255 px de largura no celular e 330 px no computador. Fica acima da redução máxima de 20 mm da p. 18, e o nome da instância tem cerca de 9 px no celular;
+  - na **capa**, a versão vertical num painel branco;
+  - o **rodapé** mantém o nome em texto.
+- **Fonte embutida:** a Lato Bold (licença OFL) vai embutida no SVG; o arquivo está em `scripts/marca/lato-bold-latin.woff2`.
+- **Ao receber o arquivo oficial** da coordenação estadual (p. 23), substituir os dois SVGs pelo oficial e comparar.
+- **Comparação lado a lado:** `docs/marca-referencia/comparacao.html` e `docs/capturas/assinatura-comparacao.png`.
 
 **Pendente:** autorização formal da coordenação para o uso da marca pela instância.
 

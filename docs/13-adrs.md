@@ -63,3 +63,10 @@ O coordenador enviou o manual oficial (PDF). O símbolo, que estava em vetor no 
 - **Marca:** o revisor apontou que "símbolo + texto HTML" equivale a improvisar o logotipo e que o símbolo ampliado sobre grafismos fere o manual (p. 5–11, 21–22). Até chegar a assinatura oficial da instância, o site usa identificação textual e capa tipográfica (`docs/10`).
 - **A RCC:** `/a-rcc` mostra direto a página fixa **Quem Somos**, ligada por chave estável (`content_item.chave = 'quem-somos'`, migração 0005), independente de título e endereço. O link antigo `/a-rcc/<endereço>` redireciona com 308 e a URL canônica é `/a-rcc`. No painel, a ligação fica em **Conteúdo → A RCC → Quem Somos** (permissão `conteudo.estrutura`, só o gestor).
 - **Menu:** a mesma lista no computador e no celular: A RCC, Sede, Grupos de Oração, Formação, Notícias, Agenda, Multimídia. "Sede" substitui o rótulo "Igreja e Renovação" e **mantém a rota** `/igreja-e-renovacao`, para que os links já divulgados continuem valendo. A loja fica fora do menu e do rodapé enquanto estiver fechada.
+
+## ADR-015 — Assinatura com o nome da instância, conforme as p. 23–24 do manual (18/11/2026)
+O coordenador pediu o símbolo junto com o logotipo, parametrizado pelo manual e sobre fundo branco, com a informação "Renovação Carismática Católica / Arquidiocese de Cuiabá".
+- **Como foi feito:** a partir das artes oficiais vetoriais, trocou-se apenas o nome de instância, segundo as regras do manual: 70% e alinhado à esquerda na horizontal; 60% e centralizado na vertical; Lato Bold; margem da barra do "i".
+- **Onde aparece:** o cabeçalho usa a horizontal numa placa branca; a capa usa a vertical num painel branco.
+- **Substitui a identificação só em texto** do ADR-014.
+- **Continua pendente:** confirmar com a coordenação estadual se existe o arquivo oficial da instância e, se existir, adotá-lo.
