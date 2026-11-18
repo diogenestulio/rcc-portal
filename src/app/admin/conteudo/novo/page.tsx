@@ -14,13 +14,14 @@ export default async function Novo({ searchParams }: PageProps<"/admin/conteudo/
       <h1 className="text-3xl font-semibold">Novo conteúdo</h1>
       {typeof sp.erro === "string" && <div className="mt-4"><Notice tone="perigo">{sp.erro}</Notice></div>}
       <form action={criar} className="mt-6 space-y-5">
+        {sp.chave === "quem-somos" && <><input type="hidden" name="chave" value="quem-somos" /><Notice tone="info">Esta página será vinculada a <b>A RCC → Quem Somos</b>.</Notice></>}
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
             <label htmlFor="tipo" className={field.label}>Tipo</label>
-            <select id="tipo" name="tipo" className={field.input}>
+            <select id="tipo" name="tipo" defaultValue={typeof sp.tipo === "string" ? sp.tipo : "noticia"} className={field.input}>
               <option value="noticia">Notícia</option><option value="formacao">Formação</option>
               <option value="pagina">Página institucional</option><option value="comunicado">Comunicado</option>
-              <option value="igreja">Igreja e Renovação (acontecimentos da Igreja e da RCC)</option>
+              <option value="igreja">Sede (acontecimentos da Igreja e da RCC)</option>
             </select>
           </div>
           <div>

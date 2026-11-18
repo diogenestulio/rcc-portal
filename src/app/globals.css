@@ -138,13 +138,6 @@ a:hover { color: var(--color-marca-escuro); text-decoration-thickness: 2px; }
 .filete-ouro.no-claro::after { box-shadow: 0 0 0 4px var(--color-marfim); }
 .faixa-marca { height: 4px; background: var(--faixa); }
 
-/* Brasão oficial (SVG extraído do Manual) sobre o estandarte. O manual proíbe aplicar o símbolo em fundo da
-   mesma cor: um contorno claro finíssimo separa a fita verde do fundo verde, e o brilho dourado dá relevo. */
-.brasao-livre {
-  filter: drop-shadow(0 0 .6px #fbf8ee) drop-shadow(0 0 .6px #fbf8ee) drop-shadow(0 0 .8px #fbf8ee)
-          drop-shadow(0 8px 26px rgb(253 200 0 / .22));
-}
-
 /* Textura heráldica: pequenos losangos dourados espaçados ("semeado"), por cima das luzes do estandarte */
 .estandarte.textura-losangos {
   background-image:
@@ -157,18 +150,12 @@ a:hover { color: var(--color-marca-escuro); text-decoration-thickness: 2px; }
 /* Abertura da página inicial: raios dourados saindo de trás do brasão (Pentecostes) */
 .raios {
   position: absolute; inset: -40% -20% -40% 30%; pointer-events: none;
-  background: repeating-conic-gradient(from 0deg at 62% 50%, rgb(253 200 0 / .07) 0deg 3deg, transparent 3deg 14deg);
-  mask-image: radial-gradient(closest-side at 62% 50%, #000 20%, transparent 78%);
-  -webkit-mask-image: radial-gradient(closest-side at 62% 50%, #000 20%, transparent 78%);
+  background: repeating-conic-gradient(from 0deg at 78% 45%, rgb(253 200 0 / .07) 0deg 3deg, transparent 3deg 14deg);
+  mask-image: radial-gradient(closest-side at 78% 45%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(closest-side at 78% 45%, #000 20%, transparent 78%);
   animation: raios 1800ms var(--ease-saida) both;
 }
-.brilho {
-  position: absolute; pointer-events: none; border-radius: 9999px;
-  background: radial-gradient(circle, rgb(255 214 74 / .32) 0%, rgb(253 200 0 / .10) 40%, transparent 70%);
-}
-.brasao-entrada { animation: brasao 1100ms var(--ease-saida) both; }
 @keyframes raios { from { opacity: 0; transform: rotate(-6deg) scale(.96); } to { opacity: 1; transform: none; } }
-@keyframes brasao { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
 
 /* Caminhos: blocos para explorar o site (realce responde ao mouse/teclado) */
 .caminho { position: relative; overflow: hidden; transition: background-color var(--dur) var(--ease-suave), box-shadow var(--dur) var(--ease-suave), border-color var(--dur) var(--ease-suave); }

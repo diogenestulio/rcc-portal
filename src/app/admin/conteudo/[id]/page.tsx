@@ -38,8 +38,9 @@ export default async function EditContent({ params, searchParams }: PageProps<"/
         <h1 className="text-3xl font-semibold">{cur.title}</h1>
         <Badge tone={tone}>{label}</Badge>
         {doctrinal && <Badge tone="marca">Revisão doutrinal obrigatória</Badge>}
+        {item.chave === "quem-somos" && <Badge tone="info">A RCC → Quem Somos</Badge>}
       </div>
-      <p className="mt-1 text-sm text-tinta-3">Revisão nº {cur.number} · {item.publishedRevisionId ? <Link href={`${PUBLIC_BASE[item.kind]}/${item.slug}`}>ver versão pública</Link> : "ainda não publicado"}</p>
+      <p className="mt-1 text-sm text-tinta-3">Revisão nº {cur.number} · {item.publishedRevisionId ? <Link href={item.chave === "quem-somos" ? "/a-rcc" : `${PUBLIC_BASE[item.kind]}/${item.slug}`}>ver versão pública</Link> : "ainda não publicado"}</p>
       {typeof sp.erro === "string" && <div className="mt-4"><Notice tone="perigo">{sp.erro}</Notice></div>}
       {typeof sp.ok === "string" && OK[sp.ok] && <div className="mt-4"><Notice tone="sucesso">{OK[sp.ok]}</Notice></div>}
       {item.publishedRevisionId && item.publishedRevisionId !== cur.id && <div className="mt-4"><Notice tone="info">A versão publicada anterior continua no ar até esta revisão ser aprovada e publicada.</Notice></div>}

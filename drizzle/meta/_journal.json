@@ -36,6 +36,13 @@
       "when": 1794879008945,
       "tag": "0004_igreja_e_renovacao",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795039597610,
+      "tag": "0005_pagina_fixa_quem_somos",
+      "breakpoints": true
     }
   ]
 }

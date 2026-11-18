@@ -16,7 +16,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import * as schema from "../src/db/schema";
 import type { DB } from "../src/db";
 import { contentItem, contentRevision, media, user } from "../src/db/schema";
-import { uploadMedia, publicUrl } from "../src/server/media";
+import { uploadMedia, publicUrl, storage } from "../src/server/media";
 import { sanitizeRichText } from "../src/server/content";
 import { textToHtml } from "../src/server/richtext";
 import type { Subject } from "../src/server/authz";
@@ -33,7 +33,16 @@ const s: Subject = { userId: AUTOR, assignments: [{ role: "gestor_institucional"
 const CREDITO = "Ilustração original do portal (proposta para avaliação)";
 async function midia(arquivo: string, descricao: string) {
   const [ja] = await db.select().from(media).where(and(eq(media.altText, descricao), eq(media.isPrivate, false)));
-  if (ja) return ja;
+  if (ja) {
+    // PDF revisado (ex.: cabeçalho sem montagem de marca): substitui o arquivo mantendo o mesmo endereço.
+    const novo = readFileSync(path.join(DIR, arquivo));
+    if (ja.mimeType === "application/pdf" && ja.bytes !== novo.length) {
+      await storage.put(ja.storageKey, novo);
+      await db.update(media).set({ bytes: novo.length }).where(eq(media.id, ja.id));
+      console.log(`PDF atualizado: ${arquivo}`);
+    }
+    return ja;
+  }
   const r = await uploadMedia(db, s, { file: readFileSync(path.join(DIR, arquivo)), fileName: arquivo, altText: descricao, credit: arquivo.endsWith(".pdf") ? "Material de demonstração do portal, sujeito a revisão" : CREDITO, imageRightsAuthorized: true });
   const [m] = await db.select().from(media).where(eq(media.id, r.id));
   return m;

@@ -236,11 +236,14 @@ export const contentItem = pgTable("content_item", {
   publishedAt: ts("published_at"),
   archivedAt: ts("archived_at"),
   ministryId: uuid("ministry_id").references(() => ministry.id, { onDelete: "set null" }),
+  /** Página fixa do site (ex.: "quem-somos" = A RCC → Quem Somos). Identificador estável: não muda com título ou endereço. */
+  chave: text("chave"),
   isDemo: boolean("is_demo").notNull().default(false),
   createdAt: createdAt(),
   updatedAt: updatedAt(),
 }, (t) => [
   uniqueIndex("content_kind_slug").on(t.kind, t.slug),
+  uniqueIndex("content_chave").on(t.chave),
   index("content_status_idx").on(t.status),
 ]);
 

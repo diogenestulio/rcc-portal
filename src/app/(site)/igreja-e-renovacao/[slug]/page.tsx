@@ -12,5 +12,5 @@ export async function generateMetadata({ params }: PageProps<"/igreja-e-renovaca
 
 export default async function Page({ params }: PageProps<"/igreja-e-renovacao/[slug]">) {
   const { slug } = await params;
-  return <ContentPage kind="igreja" slug={slug} back={{ href: "/igreja-e-renovacao", label: "Igreja e Renovação" }} />;
+  return <ContentPage kind="igreja" slug={slug} back={{ href: "/igreja-e-renovacao", label: "Sede" }} />;
 }

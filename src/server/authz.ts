@@ -20,6 +20,7 @@ export const ACTIONS = {
   "conteudo.aprovar_geral": "Aprovar notícia, comunicado, institucional",
   "conteudo.publicar": "Publicar/agendar revisão aprovada",
   "conteudo.arquivar": "Arquivar conteúdo",
+  "conteudo.estrutura": "Definir páginas fixas do site (ex.: A RCC → Quem Somos)",
   "midia.enviar": "Enviar mídia",
   "grupo.criar": "Cadastrar grupo novo (e paróquia/município novos)",
   "grupo.editar": "Editar dados do grupo",
@@ -60,7 +61,7 @@ export const MATRIX: Record<Role, readonly Action[]> = {
   admin_tecnico: ["usuarios.gerenciar", "integracoes.gerenciar", "auditoria.ler", "midia.enviar"],
   gestor_institucional: [
     "conteudo.criar", "conteudo.editar", "conteudo.enviar_revisao", "conteudo.aprovar_geral", "conteudo.publicar", "conteudo.arquivar",
-    "midia.enviar", "grupo.criar", "grupo.editar", "grupo.publicar", "grupo.contato_privado", "grupo.moderar_correcoes", "ministerio.criar", "ministerio.editar",
+    "conteudo.estrutura", "midia.enviar", "grupo.criar", "grupo.editar", "grupo.publicar", "grupo.contato_privado", "grupo.moderar_correcoes", "ministerio.criar", "ministerio.editar",
     "ministerio.publicar", "evento.gerenciar", "evento.participantes", "usuarios.gerenciar", "papeis.conceder", "loja.conta_recebedora", "auditoria.ler",
   ],
   editor: ["conteudo.criar", "conteudo.editar", "conteudo.enviar_revisao", "conteudo.publicar", "midia.enviar"],

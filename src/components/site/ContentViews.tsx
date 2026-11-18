@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Fragment } from "react";
 import { db } from "@/db";
-import { getPublished, listPublished, type ListedContent } from "@/server/content";
+import { getPublished, listPublished, type ListedContent, type PublicContent } from "@/server/content";
 import { publicUrl } from "@/server/media";
 import { Badge, btn, Container, DemoBadge, EmptyState, PageHeader } from "@/components/ui";
 import { fmtDateOnly, fmtPublished } from "./format";
@@ -96,11 +96,16 @@ export async function ContentList({ kind, base, title, intro, page = 1 }: { kind
 export async function ContentPage({ kind, slug, back }: { kind: Kind; slug: string; back: { href: string; label: string } }) {
   const c = await getPublished(db, kind, slug);
   if (!c) notFound();
+  return <Artigo c={c} kind={kind} back={back} />;
+}
+
+/** Corpo completo de um conteúdo publicado (usado também em /a-rcc, que mostra "Quem Somos" direto). */
+export function Artigo({ c, kind, back, children }: { c: PublicContent; kind: Kind; back?: { href: string; label: string }; children?: React.ReactNode }) {
   const quando = periodo(c.event_date, c.event_end_date);
   return (
     <Container narrow className="py-10">
-      <nav aria-label="Trilha"><Link href={back.href}>← {back.label}</Link></nav>
-      <article className="mt-4">
+      {back && <nav aria-label="Trilha"><Link href={back.href}>← {back.label}</Link></nav>}
+      <article className={back ? "mt-4" : ""}>
         <header>
           <p className="flex flex-wrap items-center gap-2 text-sm text-tinta-3">
             {kind !== "pagina" && <time dateTime={new Date(c.published_at).toISOString()}>{fmtPublished(c.published_at)}</time>}
@@ -141,6 +146,7 @@ export async function ContentPage({ kind, slug, back }: { kind: Kind; slug: stri
           </footer>
         )}
       </article>
+      {children}
     </Container>
   );
 }

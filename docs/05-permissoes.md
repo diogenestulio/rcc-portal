@@ -13,6 +13,7 @@ Regras gerais: toda requisição é verificada no servidor; MFA é obrigatório 
 | `conteudo.aprovar_geral` — Aprovar notícia, comunicado, institucional |  | ✔ |  | ✔ |  |  |  |  |
 | `conteudo.publicar` — Publicar/agendar revisão aprovada |  | ✔ | ✔ |  |  |  |  |  |
 | `conteudo.arquivar` — Arquivar conteúdo |  | ✔ |  |  |  |  |  |  |
+| `conteudo.estrutura` — Definir páginas fixas do site (ex.: A RCC → Quem Somos) |  | ✔ |  |  |  |  |  |  |
 | `midia.enviar` — Enviar mídia | ✔ | ✔ | ✔ |  | ✔ | ✔ |  |  |
 | `grupo.criar` — Cadastrar grupo novo (e paróquia/município novos) |  | ✔ |  |  |  |  |  |  |
 | `grupo.editar` — Editar dados do grupo |  | ✔ |  |  |  |  | ✔ |  |

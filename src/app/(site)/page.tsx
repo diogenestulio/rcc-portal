@@ -48,13 +48,14 @@ export default async function Home() {
 
   return (
     <>
-      {/* ───── Abertura: brasão livre com raios dourados de Pentecostes ───── */}
+      {/* ───── Abertura tipográfica: sem o símbolo ampliado (o Manual da RCC preserva a unidade símbolo + logotipo e
+           proíbe o símbolo sobre grafismos). Quando houver foto autorizada de um Grupo de Oração, ela entra aqui. ───── */}
       <section aria-labelledby="destaque" className="estandarte textura-losangos sobre-estandarte relative isolate overflow-hidden">
         <div aria-hidden="true" className="raios -z-10" />
-        <Container className="grid items-center gap-10 pb-32 pt-12 sm:pb-36 sm:pt-16 md:grid-cols-[1.15fr_1fr] lg:pt-20">
-          <div>
+        <Container className="pb-32 pt-14 sm:pb-36 sm:pt-20 lg:pt-24">
+          <div className="max-w-4xl">
             <h1 id="destaque" className="text-monumental">Há um lugar para você rezar conosco.</h1>
-            <p className="mt-7 max-w-xl text-lg leading-relaxed text-marfim-texto sm:text-xl">
+            <p className="mt-7 max-w-2xl text-lg leading-relaxed text-marfim-texto sm:text-xl">
               Os Grupos de Oração se reúnem toda semana nas paróquias da Arquidiocese de Cuiabá para louvar a Deus,
               ouvir a Palavra e acolher quem chega.
             </p>
@@ -62,11 +63,6 @@ export default async function Home() {
               <ButtonLink href="/agenda" variant="ouro">Ver a agenda</ButtonLink>
               <ButtonLink href="/a-rcc" variant="claro">Conhecer a RCC</ButtonLink>
             </div>
-          </div>
-          <div aria-hidden="true" className="relative order-first justify-self-start md:order-none md:justify-self-center">
-            <div className="brilho -inset-[30%]" />
-            {/* eslint-disable-next-line @next/next/no-img-element -- SVG vetorial oficial (nítido em qualquer tamanho) */}
-            <img src="/marca/rcc-simbolo.svg" alt="" width={141} height={107} fetchPriority="high" className="brasao-livre brasao-entrada relative h-auto w-40 sm:w-52 md:w-[24rem] lg:w-[28rem]" />
           </div>
         </Container>
         <div aria-hidden="true" className="filete-ouro no-claro" />
@@ -192,11 +188,11 @@ export default async function Home() {
         </Container>
       </section>
 
-      {/* ───── Igreja e Renovação: grandes acontecimentos da Igreja e da RCC ───── */}
+      {/* ───── Sede (rota /igreja-e-renovacao): grandes acontecimentos da Igreja e da RCC ───── */}
       {igreja.length > 0 && (
         <section aria-labelledby="igreja" className="py-20 sm:py-24">
           <Container>
-            <SectionHead id="igreja" title="Igreja e Renovação" intro="Grandes encontros, campanhas e celebrações da Igreja Católica e da RCC, no Brasil e no mundo." href="/igreja-e-renovacao" more="Ver todos os acontecimentos" />
+            <SectionHead id="igreja" title="Sede" intro="Grandes encontros, campanhas e celebrações da Igreja Católica e da RCC, no Brasil e no mundo." href="/igreja-e-renovacao" more="Ver todos os acontecimentos" />
             <ul className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {igreja.map((c) => <li key={c.id}><CartaoAcontecimento c={c} /></li>)}
             </ul>

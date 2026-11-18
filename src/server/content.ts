@@ -233,3 +233,44 @@ export async function listIgreja(db: DB, opts: { proximos: boolean; hoje: string
           and (r.event_date is null or coalesce(r.event_end_date, r.event_date) < ${opts.hoje}::date)
         order by ci.published_at desc limit ${lim} offset ${off}`);
 }
+
+// ───────── Páginas fixas (identificador estável) ─────────
+/** Seções do site que apontam para UMA página institucional, independentemente de título e endereço. */
+export const PAGINAS_FIXAS = { "quem-somos": "A RCC → Quem Somos" } as const;
+export type ChaveFixa = keyof typeof PAGINAS_FIXAS;
+
+/** Leitura pública da página fixa: sempre a revisão PUBLICADA (uma edição em revisão não aparece). */
+export async function getPublishedByChave(db: DB, chave: ChaveFixa) {
+  const rows = await db.execute<PublicContent>(sql`
+    select ${COLS}, r.body_html, r.author_name, r.source_reference, r.rights_notice, r.approved_at, r.created_at as updated_at
+    ${FROM}
+    where ci.chave = ${chave} and ci.published_revision_id is not null and ci.status <> 'arquivado'`);
+  return rows[0] ?? null;
+}
+
+/** Estado da página fixa para o painel: vinculada (com situação) ou não; e as páginas candidatas. */
+export async function paginaFixa(db: DB, chave: ChaveFixa) {
+  const [vinc] = await db.execute<{ id: string; slug: string; status: string; title: string; publicada: boolean; is_demo: boolean }>(sql`
+    select ci.id, ci.slug, ci.status::text, r.title, ci.published_revision_id is not null as publicada, ci.is_demo
+    from content_item ci join content_revision r on r.id = ci.current_revision_id where ci.chave = ${chave}`);
+  const candidatas = await db.execute<{ id: string; slug: string; title: string; status: string }>(sql`
+    select ci.id, ci.slug, r.title, ci.status::text from content_item ci join content_revision r on r.id = ci.current_revision_id
+    where ci.kind = 'pagina' and ci.status <> 'arquivado' and (ci.chave is null or ci.chave = ${chave}) order by r.title`);
+  return { vinculada: vinc ?? null, candidatas: [...candidatas] };
+}
+
+/** Vincula (ou troca) a página institucional de uma seção fixa. Não altera texto, revisões nem publicação. */
+export async function vincularPaginaFixa(db: DB, s: Subject, chave: ChaveFixa, itemId: string) {
+  assertCan(s, "conteudo.estrutura");
+  if (!(chave in PAGINAS_FIXAS)) throw new WorkflowError("Seção fixa desconhecida.");
+  await db.transaction(async (tx) => {
+    const item = await lockItem(tx, itemId);
+    if (item.kind !== "pagina") throw new WorkflowError("Escolha uma página institucional (tipo Página).");
+    if (item.status === "arquivado") throw new WorkflowError("Esta página está arquivada.");
+    if (item.chave && item.chave !== chave) throw new WorkflowError("Esta página já está vinculada a outra seção fixa.");
+    const [ant] = await tx.select({ id: contentItem.id }).from(contentItem).where(eq(contentItem.chave, chave));
+    if (ant && ant.id !== itemId) await tx.update(contentItem).set({ chave: null, updatedAt: new Date() }).where(eq(contentItem.id, ant.id));
+    await tx.update(contentItem).set({ chave, updatedAt: new Date() }).where(eq(contentItem.id, itemId));
+    await audit(tx, { actorId: s.userId, action: "conteudo.vincular_secao", resourceType: "content", resourceId: itemId, detail: { secao: chave, anterior: ant?.id ?? null } });
+  });
+}

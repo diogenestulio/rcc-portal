@@ -8,7 +8,7 @@ import { pageNum } from "@/components/site/ContentViews";
 import { TZ } from "@/components/site/format";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Igreja e Renovação", description: "Acontecimentos da Igreja Católica e da Renovação Carismática no Brasil e no mundo." };
+export const metadata: Metadata = { title: "Sede", alternates: { canonical: "/igreja-e-renovacao" }, description: "Acontecimentos da Igreja Católica e da Renovação Carismática no Brasil e no mundo." };
 
 const hojeLocal = () => new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(new Date());
 
@@ -23,7 +23,7 @@ export default async function IgrejaERenovacao({ searchParams }: PageProps<"/igr
   const more = cobertura.length > per;
   return (
     <>
-      <PageHeader title="Igreja e Renovação"
+      <PageHeader title="Sede"
         intro="O que está acontecendo na Igreja Católica e na Renovação Carismática, no Brasil e no mundo: grandes encontros, campanhas, datas e celebrações, sempre com o link da fonte oficial." />
       <Container className="py-14">
         {page === 1 && (

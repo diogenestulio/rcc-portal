@@ -3,7 +3,8 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { requireAdmin } from "@/server/session";
-import { approveRevision, archive, createDraft, editContent, publish, returnToDraft, submitForReview, WorkflowError, type Nature } from "@/server/content";
+import { approveRevision, archive, createDraft, editContent, paginaFixa, publish, returnToDraft, submitForReview, vincularPaginaFixa, WorkflowError, type Nature } from "@/server/content";
+import { decide } from "@/server/authz";
 import { ForbiddenError } from "@/server/authz";
 import { textToHtml } from "@/server/richtext";
 
@@ -50,7 +51,18 @@ export async function criar(fd: FormData) {
     if (!m) throw e;
     redirect(`/admin/conteudo/novo?erro=${encodeURIComponent(m)}`);
   }
+  // Criada a partir de "A RCC → Quem Somos" sem página vinculada: vincula já (quem tem permissão de estrutura).
+  if (fd.get("chave") === "quem-somos" && kind === "pagina" && decide(s, "conteudo.estrutura").ok && !(await paginaFixa(db, "quem-somos")).vinculada) {
+    await vincularPaginaFixa(db, s, "quem-somos", id);
+  }
   redirect(`/admin/conteudo/${id}?ok=criado`);
+}
+
+/** Painel: escolher qual página institucional é "A RCC → Quem Somos" (não mexe em texto nem publicação). */
+export async function vincularQuemSomos(fd: FormData) {
+  const s = await requireAdmin();
+  const itemId = String(fd.get("item") ?? "");
+  await run("/admin/conteudo", () => vincularPaginaFixa(db, s, "quem-somos", itemId), "/admin/conteudo?ok=vinculado#quem-somos");
 }
 
 export async function salvar(fd: FormData) {

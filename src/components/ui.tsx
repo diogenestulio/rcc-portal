@@ -89,19 +89,17 @@ export const field = {
 };
 
 /**
- * Assinatura visual conforme o Manual de Identidade Visual da RCC (versão horizontal, linha única + nome de instância):
- * símbolo à esquerda; "Renovação Carismática Católica" em Lato Bold; nome da instância alinhado à esquerda, com 70%
- * do tamanho. O símbolo é o SVG oficial (decorativo, alt vazio): o texto é o nome acessível.
+ * Identificação TEXTUAL simples da instituição (cabeçalho, rodapé, painel, entrar).
+ * NÃO é a assinatura visual da RCC: o Manual de Identidade Visual (págs. 5–11 e 23) exige a arte oficial com o
+ * nome da instância, que as dioceses recebem da coordenação estadual. Enquanto o arquivo oficial
+ * "Renovação Carismática Católica — Arquidiocese de Cuiabá" não chega, não se monta logotipo com o símbolo +
+ * texto HTML (docs/10-design-system.md). Quando chegar, trocar este componente pela arte oficial (img).
  */
 export function Wordmark({ compact, inverse }: { compact?: boolean; inverse?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-3 font-marca">
-      {/* eslint-disable-next-line @next/next/no-img-element -- SVG vetorial oficial; next/image não otimiza SVG */}
-      <img src="/marca/rcc-simbolo.svg" alt="" width={141} height={107} className={cx(inverse && "brasao-livre", "w-auto shrink-0", compact ? "h-9" : "h-11 sm:h-[3.4rem]")} />
-      <span className="leading-[1.15]">
-        <span className={cx("block font-bold tracking-[-0.005em]", compact ? "text-[0.95rem]" : "text-[1.02rem] sm:whitespace-nowrap sm:text-[1.28rem]", inverse ? "text-white" : "text-marca")}>Renovação Carismática Católica</span>
-        <span className={cx("block font-bold", compact ? "text-[0.67rem]" : "text-[0.72rem] sm:text-[0.9rem]", inverse ? "text-ouro-suave" : "text-petroleo")}>{INST.arquidiocese ?? "Arquidiocese de Cuiabá"}</span>
-      </span>
+    <span className="inline-block leading-tight">
+      <span className={cx("block font-display", compact ? "text-[1.1rem]" : "text-[1.2rem] sm:text-[1.45rem]", inverse ? "text-white" : "text-estandarte")}>{INST.nomePublico}</span>
+      {!compact && <span className={cx("block text-[0.8rem] tracking-[0.01em] sm:text-[0.85rem]", inverse ? "text-prata" : "text-tinta-3")}>Renovação Carismática Católica</span>}
     </span>
   );
 }

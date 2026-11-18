@@ -4,13 +4,15 @@ import { env } from "@/lib/env";
 import { instituicaoProvisoria } from "@/config/instituicao";
 import { instituicaoProvisoria as INST } from "@/config/instituicao";
 
+/** Menu principal: a MESMA lista no computador e no celular. Ordem e grafia definidas pela coordenação (18/11/2026).
+ *  "Sede" mantém a rota /igreja-e-renovacao (links já divulgados continuam valendo). */
 export const NAV = [
   { href: "/a-rcc", label: "A RCC" },
+  { href: "/igreja-e-renovacao", label: "Sede" },
   { href: "/grupos", label: "Grupos de Oração" },
-  { href: "/agenda", label: "Agenda" },
-  { href: "/igreja-e-renovacao", label: "Igreja e Renovação" },
   { href: "/formacao", label: "Formação" },
   { href: "/noticias", label: "Notícias" },
+  { href: "/agenda", label: "Agenda" },
   { href: "/multimidia", label: "Multimídia" },
 ];
 
@@ -73,11 +75,8 @@ export function SiteFooter() {
       <div aria-hidden="true" className="filete-ouro" />
       <Container className="grid gap-12 py-14 md:grid-cols-4">
         <div className="md:col-span-2">
-          <div className="flex items-center gap-4">
-            {/* eslint-disable-next-line @next/next/no-img-element -- SVG vetorial oficial */}
-            <img src="/marca/rcc-simbolo.svg" alt="" width={141} height={107} className="brasao-livre h-14 w-auto shrink-0" />
-            <p className="font-display text-2xl leading-snug text-white">{instituicaoProvisoria.nomeCompleto}</p>
-          </div>
+          {/* Identificação textual (sem símbolo): ver Wordmark em components/ui.tsx e docs/10-design-system.md. */}
+          <p className="font-display text-2xl leading-snug text-white">{instituicaoProvisoria.nomeCompleto}</p>
           <p className="mt-5 max-w-md text-marfim-texto">
             Movimento eclesial a serviço da evangelização, em comunhão com a {INST.arquidiocese ?? "Arquidiocese"}.
             {/* PENDENTE: nomenclatura do conselho/coordenação local */}
@@ -94,7 +93,6 @@ export function SiteFooter() {
             <li><Link href="/termos">Termos de uso</Link></li>
             <li><a href="/agenda.ics">Assinar a agenda (iCal)</a></li>
             <li><Link href="/ministerios">Ministérios</Link></li>
-            <li><Link href="/loja">Loja</Link></li>
           </ul>
         </nav>
         <nav aria-label="Vínculos oficiais">

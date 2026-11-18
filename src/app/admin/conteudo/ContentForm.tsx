@@ -45,7 +45,7 @@ export function ContentFields({ v = {}, disabled, imagens = [] }: { v?: Values; 
         <p id="capa-dica" className={field.hint}>Aparece nas listas e no topo do texto. Envie antes em <Link href="/admin/midia">Mídia</Link>, com descrição e autorização de imagem.</p>
       </div>
       <fieldset className="rounded-[var(--radius-md)] border border-linha p-4">
-        <legend className="px-1 font-semibold">Acontecimento (para “Igreja e Renovação”; opcional nos demais)</legend>
+        <legend className="px-1 font-semibold">Acontecimento (para a seção “Sede”; opcional nos demais)</legend>
         <div className="grid gap-4 sm:grid-cols-2">
           <div><label htmlFor="data" className={field.label}>Data de início</label><input id="data" name="data" type="date" defaultValue={v.data ?? ""} className={field.input} /></div>
           <div><label htmlFor="data_fim" className={field.label}>Data de término</label><input id="data_fim" name="data_fim" type="date" defaultValue={v.dataFim ?? ""} className={field.input} /></div>
