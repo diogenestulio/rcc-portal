@@ -19,7 +19,7 @@ Só estão aqui as perguntas que **bloqueiam uma decisão**. Os valores atuais p
 - Domínio desejado e quem é o titular do registro.
 
 **2. Identidade visual**
-- Logotipo autorizado (vetor) e cor principal oficial; manual de marca, se houver.
+- **Arquivo digital da assinatura "Renovação Carismática Católica — Arquidiocese de Cuiabá"** (horizontal e vertical, vetor), pedido à coordenação estadual. O manual da RCC já foi recebido (16/11/2026).
 - Fotografias da comunidade com autorização de imagem.
 - Autorização para mostrar as marcas da Arquidiocese, da RCCMT e da RCC Brasil no rodapé.
 
@@ -40,6 +40,6 @@ Só estão aqui as perguntas que **bloqueiam uma decisão**. Os valores atuais p
 
 | Tema | Valor atual | Onde mudar |
 |---|---|---|
-| Cor principal | Vinho `#7A2335` (não oficial) | `src/app/globals.css` |
-| Marca | Chama tipográfica (não é o logotipo) | `Wordmark` em `src/components/ui.tsx` |
+| Cores | Do Manual de Identidade Visual da RCC (verde #006036, petróleo #004058, amarelo #FDC800, prata #B8D0DC) | `src/app/globals.css` |
+| Marca | Identificação **textual** até chegar a assinatura oficial da instância, pedida à coordenação estadual (`docs/22`) | `Wordmark` em `src/components/ui.tsx` |
 | Dízimo | Não implementado | — |

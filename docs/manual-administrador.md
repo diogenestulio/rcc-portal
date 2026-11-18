@@ -81,10 +81,10 @@ Todo o conteúdo do site é cadastrado **pelo painel**. Não é preciso programa
 | Parte do site | Onde se cadastra no painel | Quem |
 |---|---|---|
 | **Página inicial** | é montada sozinha: próximos eventos publicados, últimas notícias e atalhos | — |
-| **A RCC** (identidade, história, coordenação, documentos) | **Conteúdo** → tipo *Página*: cada página publicada vira um item em `/a-rcc/endereço-curto` | editor + aprovação |
+| **A RCC** (abre direto **Quem Somos**) | **Conteúdo → A RCC → Quem Somos** (quadro no topo da lista): editar o texto, ou o gestor escolhe/troca a página vinculada. Outras páginas institucionais (história, coordenação, documentos) aparecem como “Também nesta seção”. | editor + aprovação; vínculo: gestor |
 | **Contato**, **Multimídia**, **Colaborar**, **Privacidade** | textos fixos, hoje com aviso de "pendente"; **mudam pela equipe técnica** quando a coordenação enviar os dados (seção 11) | equipe técnica |
 | **Notícias** | **Conteúdo** → tipo *Notícia* | editor + aprovação |
-| **Igreja e Renovação** (acontecimentos da Igreja e da RCC: campanhas, congressos, JMJ, datas) | **Conteúdo** → tipo *Igreja e Renovação*, com data, local e **link da fonte oficial** | editor + aprovação |
+| **Sede** (menu; endereço `/igreja-e-renovacao`): acontecimentos da Igreja e da RCC (campanhas, congressos, JMJ, datas) | **Conteúdo** → tipo *Sede*, com data, local e **link da fonte oficial** | editor + aprovação |
 | **Multimídia** (vídeos, PDFs, galeria) | vídeos: lista de canais oficiais (equipe técnica); PDFs e fotos: **Mídia** (a galeria mostra só imagens com autorização) | editor |
 | **Formação** | **Conteúdo** → tipo *Formação* (natureza doutrina, orientação pastoral ou devoção) | editor + **revisor** |
 | **Comunicados** | **Conteúdo** → tipo *Comunicado* | editor + gestor |

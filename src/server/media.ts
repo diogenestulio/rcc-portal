@@ -23,13 +23,14 @@ import { signDownload, verifyDownload } from "./tokens";
 export class MediaError extends Error {}
 export const VARIANT_WIDTHS = [640, 1280] as const;
 
-const baseDir = () => path.resolve(process.env.MEDIA_DIR || "storage/media");
+// turbopackIgnore: o diretório vem do ambiente em execução (volume); sem isso o build inclui o projeto inteiro no servidor.
+const baseDir = () => path.resolve(/*turbopackIgnore: true*/ process.env.MEDIA_DIR || "storage/media");
 const safeKey = (k: string) => { if (!/^[0-9a-f-]{36}(-w\d+)?\.(webp|pdf)$/.test(k)) throw new MediaError("Chave inválida."); return k; };
 
 export const storage = {
-  async put(key: string, data: Buffer) { await mkdir(baseDir(), { recursive: true }); await writeFile(path.join(baseDir(), safeKey(key)), data, { mode: 0o640 }); },
-  async get(key: string) { return readFile(path.join(baseDir(), safeKey(key))); },
-  async del(key: string) { await unlink(path.join(baseDir(), safeKey(key))).catch(() => {}); },
+  async put(key: string, data: Buffer) { await mkdir(/*turbopackIgnore: true*/ baseDir(), { recursive: true }); await writeFile(/*turbopackIgnore: true*/ path.join(baseDir(), safeKey(key)), data, { mode: 0o640 }); },
+  async get(key: string) { return readFile(/*turbopackIgnore: true*/ path.join(baseDir(), safeKey(key))); },
+  async del(key: string) { await unlink(/*turbopackIgnore: true*/ path.join(baseDir(), safeKey(key))).catch(() => {}); },
 };
 
 export const variantKey = (storageKey: string, w: number) => storageKey.replace(/\.webp$/, `-w${w}.webp`);

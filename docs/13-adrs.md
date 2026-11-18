@@ -58,3 +58,8 @@ O coordenador enviou o manual oficial (PDF). O símbolo, que estava em vetor no 
 - **Assinatura:** "Renovação Carismática Católica" + "Arquidiocese de Cuiabá", conforme as páginas 23 e 24 do manual.
 - **Cabeçalho:** reorganizado em duas faixas (assinatura e ações; menu), porque o nome oficial é mais longo.
 - **Fundo verde:** sobre o verde, o símbolo leva um contorno claro finíssimo para cumprir a proibição de "fundo da mesma cor".
+
+## ADR-014 — Marca sem montagem, A RCC abre Quem Somos e menu com Sede (18/11/2026)
+- **Marca:** o revisor apontou que "símbolo + texto HTML" equivale a improvisar o logotipo e que o símbolo ampliado sobre grafismos fere o manual (p. 5–11, 21–22). Até chegar a assinatura oficial da instância, o site usa identificação textual e capa tipográfica (`docs/10`).
+- **A RCC:** `/a-rcc` mostra direto a página fixa **Quem Somos**, ligada por chave estável (`content_item.chave = 'quem-somos'`, migração 0005), independente de título e endereço. O link antigo `/a-rcc/<endereço>` redireciona com 308 e a URL canônica é `/a-rcc`. No painel, a ligação fica em **Conteúdo → A RCC → Quem Somos** (permissão `conteudo.estrutura`, só o gestor).
+- **Menu:** a mesma lista no computador e no celular: A RCC, Sede, Grupos de Oração, Formação, Notícias, Agenda, Multimídia. "Sede" substitui o rótulo "Igreja e Renovação" e **mantém a rota** `/igreja-e-renovacao`, para que os links já divulgados continuem valendo. A loja fica fora do menu e do rodapé enquanto estiver fechada.

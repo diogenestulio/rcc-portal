@@ -24,18 +24,15 @@ Implementação: tokens em `src/app/globals.css` (`@theme` do Tailwind 4) e comp
 | `rcc-logo-completo.png`, `rcc-simbolo.png` | PNGs antigos, mantidos para impressão e para gerar os ícones |
 | `src/app/icon.png`, `apple-icon.png`, `favicon.ico` | ícones do navegador e do celular |
 
-**Assinatura no site** (componente `Wordmark`), na versão horizontal com nome de instância, conforme as páginas 23 e 24 do manual:
-- símbolo à esquerda;
-- "Renovação Carismática Católica" em **Lato Bold**;
-- "Arquidiocese de Cuiabá" em Lato Bold com cerca de 70% do tamanho, **alinhado à esquerda** com o nome principal.
-- Os textos são HTML (acessíveis), e o símbolo é decorativo (`alt=""`).
-
-**Regras do manual que o site segue:**
-- não distorcer o símbolo, não mudar suas cores e não trocar a fonte da assinatura nem do nome de instância;
-- não inverter a posição do símbolo e do nome;
-- respeitar a margem de segurança.
-
-**Fundo verde:** o manual proíbe aplicar o símbolo em fundo da mesma cor. Por isso, sobre o verde-estandarte o símbolo leva um contorno claro finíssimo (filtro CSS `.brasao-livre`), que separa a fita verde do fundo sem alterar o desenho.
+**Identificação no site (desde 18/11/2026):** **não** há assinatura montada.
+- O manual exige a arte oficial com o nome da instância (p. 5–11 e 23: "as dioceses possuem o arquivo digital com seu nome próprio") e proíbe alterar proporção, fonte e aplicação.
+- Até chegar o arquivo "Renovação Carismática Católica — Arquidiocese de Cuiabá" da coordenação estadual, o componente `Wordmark` mostra **só texto** ("RCC Arquidiocese de Cuiabá / Renovação Carismática Católica"), **sem o símbolo**, no cabeçalho, no rodapé, no painel, na tela de entrar e nos PDFs.
+- A capa é **tipográfica**, sem o símbolo ampliado: não há filtro, contorno, brilho nem animação sobre a marca.
+- **Ao receber o arquivo oficial:**
+  1. usar a versão **horizontal** no cabeçalho, com o nome da instância alinhado à esquerda e a 70% do tamanho (p. 23), sem combinar condensada, linha única e sigla (p. 5);
+  2. conferir a redução mínima (p. 18–19) e a margem da barra do "i" (p. 20);
+  3. se o fundo verde prejudicar a leitura, colocar a arte sobre área clara, sem filtro.
+- `rcc-simbolo.svg` (vetor extraído do manual) fica guardado para a arte oficial e para material impresso. **Não é usado sozinho no site.**
 
 **Pendente:** autorização formal da coordenação para o uso da marca pela instância.
 
